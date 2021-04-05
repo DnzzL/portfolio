@@ -9,7 +9,7 @@ const Hobbies = () => {
         <div class="lg:w-2/3 mx-auto">
           <div class="flex flex-wrap w-full bg-gray-100 py-32 px-10 relative mb-4">
             <img
-              alt="gallery"
+              alt="formula 1"
               class="w-full object-cover h-full object-center block opacity-25 absolute inset-0"
               src={formulaOne}
             />
@@ -27,7 +27,7 @@ const Hobbies = () => {
             <div class="px-2 w-1/2">
               <div class="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
                 <img
-                  alt="gallery"
+                  alt="rowing"
                   class="w-full object-cover h-full object-center block opacity-25 absolute inset-0"
                   src={aviron}
                 />
@@ -45,7 +45,7 @@ const Hobbies = () => {
             <div class="px-2 w-1/2">
               <div class="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
                 <img
-                  alt="gallery"
+                  alt="Metz"
                   class="w-full object-cover h-full object-center block opacity-25 absolute inset-0"
                   src={metz}
                 />
