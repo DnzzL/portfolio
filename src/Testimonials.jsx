@@ -20,10 +20,11 @@ const Testimonials = () => {
             <a
               href="https://www.leparisien.fr/immobilier/encadrement-des-loyers-a-paris-cette-application-epingle-les-annonces-de-location-illegales-04-02-2020-8252145.php"
               target="_blank"
+              rel="noreferrer"
             >
               <div className="h-full text-center">
                 <img
-                  alt="testimonial"
+                  alt="testimonial leparisien"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={leparisien}
                 />
@@ -44,10 +45,11 @@ const Testimonials = () => {
             <a
               href="https://immobilier.lefigaro.fr/article/cette-application-verifie-si-votre-loyer-respecte-bien-l-encadrement_d87f2318-2317-11ea-88a9-d2e707b938cd/"
               target="_blank"
+              rel="noreferrer"
             >
               <div className="h-full text-center">
                 <img
-                  alt="testimonial"
+                  alt="testimonial lefigaro"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={lefigaro}
                 />
@@ -69,10 +71,11 @@ const Testimonials = () => {
             <a
               href="https://www.facebook.com/LouerAgile/posts/2429261067286129"
               target="_blank"
+              rel="noreferrer"
             >
               <div className="h-full text-center">
                 <img
-                  alt="testimonial"
+                  alt="testimonial loueragile"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={jinka}
                 />

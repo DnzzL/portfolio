@@ -8,7 +8,7 @@ const Header = () => {
           <img
             className="rounded-full border border-gray-100 object-scale-down shadow-sm w-14 h-14"
             src={photo}
-            alt="user image"
+            alt="my picture"
           />
           <span className="ml-3 text-xl">Thomas Legrand</span>
         </a>
@@ -17,6 +17,7 @@ const Header = () => {
             className="ml-3 text-gray-500 hover:text-gray-900"
             href="https://github.com/dnzzl"
             target="_blank"
+            rel="noreferrer"
           >
             <svg
               fill="currentColor"
@@ -34,6 +35,7 @@ const Header = () => {
             className="ml-3 text-gray-500 hover:text-blue-700"
             href="https://www.linkedin.com/in/thomas-d-legrand/"
             target="_blank"
+            rel="noreferrer"
           >
             <svg
               fill="currentColor"
@@ -55,6 +57,7 @@ const Header = () => {
             className="ml-3 text-gray-500 hover:text-blue-300"
             href="https://twitter.com/thomasd_legrand"
             target="_blank"
+            rel="noreferrer"
           >
             <svg
               fill="currentColor"

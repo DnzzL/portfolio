@@ -29,24 +29,16 @@ const Projects = () => {
                 <img
                   className="h-40 rounded w-full object-cover object-center mb-6"
                   src={encadrement}
-                  alt="content"
+                  alt="encadrement-loyers"
                 />
                 <div className="md:w-64 md:mb-0 mb-6 flex frex-wrap flex-row content-around">
                   <img
                     className="w-6 h-6 mb-2 mr-3"
                     src={typescript}
-                    alt="user image"
+                    alt="typescript"
                   />
-                  <img
-                    className="w-6 h-6 mb-2 mr-3"
-                    src={vue}
-                    alt="user image"
-                  />
-                  <img
-                    className=" w-6 h-6 mb-2"
-                    src={nodejs}
-                    alt="user image"
-                  />
+                  <img className="w-6 h-6 mb-2 mr-3" src={vue} alt="vuejs" />
+                  <img className=" w-6 h-6 mb-2" src={nodejs} alt="nodejs" />
                 </div>
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
                   Encadrement Loyers
@@ -65,24 +57,20 @@ const Projects = () => {
                 <img
                   className="h-40 rounded w-full object-cover object-center mb-6"
                   src={velibetter}
-                  alt="content"
+                  alt="velibetter"
                 />
                 <div className="md:w-64 md:mb-0 mb-6 flex frex-wrap flex-row content-around">
                   <img
                     className="w-6 h-6 mb-2 mr-3"
                     src={typescript}
-                    alt="user image"
+                    alt="typescript"
                   />
                   <img
                     className="w-6 h-6 mb-2 mr-3"
                     src={angular}
-                    alt="user image"
+                    alt="angular"
                   />
-                  <img
-                    className=" w-6 h-6 mb-2"
-                    src={python}
-                    alt="user image"
-                  />
+                  <img className=" w-6 h-6 mb-2" src={python} alt="python" />
                 </div>
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
                   Velibetter
@@ -101,15 +89,15 @@ const Projects = () => {
                 <img
                   className="h-40 rounded w-full object-cover object-center mb-6"
                   src={molkky}
-                  alt="content"
+                  alt="molkky"
                 />
                 <div className="md:w-64 md:mb-0 mb-6 flex frex-wrap flex-row content-around">
                   <img
                     className="w-6 h-6 mb-2 mr-3"
                     src={typescript}
-                    alt="user image"
+                    alt="typescript"
                   />
-                  <img className="w-6 h-6 mb-2" src={react} alt="user image" />
+                  <img className="w-6 h-6 mb-2" src={react} alt="react" />
                 </div>
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
                   Mölkky Companion
@@ -125,15 +113,16 @@ const Projects = () => {
             <a
               href="https://www.kaggle.com/tlegrand/happy-halloween"
               target="_blank"
+              rel="noreferrer"
             >
               <div className="bg-gray-100 p-6 rounded-lg">
                 <img
                   className="h-40 rounded w-full object-cover object-center mb-6"
                   src={spookyAuthor}
-                  alt="content"
+                  alt="Kaggle"
                 />
                 <div className="md:w-64 md:mb-0 mb-6 flex frex-wrap flex-row content-around">
-                  <img className="w-6 h-6 mb-2" src={python} alt="user image" />
+                  <img className="w-6 h-6 mb-2" src={python} alt="python" />
                 </div>
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
                   Kaggle: Spooky Author Identification
