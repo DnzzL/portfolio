@@ -1,13 +1,13 @@
-import typescript from "./images/typescript.svg";
-import vue from "./images/vue.png";
-import python from "./images/python.png";
-import encadrement from "./images/encadrement.png";
-import nodejs from "./images/nodejs.png";
-import angular from "./images/angular.png";
-import velibetter from "./images/velibetter.png";
-import react from "./images/react.png";
-import molkky from "./images/molkky.jpeg";
-import spookyAuthor from "./images/spooky_author.png";
+import typescript from "./assets/images/typescript.svg";
+import vue from "./assets/images/vue.png";
+import python from "./assets/images/python.png";
+import encadrement from "./assets/images/encadrement.png";
+import nodejs from "./assets/images/nodejs.png";
+import angular from "./assets/images/angular.png";
+import velibetter from "./assets/images/velibetter.png";
+import react from "./assets/images/react.png";
+import molkky from "./assets/images/molkky.jpeg";
+import spookyAuthor from "./assets/images/spooky_author.png";
 
 const Projects = () => {
   return (

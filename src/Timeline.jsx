@@ -1,7 +1,7 @@
-import tsp from "./images/tsp.png";
-import dcu from "./images/dcu.svg";
-import mention from "./images/mention.png";
-import ornikar from "./images/ornikar.png";
+import tsp from "./assets/images/tsp.png";
+import dcu from "./assets/images/dcu.svg";
+import mention from "./assets/images/mention.png";
+import ornikar from "./assets/images/ornikar.png";
 
 const Timeline = () => {
   return (

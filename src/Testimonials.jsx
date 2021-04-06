@@ -1,6 +1,6 @@
-import leparisien from "./images/leparisien.png";
-import lefigaro from "./images/lefigaro.png";
-import jinka from "./images/jinka.png";
+import leparisien from "./assets/images/leparisien.png";
+import lefigaro from "./assets/images/lefigaro.png";
+import jinka from "./assets/images/jinka.png";
 
 const Testimonials = () => {
   return (

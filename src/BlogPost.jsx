@@ -3,27 +3,34 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { markdownPlugins, markdownRenderers } from "./markdownConfig";
+import fistMonthsUrl from "@blogs/2018-08-21-first-months.md";
+import winSetup from "@blogs/2018-09-07-win10-setup.md";
+import pipenv from "@blogs/2018-09-14-get-started-pipenv.md";
+import technicalDebt from "@blogs/2018-10-12-machine-learning-technical-debt.md";
+import deployMLServices from "@blogs/2018-12-09-share-and-deploy-ml-services.md";
+import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
+import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
+import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
 
 const BlogPost = () => {
   let { filename } = useParams();
+  const filenames = [
+    fistMonthsUrl,
+    winSetup,
+    pipenv,
+    technicalDebt,
+    deployMLServices,
+    mlKotlin,
+    mlFlow,
+    bigDataWorld,
+  ];
   const [post, setPost] = useState();
 
-  function importAll(r) {
-    return r.keys().map(r);
-  }
-
   useEffect(() => {
-    importAll(require.context("/blogs", false, /\.md$/))
-      .map((f) => f.default)
+    filenames
       .filter((f) => f.includes(filename))
       .forEach(async (filename) => {
-        const file = await import(
-          `${filename
-            .split(".")[0]
-            .toString()
-            .replace("/static/media/", "/blogs/")}.md`
-        );
-        const response = await fetch(file.default);
+        const response = await fetch(filename);
         const text = await response.text();
         const post = metadataParser(text);
         setPost(post);

@@ -2,6 +2,7 @@
 
 .vscode
 src/blogs/
+.env
 
 # dependencies
 /node_modules
