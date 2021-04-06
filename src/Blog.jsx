@@ -10,7 +10,7 @@ const Blog = () => {
   }
 
   useEffect(() => {
-    importAll(require.context("./blogs", false, /\.md$/))
+    importAll(require.context("/blogs", false, /\.md$/))
       .map((f) => f.default)
       .forEach(async (filename) => {
         const fname = `${filename
@@ -21,7 +21,7 @@ const Blog = () => {
           `${filename
             .split(".")[0]
             .toString()
-            .replace("/static/media/", "./blogs/")}.md`
+            .replace("/static/media/", "/blogs/")}.md`
         );
         const response = await fetch(file.default);
         const text = await response.text();
