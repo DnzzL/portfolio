@@ -4,8 +4,8 @@
     "baseUrl": "./src",
     "jsx": "react",
     "paths": {
-      "@images/*": ["./assets/images/*"],
-      "@blogs/*": ["./blogs/*"]
+      "@images/*": ["src/assets/images/*"],
+      "@blogs/*": ["src/assets/blogs/*"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*", "build"]

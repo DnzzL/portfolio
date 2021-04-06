@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "craco-alias": "^2.2.0",
     "markdown-yaml-metadata-parser": "^3.0.0",
     "path": "^0.12.7",
     "react": "^17.0.2",
@@ -49,7 +50,6 @@
     "@tailwindcss/postcss7-compat": "^2.0.4",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
-    "raw.macro": "^0.4.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
   }
 }

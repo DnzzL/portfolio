@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import metadataParser from "markdown-yaml-metadata-parser";
-import BlogSnippet from "Snipper";
+import BlogSnippet from "Snippet";
 import fistMonthsUrl from "@blogs/2018-08-21-first-months.md";
 import winSetup from "@blogs/2018-09-07-win10-setup.md";
 import pipenv from "@blogs/2018-09-14-get-started-pipenv.md";
