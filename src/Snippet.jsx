@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+import { useState } from "react";
+
 const BlogSnippet = ({ post }) => {
+  const [fname, setFname] = useState("");
+
+  useEffect(() => {
+    setFname(`/post/${post.fname}`);
+  }, [post]);
+
   return (
     <div className="py-8 flex flex-wrap md:flex-nowrap">
       <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
@@ -14,10 +23,7 @@ const BlogSnippet = ({ post }) => {
           {post.metadata.title}
         </h2>
         <p className="leading-relaxed">{post.metadata.description}</p>
-        <a
-          className="text-red-500 inline-flex items-center mt-4"
-          href={`/post/${post.fname}`}
-        >
+        <a className="text-red-500 inline-flex items-center mt-4" href={fname}>
           Learn More
           <svg
             className="w-4 h-4 ml-2"

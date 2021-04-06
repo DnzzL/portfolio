@@ -50,7 +50,9 @@ const Blog = () => {
         </div>
         <div className="-my-8 divide-y-2 divide-gray-100">
           {posts.length > 0 &&
-            posts.map((post) => <BlogSnippet post={post}></BlogSnippet>)}
+            posts.map((post, i) => (
+              <BlogSnippet key={i} post={post}></BlogSnippet>
+            ))}
         </div>
       </div>
     </section>

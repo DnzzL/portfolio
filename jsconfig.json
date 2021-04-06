@@ -5,7 +5,8 @@
     "jsx": "react",
     "paths": {
       "@images/*": ["src/assets/images/*"],
-      "@blogs/*": ["src/assets/blogs/*"]
+      "@blogs/*": ["src/assets/blogs/*"],
+      "@/*": ["./*"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*", "build"]
