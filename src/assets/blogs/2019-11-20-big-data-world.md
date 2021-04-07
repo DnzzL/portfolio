@@ -2,7 +2,7 @@
 layout: post
 title: "Big Data World 2019 in short"
 description: "Key takeaways from the conference."
-date: 2019-11-20 10:30:10 +0100
+date: "2019-11-20"
 categories: [Conference]
 image: conference.jpg
 ---

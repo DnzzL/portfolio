@@ -9,6 +9,7 @@ import deployMLServices from "@blogs/2018-12-09-share-and-deploy-ml-services.md"
 import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
 import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
+import newWebsite from "@blogs/2021-04-07-new-website.md";
 
 const Blog = () => {
   const filenames = [
@@ -20,6 +21,7 @@ const Blog = () => {
     mlKotlin,
     mlFlow,
     bigDataWorld,
+    newWebsite,
   ];
   const [posts, setPosts] = useState([]);
 
@@ -32,7 +34,11 @@ const Blog = () => {
       const response = await fetch(filename);
       const text = await response.text();
       const { metadata, content } = metadataParser(text);
-      setPosts((prevPosts) => [{ metadata, content, fname }, ...prevPosts]);
+      setPosts((prevPosts) =>
+        [{ metadata, content, fname }, ...prevPosts].sort(function (a, b) {
+          return new Date(b.metadata.date) - new Date(a.metadata.date);
+        })
+      );
     });
   }, []);
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Share and deploy your Machine Learning services with Docker"
 description: "Many resources focus on machine learning algorithms, which are really interesting, yet forget about the end of the cycle."
-date: 2018-12-09 18:30:10 +0100
+date: "2018-12-09"
 categories: [Python]
 image: share-and-deploy.png
 ---

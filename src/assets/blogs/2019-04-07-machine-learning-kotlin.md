@@ -2,7 +2,7 @@
 layout: post
 title: "Machine Learning with Kotlin"
 description: "As Kotlin can leverage the JVM ecosystem, there are already good libraries to get things done."
-date: 2019-04-07 10:30:10 +0100
+date: "2019-04-07"
 categories: [Kotlin]
 image: ml-with-kotlin.png
 ---

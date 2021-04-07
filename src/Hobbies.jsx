@@ -54,8 +54,8 @@ const Hobbies = () => {
                     Metz
                   </h2>
                   <p class="leading-relaxed">
-                    Random Fact: I come from Metz, in the east of France, only
-                    recently have I been living in Paris.
+                    I come from Metz, in the east of France, only recently have
+                    I been living in Paris.
                   </p>
                 </div>
               </div>

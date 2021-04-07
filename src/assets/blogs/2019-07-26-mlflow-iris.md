@@ -2,7 +2,7 @@
 layout: post
 title: "Ease your Machine Learning work with MLflow"
 description: "MLflow is an open-source platform that helps to manage the ML lifecycle, including experimentation, reproducibility, and deployment. "
-date: 2019-07-26 10:30:10 +0100
+date: "2019-07-26"
 categories: [Python]
 image: mlflow.png
 ---

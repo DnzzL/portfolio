@@ -2,7 +2,7 @@
 layout: post
 title: "What does a Data Scientist do on a daily basis?"
 description: "Data Scientist is often presented as the trendy job at the moment. As a consequence, many, including myself, try to find their way to get this job."
-date: 2018-08-20 21:30:10 +0100
+date: "2018-08-20"
 categories: [Others]
 image: first-months.jpg
 ---

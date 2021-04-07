@@ -11,6 +11,7 @@ import deployMLServices from "@blogs/2018-12-09-share-and-deploy-ml-services.md"
 import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
 import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
+import newWebsite from "@blogs/2021-04-07-new-website.md";
 
 const BlogPost = () => {
   let { filename } = useParams();
@@ -23,6 +24,7 @@ const BlogPost = () => {
     mlKotlin,
     mlFlow,
     bigDataWorld,
+    newWebsite,
   ];
   const [post, setPost] = useState();
 

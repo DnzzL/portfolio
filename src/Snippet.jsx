@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const BlogSnippet = ({ post }) => {
   const [fname, setFname] = useState("");
+  const splitDate = post.metadata.date.split("-");
 
   useEffect(() => {
     setFname(`/post/${post.fname}`);
@@ -15,7 +16,11 @@ const BlogSnippet = ({ post }) => {
           {post.metadata.categories}
         </span>
         <span className="mt-1 text-gray-500 text-sm">
-          {new Date(post.metadata.date).toDateString()}
+          {new Date(
+            splitDate.slice(0, 1),
+            splitDate.slice(1, 2),
+            splitDate.slice(2, 3)
+          ).toDateString()}
         </span>
       </div>
       <div className="md:flex-grow">

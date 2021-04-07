@@ -3,7 +3,7 @@ layout: post
 title:  "Reproducible Python project with Pipenv"
 description: "Pipenv provides a simple way to create and manage independent Python environment as well as installing/removing packages.
 Nowadays it is the recommended tool to handle your Python projects."
-date:   2018-09-14 18:30:10 +0100
+date: "2018-09-14"
 categories: [Python]
 image: pipenv.jpg
 ---

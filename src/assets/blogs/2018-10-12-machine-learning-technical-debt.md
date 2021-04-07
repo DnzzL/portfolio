@@ -2,7 +2,7 @@
 layout: post
 title: "Technical Debt in Machine Learning"
 description: "I have come across a very interesting paper about Technical debt in Machine Learning."
-date: 2018-10-12 11:30:10 +0100
+date: "2018-10-12"
 categories: [Papers]
 image: article.jpg
 ---

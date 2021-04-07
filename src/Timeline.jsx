@@ -21,8 +21,11 @@ const Timeline = () => {
                 Télécom SudParis
               </h2>
               <p className="leading-relaxed">
-                Majeure modélisation statistiques et applications
+                Major in Statistical Modelling and Applications
               </p>
+              <span className="inline-block rounded bg-yellow-50 text-yellow-500 text-xs font-medium tracking-widest my-">
+                2015 - 2018
+              </span>
             </div>
           </div>
         </div>
@@ -42,6 +45,9 @@ const Timeline = () => {
               <p className="leading-relaxed">
                 Data Science, Cybersecurity, Cloud technologies
               </p>
+              <span className="inline-block rounded bg-yellow-50 text-yellow-500 text-xs font-medium tracking-widest my-">
+                2017 - 2017
+              </span>
             </div>
           </div>
         </div>
@@ -59,8 +65,12 @@ const Timeline = () => {
                 Mention
               </h2>
               <p className="leading-relaxed">
-                Data Scientist, mostly working on NLP
+                Data Scientist: sentiment analysis, entity recognition,
+                knowledge graph
               </p>
+              <span className="inline-block rounded bg-yellow-50 text-yellow-500 text-xs font-medium tracking-widest my-">
+                2018 - 2020
+              </span>
             </div>
           </div>
         </div>
@@ -77,7 +87,13 @@ const Timeline = () => {
               <h2 className="font-medium title-font text-gray-900 mb-1 text-xl">
                 Ornikar
               </h2>
-              <p className="leading-relaxed">Currently Data Scientist</p>
+              <p className="leading-relaxed">
+                Data Scientist: dbt stack, driving theory exam success
+                prediction
+              </p>
+              <span className="inline-block rounded bg-yellow-50 text-yellow-500 text-xs font-medium tracking-widest my-">
+                2020 - Currently
+              </span>
             </div>
           </div>
         </div>
