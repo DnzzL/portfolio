@@ -3,7 +3,7 @@ name: Deploy to dokku
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-20.04
