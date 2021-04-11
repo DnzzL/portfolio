@@ -10,6 +10,7 @@ import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
 import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
 import newWebsite from "@blogs/2021-04-07-new-website.md";
+import { Helmet } from "react-helmet";
 
 const Blog = () => {
   const filenames = [
@@ -44,6 +45,9 @@ const Blog = () => {
 
   return (
     <section className="text-gray-600 body-font overflow-hidden">
+      <Helmet>
+        <title>Articles</title>
+      </Helmet>
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-wrap w-full mb-20">
           <div className="lg:w-1/2 w-full mb-6 lg:mb-0">

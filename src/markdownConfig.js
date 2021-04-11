@@ -38,26 +38,6 @@ function FootnoteReference(props) {
   );
 }
 
-{
-  /* <div className="py-8">
-  <div className="block flex justify-start h-8 bg-gray-700 rounded-t">
-    <div className="rounded-full text-gray-700 text-center bg-red-500 h-4 w-4 m-2"></div>
-    <div className="rounded-full text-gray-700 text-center bg-yellow-500 h-4 w-4 m-2"></div>
-    <div className="rounded-full text-gray-700 text-center bg-green-500 h-4 w-4 m-2"></div>
-  </div>
-  <pre className="block bg-gray-800 p-4 rounded-b overflow-x-auto">
-    <code className="font-mono bg-gray-800 text-gray-400 text-sm inline px-1">
-        <SyntaxHighlighter language={language} children={value} />
-    </code>
-  </pre>
-</div>; */
-}
-
-function Pre({ inline, realClassName, children }) {
-  const Component = inline ? "span" : "pre";
-  return <Component className={realClassName}>{children}</Component>;
-}
-
 function FootnoteDefinition(props) {
   return (
     <div className={styles.footnoteDefinition} id={"def-" + props.identifier}>

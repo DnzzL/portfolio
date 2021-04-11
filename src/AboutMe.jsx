@@ -1,9 +1,13 @@
 import Hobbies from "Hobbies";
 import Timeline from "./Timeline";
+import { Helmet } from "react-helmet";
 
 const AboutMe = () => {
   return (
     <section className="text-gray-600 body-font">
+      <Helmet>
+        <title>About me</title>
+      </Helmet>
       <div className="container px-5 py-10 mx-auto">
         <div className="flex flex-wrap w-full mb-10">
           <div className="lg:w-1/2 w-full mb-6 lg:mb-0">

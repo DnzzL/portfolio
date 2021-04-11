@@ -12,6 +12,8 @@ import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
 import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
 import newWebsite from "@blogs/2021-04-07-new-website.md";
+import { Helmet } from "react-helmet";
+import Questions from "./Questions";
 
 const BlogPost = () => {
   let { filename } = useParams();
@@ -41,6 +43,11 @@ const BlogPost = () => {
 
   return (
     <section className="text-gray-600 body-font">
+      <Helmet>
+        <title>{post && post.metadata.title}</title>
+        <meta name="description" content={post && post.metadata.description} />
+        <meta property="og:type" content="article" />
+      </Helmet>
       <div className="container px-5 py-10 mx-auto flex flex-col">
         <div className="flex flex-wrap w-full mb-4">
           <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
@@ -67,6 +74,7 @@ const BlogPost = () => {
             )}
           </article>
         </div>
+        <Questions></Questions>
       </div>
     </section>
   );
