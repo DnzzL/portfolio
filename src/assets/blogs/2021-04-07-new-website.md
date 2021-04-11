@@ -92,3 +92,5 @@ CMD ["nginx", "-g", "daemon off;"]
 I had to trigger `GENERATE_SOURCEMAP=false` otherwise I was having a `Javascript heap out of memory` error even after I increased my swap size.
 
 In the end, **welcome to my brand new website**!
+
+You can find the whole source code on my [Github](https://github.com/dnzzl/portfolio) here.

@@ -27,21 +27,29 @@ Based on my [precedent post](/python/2018/12/09/share-and-deploy-ml-services.htm
 
 The first thing to do is to create an experiment. You can do it programmatically but I prefer to do it with the Command Line:
 
-`mlflow experiments create --experiment-name iris `
+```sh
+mlflow experiments create --experiment-name iris
+```
 
 It's going to create a specific space in the UI to make your experiments more readable.
 
 We are working on a simple example, but let's say your training data can change over time, you'll want to save its state for each run. This can be achieved with the function:
 
-`mlflow.log_artifact(path)`
+```sh
+mlflow.log_artifact(path)
+```
 
 Then, you can also log all you parameters thanks to the function
 
-`mlflow.log_param(name, value)`
+```sh
+mlflow.log_param(name, value)
+```
 
 Finally, you can track the metrics of your experiments with
 
-`mlflow.log_metric(name, value)`
+```sh
+mlflow.log_metric(name, value)
+```
 
 Everything is going to be saved under a `mlruns` repository.
 
@@ -49,7 +57,41 @@ Everything is going to be saved under a `mlruns` repository.
 
 In the end, the training file becomes:
 
-![Training](/blog-images/mlflow-iris/training.svg "Training")
+```python
+client = MlflowClient()
+experiment = client.get_experiment_by_name("iris")
+with mlflow.start_run(experiment_id=experiment.experiment_id):
+    # Import dataset
+    logging.info(f"reading {input_path}")
+    mlflow.log_artifact(input_path)
+    iris = pd.read_csv(input_path)
+    X = iris.drop("Species", axis=1)
+    y = iris.Species
+    # Instantiate PCA
+    pca = PCA()
+    # Instantiate LogReg
+    logistic = SGDClassifier(loss="log", penalty="l2", max_iter=100, tol=1e-3, random_state=42)
+    mlflow.log_params(logistic.get_params())
+    param_grid = {
+        "pca__n_components": [2, 3],
+        "logistic__alpha": np.logspace(-4, 4, 5)
+    }
+    mlflow.log_params(param_grid)
+    # Define training pipeline
+    pipe = Pipeline(step=[('pca', pca), ('logistic', logistic)])
+    # Training
+    logging.info("beginning training")
+    search = GridSearchCV(pipe, param_grid, iid=False, cv=3, return_train_score=False)
+    search.fit(X, y)
+    print(f"best paramer (CV score={search.best_score_})")
+    print(search.best_params_)
+    mlflow.log_params(search.best_params_)
+    mlflow.log_metric("best score", search.best_score_)
+    # Save best model
+    logging.info("saving best model")
+    dump(search.best_estimator_, output_path)
+    mlflow.log_artifact(output_path)
+```
 
 ## Navigate the UI
 
@@ -74,13 +116,30 @@ A project is defined by a name, an environment that can be a Conda environment, 
 
 As a matter of example, here is the MLproject file for the Iris project:
 
-![MLproject](/blog-images/mlflow-iris/mlproject.svg "MLproject")
+```yml
+name: iris
+conda_env: environment.yml
+
+entry_points:
+  train:
+    parameters:
+      input_file: path
+      output_file: path
+    command: "python Training.py {input_file} {output_file}
+  infer:
+    parameters:
+      classifier_path: path
+      input_file: path
+    command: "python Inference.py {classifier_path} {input_file}"
+```
 
 MLflow supports four types of parameters: string, float, path, uri, and checks they are correct. You can also define default values for each parameter.
 
 This file is easy to grasp for a collaborator to quickly work on this project. All he/she has to do is to pull the git repository and can train right away with:
 
-`mlflow run . -e train -P input_file=data/iris.csv -P output_file=models/logreg.joblib`
+```sh
+mlflow run . -e train -P input_file=data/iris.csv -P output_file=models/logreg.joblib
+```
 
 This command creates a conda environment from the `environement.yml` file, run the endpoint `train` in the current directory and define the parameters `input_file` and `output_file`.
 

@@ -7,6 +7,10 @@ categories: [Kotlin]
 image: ml-with-kotlin.png
 ---
 
+#### TLDR
+
+You can find the whole source code on my [Github](https://github.com/DnzzL/kotlin-ml) here.
+
 ## Python: king of the hill
 
 No wonder Python has become the reference language for Machine Learning: its easily readable syntax, strong community support, and easy setup make it a really strong choice and appealing to mathematics researcher as well as engineers. It is a really good compromise between research and production.
@@ -72,20 +76,65 @@ Then, we configure the Spark session in our `Main.kt`.
 We are still working on our `iris.csv` dataset, so we import the data.
 We specify that the data has a header and that we want the schema to be inferred.
 
-![Import](/blog-images/machine-learning-kotlin/import.svg "Import")
+```kotlin
+val iris = spark.read()
+    .format("csv")
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .csv("src/main/resources.iris.csv")
+```
 
 After this, we need to encode our target for later
 
-![Encode](/blog-images/machine-learning-kotlin/encode.svg "Encode")
+```kotlin
+val indexer = StringIndexer()
+    .setInputCol("species")
+    .setOutputCol("label")
+    .fit(iris)
+
+val indexed = indexer.transform(iris)
+```
 
 It is now time to define our pipeline. To begin with, we define the columns that will be used as inputs and the target.
 Like the precedent post, we run a Principal Component Analysis and a Logistic Regression.
 
-![Pipeline](/blog-images/machine-learning-kotlin/pipeline.svg "Pipeline")
+```kotlin
+val assembler = VectorAssembler()
+    .setInputCols(arrayOf("sepal_length", "sepal_width", "petal_length", "petal_width"))
+    .setOutputCol("features")
+
+val pca = PCA()
+    .setInputCol("features")
+    .setOutputCol("pcaFeatures)
+    .setK(2)
+
+val lr = LogisticRegression()
+    .setMaxIter(10)
+    .setRegParam(0.1)
+    .setElasticNetParam(0.8)
+    .setFeaturesCol(pca.outputCol)
+    setLabelCol("label")
+
+val pipeline = Pipeline().setStages(arrayOf(assembler, pca, lr))
+```
 
 Finally, we train the full pipeline with a 3 K-Fold Cross-validation.
 
-![Training](/blog-images/machine-learning-kotlin/crossvalidation.svg "Training")
+```kotlin
+val paramGrid = ParamGridBuilder()
+    .addGrid(pca.k(), intArrayOf(2, 3))
+    .addGrid(lr.regParam(), doubleArrayOf(0.1, 0.001))
+    .build()
+
+val cv = CrossValidator()
+    .setEstimator(pipeline)
+    .setEvaluator(MulticlassClassificationEvaluation())
+    .setEstimatorParamMaps(paramGrid)
+    .setNumFolds(3)
+    .setSeed(12)
+
+val cvModel = cv.fit(indexed)
+```
 
 ## Conclusion
 
