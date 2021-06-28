@@ -10,6 +10,7 @@ import mlKotlin from "@blogs/2019-04-07-machine-learning-kotlin.md";
 import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
 import newWebsite from "@blogs/2021-04-07-new-website.md";
+import plaineCommune from "@blogs/2021-06-28-plaine-commune.md";
 import { Helmet } from "react-helmet";
 
 const Blog = () => {
@@ -23,6 +24,7 @@ const Blog = () => {
     mlFlow,
     bigDataWorld,
     newWebsite,
+    plaineCommune,
   ];
   const [posts, setPosts] = useState([]);
 
