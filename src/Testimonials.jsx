@@ -20,7 +20,7 @@ const Testimonials = () => {
         <div className="flex flex-wrap -m-4">
           <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
             <a
-              href="https://www.leparisien.fr/immobilier/encadrement-des-loyers-a-paris-cette-application-epingle-les-annonces-de-location-illegales-04-02-2020-8252145.php"
+              href="https://www.leparisien.fr/immobilier/encadrement-des-loyers-a-paris-plus-dun-tiers-des-annonces-depassent-le-plafond-29-11-2021-DSELLVLKVNEKBGPPHXXKGE4PPE.php"
               target="_blank"
               rel="noreferrer"
             >
@@ -45,13 +45,13 @@ const Testimonials = () => {
           </div>
           <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
             <a
-              href="https://immobilier.lefigaro.fr/article/cette-application-verifie-si-votre-loyer-respecte-bien-l-encadrement_d87f2318-2317-11ea-88a9-d2e707b938cd/"
+              href="https://www.francetvinfo.fr/economie/immobilier/encadrement-des-loyers/encadrement-des-loyers-35-des-annonces-a-paris-depassent-le-plafond-legal-selon-une-etude_4863209.html"
               target="_blank"
               rel="noreferrer"
             >
               <div className="h-full text-center">
                 <img
-                  alt="testimonial lefigaro"
+                  alt="testimonial francetv"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={francetv}
                 />
@@ -71,13 +71,13 @@ const Testimonials = () => {
           </div>
           <div className="lg:w-1/3 lg:mb-0 p-4">
             <a
-              href="https://www.facebook.com/LouerAgile/posts/2429261067286129"
+              href="https://www.liberation.fr/societe/logement/encadrement-des-loyers-a-paris-plus-dun-tiers-des-annonces-depassent-le-plafond-legal-20211129_3MIPACBXYFCSBDRXNXXIOO2BCQ/"
               target="_blank"
               rel="noreferrer"
             >
               <div className="h-full text-center">
                 <img
-                  alt="testimonial loueragile"
+                  alt="testimonial liberation"
                   className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
                   src={liberation}
                 />
