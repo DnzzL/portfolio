@@ -11,6 +11,7 @@ import mlFlow from "@blogs/2019-07-26-mlflow-iris.md";
 import bigDataWorld from "@blogs/2019-11-20-big-data-world.md";
 import newWebsite from "@blogs/2021-04-07-new-website.md";
 import plaineCommune from "@blogs/2021-06-28-plaine-commune.md";
+import lyon from "@blogs/2021-11-29-lyon.md";
 import { Helmet } from "react-helmet";
 
 const Blog = () => {
@@ -25,6 +26,7 @@ const Blog = () => {
     bigDataWorld,
     newWebsite,
     plaineCommune,
+    lyon,
   ];
   const [posts, setPosts] = useState([]);
 
