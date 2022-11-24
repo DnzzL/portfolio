@@ -1,0 +1,7 @@
+h2 {
+  @apply text-2xl;
+  @apply font-medium;
+  @apply mb-2;
+  @apply text-gray-900;
+  margin: 16px 0px;
+}

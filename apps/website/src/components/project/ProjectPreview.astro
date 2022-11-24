@@ -1,0 +1,39 @@
+---
+export interface Props {
+  project: {
+    description: string;
+    link: string;
+    thumbnailImage: string;
+    thumbnailImageAlt: string;
+    title: string;
+    technos: string[];
+  };
+}
+const { title, description, link, technos, thumbnailImage, thumbnailImageAlt } =
+  Astro.props.project;
+---
+
+<div class="h-full p-4">
+  <a href={link} target="_blank">
+    <div class="p-6 bg-gray-100 rounded-lg">
+      <img
+        class="object-cover object-center w-full h-40 mb-6 rounded"
+        src={thumbnailImage}
+        alt={thumbnailImageAlt}
+      />
+      <div class="grid justify-start grid-flow-col gap-4">
+        {
+          technos.map((techno) => (
+            <img class="w-6 h-6 mb-2" src={techno} alt="react" />
+          ))
+        }
+      </div>
+      <h2 class="mb-2 text-lg font-medium text-gray-900 title-font">
+        {title}
+      </h2>
+      <p class="text-base leading-relaxed">
+        {description}
+      </p>
+    </div>
+  </a>
+</div>

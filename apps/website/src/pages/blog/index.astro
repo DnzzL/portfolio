@@ -1,0 +1,21 @@
+---
+import Blog from '../../components/blog/Blog.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const title = 'Blog';
+const description =
+  'My blog with articles about web development and programming in general.';
+const posts = (await Astro.glob('../../blog-posts/*.md')).sort(
+  (a, b) =>
+    new Date(b.frontmatter.date).valueOf() -
+    new Date(a.frontmatter.date).valueOf()
+);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  socialImage="/assets/photo.jpg"
+  socialImageAlt="Thomas' blog social image"
+>
+  <Blog description={description} posts={posts} />
+</BaseLayout>

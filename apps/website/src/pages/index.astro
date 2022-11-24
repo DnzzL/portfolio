@@ -1,0 +1,58 @@
+---
+import Project from '../components/project/Project.astro';
+import Testimonials from '../components/Testimonials.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+const projects = [
+  {
+    title: 'Encadrement loyers',
+    description:
+      'This is to inform and warn future tenants that some rents do not respect the rent control',
+    link: 'https://www.encadrement-loyers.fr',
+    thumbnailImage: '/images/encadrement.png',
+    thumbnailImageAlt: 'Encadrement',
+    technos: [
+      '/images/typescript.svg',
+      '/images/vue.png',
+      '/images/nodejs.png',
+    ],
+  },
+  {
+    title: 'Velibetter',
+    description:
+      'We wanted to create a more user-friendly alternative and with timeseries predictions',
+    link: 'https://velibetter.thomas.sh',
+    thumbnailImage: '/images/velibetter.png',
+    thumbnailImageAlt: 'Velibetter',
+    technos: [
+      '/images/typescript.svg',
+      '/images/angular.png',
+      '/images/python.png',
+    ],
+  },
+  {
+    title: 'Molkky',
+    description:
+      'PWA to keep track of point and misses during a play of Molkky: works offline, supports undoing a play',
+    link: 'https://github.com/DnzzL/molkky',
+    thumbnailImage: '/images/molkky.jpeg',
+    thumbnailImageAlt: 'Molkky',
+    technos: ['/images/typescript.svg', '/images/react.png'],
+  },
+  {
+    title: 'Kaggle: Spooky Author',
+    description:
+      'The challenge was to predict the author of excerpts from horror stories by E.A. Poe, M Shelley, and HP Lovecraft.',
+    link: 'https://www.kaggle.com/tlegrand/happy-halloween',
+    thumbnailImage: '/images/spooky_author.png',
+    thumbnailImageAlt: 'Kaggle',
+    technos: ['/images/python.png'],
+  },
+];
+---
+
+<BaseLayout title="Homepage" description="">
+  <main>
+    <Project description="My personal projects" projects={projects} />
+    <Testimonials />
+  </main>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+import BlogPost from '../../components/blog/BlogPost.astro';
+import Layout from '../../layouts/BaseLayout.astro';
+export async function getStaticPaths() {
+  const posts = (await Astro.glob('../../blog-posts/*.md'))
+    .sort(
+      (a, b) =>
+        new Date(b.frontmatter.date).valueOf() -
+        new Date(a.frontmatter.date).valueOf()
+    )
+    .map((post) => ({
+      ...post,
+      slug: post.file.split('/').pop()?.split('.').shift(),
+    }));
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+const { Content } = Astro.props.post;
+const {
+  title,
+  description,
+  date,
+  heroImage,
+  heroImageAlt,
+  thumbnailImage,
+  thumbnailImageAlt,
+  canonicalUrl,
+} = Astro.props.post.frontmatter;
+const originalUrl = !canonicalUrl?.startsWith(Astro.site?.href)
+  ? canonicalUrl
+  : undefined;
+---
+
+<Layout
+  {title}
+  {description}
+  socialImage={thumbnailImage}
+  socialImageAlt={thumbnailImageAlt}
+  {canonicalUrl}
+  {originalUrl}
+>
+  <BlogPost {title} {date} {heroImage} {heroImageAlt} {originalUrl}>
+    <Content />
+  </BlogPost>
+</Layout>

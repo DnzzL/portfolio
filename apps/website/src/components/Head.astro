@@ -1,0 +1,64 @@
+---
+export interface Props {
+  canonicalURL: URL;
+  description: string;
+  title: string;
+  siteName: string;
+  socialImage?: string;
+  socialImageAlt?: string;
+}
+const {
+  canonicalURL,
+  description,
+  title,
+  siteName,
+  socialImage = 'assets/photo.jpg',
+  socialImageAlt = `Thomas' website social image`,
+} = Astro.props;
+const canonicalImageSrc = new URL(socialImage, Astro.site);
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<meta name="theme-color" content="#164e63" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  href="/rss.xml"
+  title="Thomas's blog"
+/>
+
+<!-- Primary Meta Tags -->
+<title set:html={title} />
+<meta name="title" content={title} />
+<meta name="author" content="Thomas Legrand" />
+<meta name="description" content={description} />
+<meta
+  name="keywords"
+  content="Thomas Legrand, Blog, Web Development, JavasScript, TypeScript, HTML, CSS, Python, Go, Nx"
+/>
+<link rel="canonical" href={canonicalURL} />
+
+<!-- OpenGraph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content={canonicalImageSrc} />
+<meta property="og:image:alt" content={socialImageAlt} />
+
+<!-- Twitter Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thomasd_legrand" />
+<meta name="twitter:creator" content="@thomasd_legrand" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={canonicalImageSrc} />
+<meta name="twitter:image:alt" content={socialImageAlt} />

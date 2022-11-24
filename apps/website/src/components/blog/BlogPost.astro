@@ -1,0 +1,44 @@
+---
+export interface Props {
+  title: string;
+  categories: string[];
+  date: string;
+  heroImage: string;
+  heroImageAlt: string;
+  originalUrl: string | undefined;
+}
+const { title, categories, date, heroImage, heroImageAlt, originalUrl } =
+  Astro.props;
+---
+
+<section class="text-gray-600 body-font">
+  <div class="container flex flex-col px-5 py-10 mx-auto">
+    <div class="flex flex-wrap w-full mb-4">
+      <div class="w-full mb-6 lg:w-1/2 lg:mb-0">
+        <h1
+          class="mb-2 text-2xl font-medium text-gray-900 sm:text-3xl title-font"
+        >
+          {title}
+        </h1>
+        <div class="w-20 h-1 bg-yellow-300 rounded"></div>
+        <span
+          class="inline-block px-2 py-1 my-5 text-xs font-medium tracking-widest text-yellow-500 rounded bg-yellow-50"
+        >
+          {categories}
+        </span>
+      </div>
+      <p class="w-full leading-relaxed text-gray-500 lg:w-1/2"></p>
+    </div>
+    <div class="md:w-auto">
+      <article class="mx-auto prose-sm prose sm:prose lg:prose-lg xl:prose-xl">
+        <main class="blog-content">
+          <slot />
+        </main>
+
+        <a class="inline-block mt-8 underline-offset-2" href="/blog"
+          >&leftarrow; Return to all blog posts</a
+        >
+      </article>
+    </div>
+  </div>
+</section>
