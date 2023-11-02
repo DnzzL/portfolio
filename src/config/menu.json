@@ -9,6 +9,10 @@
       "url": "/about"
     },
     {
+      "name": "Projects",
+      "url": "/projects"
+    },
+    {
       "name": "Tags",
       "url": "/tags"
     },

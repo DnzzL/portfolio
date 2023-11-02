@@ -1,11 +1,11 @@
 ---
-import { Image } from 'astro:assets';
-import menu from '@config/menu.json';
-import config from '@config/config.json';
-import HamburgerIcon from '@icons/HamburgerIcon.astro';
-import CloseIcon from '@icons/CloseIcon.astro';
-import HomeIcon from '@icons/HomeIcon.astro';
 import ThemeIcon from '@components/ThemeIcon.astro';
+import config from '@config/config.json';
+import menu from '@config/menu.json';
+import CloseIcon from '@icons/CloseIcon.astro';
+import HamburgerIcon from '@icons/HamburgerIcon.astro';
+import HomeIcon from '@icons/HomeIcon.astro';
+import { Image } from 'astro:assets';
 
 export interface NavigationLink {
   name: string;
@@ -23,7 +23,7 @@ const { main }: { main: NavigationLink[] } = menu;
           <Image
             src={config.site.logo}
             alt={config.site.title}
-            class="w-16 rounded bg-zinc-950"
+            class="w-16 rounded"
             width={512}
             height={512}
             decoding="async"

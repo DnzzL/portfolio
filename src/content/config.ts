@@ -9,8 +9,21 @@ const blog = defineCollection({
     heroImage: z.string().optional(),
     categories: z.array(z.string()).default(['others']),
     tags: z.array(z.string()).default(['others']),
-    authors: z.array(z.string()).default(['gndx']),
+    authors: z.array(z.string()).default(['Thomas Legrand']),
   }),
 });
 
-export const collections = { blog };
+const project = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    github: z.string().optional(),
+    url: z.string().optional(),
+    heroImage: z.string().optional(),
+    categories: z.array(z.string()).default(['others']),
+    tags: z.array(z.string()).default(['others']),
+    authors: z.array(z.string()).default(['Thomas Legrand']),
+  }),
+});
+
+export const collections = { blog, project };

@@ -1,0 +1,30 @@
+---
+import Pagination from '@components/Pagination.astro';
+import config from '@config/config.json';
+import Base from '@layouts/Base.astro';
+import Projects from '@layouts/Projects.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }) {
+  const allProjects = await getCollection('project');
+  const formattedProjects = allProjects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(formattedProjects, {
+    pageSize: config.site.pageSize,
+  });
+}
+const { page } = Astro.props;
+---
+
+<Base meta_title="Projects">
+  <h1 class="mb-8 text-2xl font-bold md:text-3xl">Projects</h1>
+  <Projects projects={page.data} />
+  <Pagination
+    length={page.lastPage}
+    currentUrl={page.url.current}
+    currentPage={page.currentPage}
+    firstUrl={`/project/`}
+    prevUrl={page.url.prev}
+    nextUrl={page.url.next}
+    lastUrl={`/project/${page.lastPage}`}
+  />
+</Base>

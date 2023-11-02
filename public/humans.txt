@@ -1,15 +1,15 @@
 /* TEAM */
-	Chef: Oscar Barajas Tavares
-	Contact: oscar [at] gndx.dev
-	Twitter: @gndx
-	From: Medellín, Antioquia, Colombia.
+	Chef: Thomas Legrand
+	Contact: thomas [at] legrand.sh
+	Twitter: @thomasd_legrand
+	From: Nice, France.
 
 /* THANKS */
 	Template: EV0 Theme
-	GitHub: @gndx
+	GitHub: @dnzzl
 
 /* SITE */
-	Last update: 2023/09/18
-	Language: Spanish
+	Last update: 2023/11/01
+	Language: English
 	Doctype: Astro
 	IDE: VSCode

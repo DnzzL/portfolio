@@ -1,15 +1,14 @@
 ---
-import Base from "@layouts/Base.astro";
-import CategoryIcon from "@components/icons/CategoryIcon.astro";
-import { getTaxonomy } from "@utils/getAllTags";
-import { getSinglePage } from "@utils/getAllTags";
-import { taxonomyFilter } from "@utils/getAllTags";
-import { deslugify } from "@utils/slug";
+import CategoryIcon from '@components/icons/CategoryIcon.astro';
+import Base from '@layouts/Base.astro';
+import { getSinglePage, getTaxonomy, taxonomyFilter } from '@utils/getAllTags';
+import { deslugify } from '@utils/slug';
 
 export async function getStaticPaths() {
-  const categories = await getTaxonomy("blog", "categories");
+  const categories = (await getTaxonomy('blog', 'categories')) ?? [];
+  const projectCategories = (await getTaxonomy('project', 'categories')) ?? [];
 
-  return categories.map((category) => {
+  return [...categories, ...projectCategories].map((category) => {
     return {
       params: { category: category.slug },
     };
@@ -18,25 +17,39 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 
-const posts = await getSinglePage("blog");
-const filterByCategory = taxonomyFilter(posts, "categories", category);
+const posts = await getSinglePage('blog');
+const filterPostByCategory = taxonomyFilter(posts, 'categories', category);
+
+const projects = await getSinglePage('project');
+const filterProjectByCategory = taxonomyFilter(projects, 'categories', category);
 ---
 
 <Base>
-  <h1 class="text-2xl md:text-3xl font-bold mb-8 capitalize">Category: {deslugify(category)}</h1>
-  <ul class="space-y-4 text-left ml-4 text-zinc-500 dark:text-zinc-400 dark:text-zinc-400">
+  <h1 class="mb-8 text-2xl font-bold capitalize md:text-3xl">Category: {deslugify(category)}</h1>
+  <h2>Posts</h2>
+  <ul class="mb-4 ml-4 space-y-4 text-left text-zinc-500 dark:text-zinc-400 dark:text-zinc-400">
     {
-      filterByCategory?.map((post) => (
+      filterPostByCategory?.map((post) => (
         <li class="flex items-center space-x-1">
           <CategoryIcon />
-          <a
-            href={`/blog/${post.slug}`}
-            class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800"
-          >
+          <a href={`/blog/${post.slug}`} class="text-zinc-500 hover:text-zinc-800 dark:text-zinc-400">
             {post.data.title}
           </a>
         </li>
-      ))
+      )) ?? <p>None</p>
+    }
+  </ul>
+  <h2>Projects</h2>
+  <ul class="ml-4 space-y-4 text-left text-zinc-500 dark:text-zinc-400 dark:text-zinc-400">
+    {
+      filterProjectByCategory?.map((project) => (
+        <div class="flex items-center space-x-1">
+          <CategoryIcon />
+          <a href={`/project/${project.slug}`} class="text-zinc-500 hover:text-zinc-800 dark:text-zinc-400">
+            {project.data.title}
+          </a>
+        </div>
+      )) ?? <p>None</p>
     }
   </ul>
 </Base>
