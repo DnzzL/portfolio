@@ -2,7 +2,7 @@
 title: 'Encadrement: June Update'
 description: 'Press Release and new cities'
 pubDate: '2021-06-28'
-categories: [Project]
+categories: ["Project"]
 heroImage: '/thumbnails/encadrement.jpeg'
 tags: ['Encadrement']
 ---

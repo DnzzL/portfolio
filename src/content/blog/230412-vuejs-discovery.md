@@ -2,7 +2,7 @@
 title: 'Embracing Vue.js'
 description: 'From only knowing React'
 pubDate: '2023-04-12'
-categories: ['Frontend']
+categories: ['Webdev']
 heroImage: '/thumbnails/vue.webp'
 tags: ['Framework', 'Vue']
 ---
