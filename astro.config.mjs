@@ -1,16 +1,16 @@
-import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import Compress from 'astro-compress';
-import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
+import { defineConfig } from 'astro/config';
 import { VitePWA } from 'vite-plugin-pwa';
 
 import { manifest } from './src/utils/manifest';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'http://localhost:4322/',
+  site: 'https://thomas.legrand.sh',
   image: {
     remotePatterns: [{ protocol: 'https' }],
   },
