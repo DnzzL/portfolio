@@ -1,7 +1,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-import Compress from 'astro-compress';
+import Compress from '@playform/compress';
 import robotsTxt from 'astro-robots-txt';
 import { defineConfig } from 'astro/config';
 import { VitePWA } from 'vite-plugin-pwa';

@@ -3,7 +3,7 @@ title: 'A Love Letter to the Vue Ecosystem'
 description: 'Why Nuxt 3, Nuxt UI, and Supabase are my go-to stack'
 pubDate: '2025-03-27'
 categories: ['Webdev']
-heroImage: '/thumbnails/vue-ecosystem.webp'
+heroImage: '/thumbnails/nuxt.png'
 tags: ['Framework', 'Vue', 'Nuxt', 'Supabase']
 ---
 
