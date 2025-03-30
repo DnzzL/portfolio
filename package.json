@@ -42,6 +42,7 @@
     "@astrojs/rss": "3.0.0",
     "@astrojs/sitemap": "3.0.1",
     "@astrojs/tailwind": "5.0.1",
+    "@playform/compress": "^0.1.8",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/typography": "0.5.10",
     "@typescript-eslint/eslint-plugin": "6.7.5",
@@ -63,5 +64,11 @@
   },
   "dependencies": {
     "sharp": "^0.33.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
