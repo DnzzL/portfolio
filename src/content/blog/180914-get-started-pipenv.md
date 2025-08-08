@@ -4,7 +4,7 @@ description: "Pipenv provides a simple way to create and manage independent Pyth
 Nowadays it is the recommended tool to handle your Python projects."
 pubDate: "2018-09-14"
 categories: ['Python']
-heroImage: '/thumbnails/pipenv.jpg'
+heroImage: '/thumbnails/pipenv.webp'
 tags: ["Pipenv", "Dependencies"]
 ---
 

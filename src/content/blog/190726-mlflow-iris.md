@@ -3,7 +3,7 @@ title: 'Ease your Machine Learning work with MLflow'
 description: 'MLflow is an open-source platform that helps to manage the ML lifecycle, including experimentation, reproducibility, and deployment. '
 pubDate: '2019-07-26'
 categories: ['Python']
-heroImage: '/thumbnails/mlflow.png'
+heroImage: '/thumbnails/mlflow.webp'
 tags: ['MLflow']
 ---
 
@@ -97,13 +97,13 @@ with mlflow.start_run(experiment_id=experiment.experiment_id):
 
 To access the UI, execute `mlflow ui`.
 
-![UI](/blog-images/mlflow-iris/mlflow_ui.png 'UI')
+![UI](/blog-images/mlflow-iris/mlflow_ui.webp 'UI')
 
 I'm under the `iris` experiment, and we can see all the runs. It is also possible to search specific runs with a SQL-like syntax by filtering with some parameter, metrics or value.
 
 If you click on a run, you have access to a more detailed view:
 
-![Run](/blog-images/mlflow-iris/run.png 'Run')
+![Run](/blog-images/mlflow-iris/run.webp 'Run')
 
 You can still see parameters and metrics, but you can also add some notes, tag the run and even look at the artifacts you've saved.
 All the information is saved and accessible in a convenient way.

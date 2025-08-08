@@ -3,7 +3,7 @@ title: 'From Data Scientist to Fullstack Developer'
 description: "The story of why I've changed my job"
 pubDate: '2023-01-06'
 categories: ['Daily Job']
-heroImage: '/thumbnails/react.jpg'
+heroImage: '/thumbnails/react.webp'
 tags: ['Data Science', 'Fullstack Dev']
 ---
 

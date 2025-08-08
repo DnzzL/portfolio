@@ -3,7 +3,7 @@ title: 'Brand new website hosted on Dokku'
 description: "I've decided to refresh my personal website."
 pubDate: '2021-04-07'
 categories: ['Dokku']
-heroImage: '/thumbnails/dokku.png'
+heroImage: '/thumbnails/dokku.webp'
 tags: ['Personal platform']
 ---
 

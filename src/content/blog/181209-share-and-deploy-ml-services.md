@@ -3,7 +3,7 @@ title: 'Share and deploy your Machine Learning services with Docker'
 description: 'Many resources focus on machine learning algorithms, which are really interesting, yet forget about the end of the cycle.'
 pubDate: '2018-12-09'
 categories: ['Python']
-heroImage: '/thumbnails/share-and-deploy.png'
+heroImage: '/thumbnails/share-and-deploy.webp'
 tags: ['Deploy', 'Docker']
 ---
 

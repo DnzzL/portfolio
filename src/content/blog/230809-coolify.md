@@ -3,7 +3,7 @@ title: 'Farewell Heroku, Hello Coolify'
 description: 'Yet another iteration'
 pubDate: '2023-04-12'
 categories: ['Personal Platform']
-heroImage: '/thumbnails/coolify.png'
+heroImage: '/thumbnails/coolify.webp'
 tags: ['Deployment']
 ---
 

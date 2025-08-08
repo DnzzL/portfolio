@@ -3,7 +3,7 @@ title: 'Molkky'
 pubDate: '2020-04-27'
 github: 'https://github.com/DnzzL/molkky'
 url: 'https://molkky.legrand.sh'
-heroImage: '/project-images/molkky/molkky.png'
+heroImage: '/project-images/molkky/molkky.webp'
 categories: ['Game']
 tags: ['Javascript', 'Typescript', 'React']
 authors: ['Thomas Legrand']

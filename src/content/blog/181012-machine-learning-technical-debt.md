@@ -3,7 +3,7 @@ title: 'Technical Debt in Machine Learning'
 description: 'I have come across a very interesting paper about Technical debt in Machine Learning.'
 pubDate: '2018-10-12'
 categories: ['Papers']
-heroImage: '/thumbnails/article.jpg'
+heroImage: '/thumbnails/article.webp'
 tags: ['Technical Debt']
 ---
 

@@ -3,7 +3,7 @@ title: 'With Astro came speed'
 description: 'Rewrite of my website with Astro.build'
 pubDate: '2022-11-28'
 categories: ['Astro', 'Blog']
-heroImage: '/blog-placeholder.jpg'
+heroImage: '/blog-placeholder.webp'
 tags: ['Portfolio']
 author: '["Thomas"]'
 ---
@@ -55,7 +55,7 @@ and also a more optimized handling of images by using the Astro native `<Image>`
 ```
 
 In the end, I managed to reach a **100 Performance score** on Lighthouse, more than enough I guess.
-![Lighthouse score](/blog-images/astro-rewrite/lighthouse.png 'Lighthouse score')
+![Lighthouse score](/blog-images/astro-rewrite/lighthouse.webp 'Lighthouse score')
 
 ## Final notes
 

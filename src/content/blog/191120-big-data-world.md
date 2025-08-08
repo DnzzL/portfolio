@@ -3,7 +3,7 @@ title: 'Big Data World 2019 in short'
 description: 'Key takeaways from the conference.'
 pubDate: '2019-11-20'
 categories: ['Conference']
-heroImage: '/thumbnails/conference.jpg'
+heroImage: '/thumbnails/conference.webp'
 tags: ['Big Data World']
 ---
 

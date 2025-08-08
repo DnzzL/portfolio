@@ -14,7 +14,7 @@ Vérifiez si les annonces immobilières sont conformes ou non à la loi de l’e
 
 ## Extension web
 
-![Infographie fonctionnement](/project-images/encadrement/infographie_encadrement.png 'Infographie fonctionnement')
+![Infographie fonctionnement](/project-images/encadrement/infographie_encadrement.webp 'Infographie fonctionnement')
 
 ## Une sélection d'annonces conformes
 

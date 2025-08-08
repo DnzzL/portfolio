@@ -3,7 +3,7 @@
 EV0 Astro Theme is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript. It serves as a starting point for creating your personal portfolio website or showcasing your projects online. The template is open-source and released under the MIT license, meaning you are free to use, modify, and distribute it for personal or commercial purposes.
 
 <p align="center">
-  <img align="center" alt="EV0 Astro Theme" src="https://s3.amazonaws.com/gndx.dev/ev0-astro-theme.png"/>
+  <img align="center" alt="EV0 Astro Theme" src="https://s3.amazonaws.com/gndx.dev/ev0-astro-theme.webp"/>
 </p>
 
 <a href="https://astro.build"><img src="https://astro.badg.es/v2/built-with-astro/tiny.svg" alt="Built with Astro" width="120" height="20"></a>
@@ -36,7 +36,7 @@ EV0 Astro Theme is a free and open-source serverless blog template, built with A
 ## ⚓ Lighthouse Score - PWA Ready
 
 <p align="center">
-  <img align="center" alt="Lighthouse Score" src="https://s3.amazonaws.com/gndx.dev/EV0-astro-theme-lighthouse.png"/>
+  <img align="center" alt="Lighthouse Score" src="https://s3.amazonaws.com/gndx.dev/EV0-astro-theme-lighthouse.webp"/>
 </p>
 
 ## 🚀 Getting Started
@@ -68,8 +68,8 @@ To configure your blog, edit the `src/config/config.json` file. This file contai
     "title": "EV0 Astro Theme",
     "base_url": "https://ev0.gndx.io",
     "base_path": "/",
-    "favicon": "/favicon.png",
-    "logo": "https://s3.amazonaws.com/gndx.dev/ev0-astro-logo.png",
+    "favicon": "/favicon.webp",
+    "logo": "https://s3.amazonaws.com/gndx.dev/ev0-astro-logo.webp",
     "lang": "en",
     "description": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript.",
     "pageSize": 6
@@ -83,7 +83,7 @@ To configure your blog, edit the `src/config/config.json` file. This file contai
   },
   "author": {
     "name": "Oscar Barajas Tavares @gndx",
-    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.png",
+    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.webp",
     "bio": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript."
   }
 }
@@ -151,8 +151,8 @@ Follow the instructions and this will generate a new markdown file in the `src/c
 ├── public/
 │   └── favicons/
 │   └── fonts/
-│   └── blog-placeholder.jpg
-│   └── favicon.png
+│   └── blog-placeholder.webp
+│   └── favicon.webp
 │   └── humans.txt
 ├── scripts/
 │   └── youtube.cjs

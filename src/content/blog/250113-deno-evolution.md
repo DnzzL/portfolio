@@ -3,7 +3,7 @@ title: 'Deno: A Fresh Take on JavaScript Development'
 description: "Exploring Deno's evolution and its impact on modern JavaScript development"
 pubDate: '2025-01-13'
 categories: ['Webdev']
-heroImage: '/thumbnails/deno.jpg'
+heroImage: '/thumbnails/deno.webp'
 tags: ['JavaScript', 'Deno', 'Development']
 ---
 

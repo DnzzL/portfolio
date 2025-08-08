@@ -3,8 +3,8 @@
     "title": "Thomas Legrand",
     "base_url": "https://thomas.legrand.sh",
     "base_path": "/",
-    "favicon": "/logo.png",
-    "logo": "/logo.png",
+    "favicon": "/logo.webp",
+    "logo": "/logo.webp",
     "lang": "en",
     "description": "My personal website",
     "pageSize": 6
@@ -19,7 +19,7 @@
   },
   "author": {
     "name": "Thomas Legrand",
-    "avatar": "/photo.jpg",
+    "avatar": "/photo.webp",
     "bio": "My personal website"
   }
 }

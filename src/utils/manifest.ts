@@ -13,17 +13,17 @@ export const manifest: Partial<ManifestOptions> = {
   lang: 'ES',
   icons: [
     {
-      src: '/favicons/favicon-192x192.png',
+      src: '/favicons/favicon-192x192.webp',
       sizes: '192x192',
       type: 'image/png',
     },
     {
-      src: '/favicons/favicon-256x256.png',
+      src: '/favicons/favicon-256x256.webp',
       sizes: '256x256',
       type: 'image/png',
     },
     {
-      src: '/favicons/favicon-256x256.png',
+      src: '/favicons/favicon-256x256.webp',
       sizes: '256x256',
       type: 'image/png',
       purpose: 'any maskable',

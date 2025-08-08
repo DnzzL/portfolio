@@ -2,7 +2,7 @@
 title: 'Velibetter'
 pubDate: '2020-02-21'
 github: 'https://github.com/aymericdo/loyer-paris-be'
-heroImage: '/project-images/velibetter/velibetter.png'
+heroImage: '/project-images/velibetter/velibetter.webp'
 categories: ['Mobility']
 tags: ['Javascript', 'Typescript', 'Python', 'Angular', 'Time Series']
 authors: ['Thomas Legrand', 'Aymeric Dominique']
