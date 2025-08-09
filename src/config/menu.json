@@ -13,6 +13,10 @@
       "url": "/projects"
     },
     {
+      "name": "Resume",
+      "url": "/resume"
+    },
+    {
       "name": "Tags",
       "url": "/tags"
     },

@@ -1,0 +1,396 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Thomas Legrand",
+    "label": "Ingénieur Logiciel IA",
+    "image": "",
+    "email": "legrand.thomas5@outlook.fr",
+    "phone": "",
+    "url": "https://thomas.legrand.sh",
+    "summary": "Développeur Full stack Typescript, VueJS, ReactJS.\nEx-Data Scientist passionné par l'analyse de données, le machine learning, et les nouvelles technologies en général.\n\nFier co-développeur d'Encadrement, l'extension qui vous aide dans votre recherche d'appart (https://encadrement-loyers.fr/)!\n\nMembre des pôles Organisation, Technique et Communauté de Data4Good.",
+    "location": {
+      "countryCode": "FR",
+      "address": "France"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "thomas-d-legrand",
+        "url": "https://www.linkedin.com/in/thomas-d-legrand/"
+      },
+      {
+        "network": "GitHub",
+        "username": "DnzzL",
+        "url": "https://github.com/dnzzl"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "FREELANCEREPUBLIK",
+      "position": "Ingénieur logiciel",
+      "startDate": "2023-01-01",
+      "endDate": "",
+      "highlights": [],
+      "summary": "- Développement et refactoring du back office de recrutement interne avec tests E2E Cypress\n- Développement d'une brique de synchronisation back office interne <> CRM\n- Développement d'une brique de synchronisation back office interne <> Outil de gestion de contrats\n- Conception et développement de microservices Deno 2 avec gestion de la charge via worker BullMQ\n- Conception et développement d'aide au recrutement Fiche de poste <> Candidats via IA\n- Développement d'un parsing de CV maison par IA\n- Co-création d'un SaaS de matching de candidats par IA\n\nTechnologies: Node, Vue, GraphQL, Typescript, BullMQ, Redis, LLM, Deno, Recherche vectorielle, n8n, Cypress, Jest, Hubspot, Gemini, OpenAI, MongoDB, Supabase, Postgres, Nuxt3",
+      "url": "https://www.linkedin.com/company/freelancerepublik/",
+      "location": "Nice, Provence-Alpes-Côte d’Azur, France"
+    },
+    {
+      "name": "Ornikar",
+      "position": "Machine Learning Engineer",
+      "startDate": "2022-02-01",
+      "endDate": "2023-01-31",
+      "highlights": [],
+      "summary": "- Modélisation de la connaissance des élèves via Knowledge Tracing\n- Recommendations pour de l'apprentissage personnalisé\n- Publication d'un article sur le premier projet de Machine Learning chez Ornikar\n- Modélisation du risque assurantiel des élèves de la conduite\n\nTechnologies: Python, dbt, DVC, Airflow, Airbyte, Docker, Terraform",
+      "url": "https://www.linkedin.com/company/ornikar/",
+      "location": "Ville de Paris, Île-de-France, France"
+    },
+    {
+      "name": "Ornikar",
+      "position": "Data Scientist",
+      "startDate": "2020-05-01",
+      "endDate": "2022-02-28",
+      "highlights": [],
+      "summary": "- Analytical Engineering: consolidation de la stack dbt, ajout de documentation, de tests unitaires et de data quality\n- Algorithme prédictif de la probabilité de succès au code de la route (+150k vues / mois)\n- Algorithme de Lead Scoring\n- Automatisation de pipelines d'inférence via DAG Airflow\n- Reconnaissance Optique de caractères (OCR) pour papiers administratifs\n- Déploiement de Cloud Run sur Google Cloud Platform via Terraform\n\nTechnologies: dbt, SQL, Python, Airflow, Docker, LightGBM, Scikit-learn, Bigquery, GCP",
+      "url": "https://www.linkedin.com/company/ornikar/",
+      "location": "Paris, Île-de-France, France"
+    },
+    {
+      "name": "Mention",
+      "position": "Data Scientist",
+      "startDate": "2018-08-01",
+      "endDate": "2020-04-30",
+      "highlights": [],
+      "summary": "- Analyse de sentiment à partir de réseau de neurones pré-entraîné (+ 1000 requêtes/s)\n- Extraction de mots clés,  Reconnaissance d'entités\n- Clustering du flux d'information\n- Création de graphes de texte\n- Détection d'anomalies en temps-réel\n- Suggestion du meilleur moment pour publier\n- Rapport de tendances Instagram\n- Détection de logos dans les images\n- Graph de connaissances\n\nTechnologies: Python, NLP, spaCy, Scikit-learn,  Pytorch, Keras, Tensorflow, Docker, BigQuery, gRPC",
+      "url": "https://www.linkedin.com/company/mention/",
+      "location": "Paris, France"
+    },
+    {
+      "name": "Mention",
+      "position": "Stagiaire Data Scientist",
+      "startDate": "2018-02-01",
+      "endDate": "2018-07-31",
+      "highlights": [],
+      "summary": "Travail avec les API Twitter, Facebook et Instagram.\n\nTravaux réalisés:\n- Assignation automatique d'intérêts\n- Suggestion d'heure de publication\n- Mettre en avant mentions pertinentes\n- Amélioration du parsing de page webs",
+      "url": "https://www.linkedin.com/company/mention/",
+      "location": "Paris, France"
+    },
+    {
+      "name": "efluid SAS",
+      "position": "Stagiaire en informatique",
+      "startDate": "2017-06-01",
+      "endDate": "2017-08-31",
+      "highlights": [],
+      "summary": "Amélioration l’outillage de recherche d’information de l’équipe de développement:\n- Mise en place d'un outil d’indexation des documents de l’équipe de développement (format ADOC)\n- Ajout d’un moteur de recherche (lunr.js) avec indexation réalisée via NodeJs.\n- Mise en place d'un outil de conversion de document ADOC en présentation Html.\n- Automatisation via Maven",
+      "url": "https://www.linkedin.com/company/efluid-sas/",
+      "location": "Région de Metz, France"
+    },
+    {
+      "name": "AIESEC",
+      "position": "Membre pôle événementiel",
+      "startDate": "2016-09-01",
+      "endDate": "2017-01-31",
+      "highlights": [],
+      "summary": "Membre de l'équipe organisatrice du Global Village 2017 de Télécom SudParis à Evry, événement accueillant plusieurs centaines de visiteurs pour découvrir les cultures des pays présents sur le campus, goûter les spécialités culinaires, assister à des spectacles et remise de prix.",
+      "url": "https://www.linkedin.com/company/aiesec/"
+    },
+    {
+      "name": "efluid SAS",
+      "position": "Stagiaire informatique",
+      "startDate": "2016-06-01",
+      "endDate": "2016-08-31",
+      "highlights": [],
+      "summary": "Développement de tests d’intégration automatisés en Java pour les processus TP \n- Etude des cas d’utilisation à tester \n- Recherche des processus à tester \n- Mise en œuvre des tests dans le cadre d’un composant permettant la réutilisation des contextes \n\nConception de tests d’intégration automatisés en Java pour les processus Batch \n- Etude du composant à utiliser en cours de mise au point \n- Mise en œuvre de la phase de préparation des contextes à tester sur le principe du composant TP \n- Mise en œuvre de l’exécution d’un premier test.",
+      "url": "https://www.linkedin.com/company/efluid-sas/",
+      "location": "Région de Metz, France"
+    },
+    {
+      "name": "AIESEC",
+      "position": "Chargé de recrutement international",
+      "startDate": "2015-09-01",
+      "endDate": "2016-06-30",
+      "highlights": [],
+      "summary": "AIESEC est la plus grande association étudiante au monde, présente dans 125 pays, 100 000 membres. C'est un réseau mondial de jeunes impactant le monde à travers des expériences de développement du leadership. \n\nThe Incoming Exchange (ICX) team goals are to contact local companies and sell the AIESEC product, recruit interns, help them along the way by finding them accommodation, opening a bank account, helping with the visa procedures and organizing social events.",
+      "url": "https://www.linkedin.com/company/aiesec/"
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Data for Good",
+      "position": "Data Scientist bénévole",
+      "startDate": "2021-08-01",
+      "endDate": "2021-08-31",
+      "summary": "- Membre du pôle technique: Définition des standards techniques et accompagnement des projets\n- Membre du pôle communauté: Animer la communauté de bénévole et développer l'antenne de Nice\n- Offseason sur l'industrialisation des projets Data For Good\n- Offseason et Saison 10: BechdelAI créer des outils et des études pour sensibiliser autour des enjeux de parité et d'inégalités dans le cinéma",
+      "highlights": [],
+      "url": "https://www.linkedin.com/company/10627994"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Télécom SudParis",
+      "area": "Majeure Modélisations Statistiques et Applications",
+      "studyType": "",
+      "startDate": "2015-01-01",
+      "endDate": "2018-12-31",
+      "score": "",
+      "courses": []
+    },
+    {
+      "institution": "Dublin City University",
+      "area": "Machine Learning, Data mining, Cloud technologies, Network Security",
+      "studyType": "",
+      "startDate": "2017-01-01",
+      "endDate": "2017-12-31",
+      "score": "",
+      "courses": []
+    },
+    {
+      "institution": "Lycée Fabert",
+      "area": "PSI* : Physique Science de l'Ingénieur",
+      "studyType": "",
+      "startDate": "2013-01-01",
+      "endDate": "2015-12-31",
+      "score": "",
+      "courses": []
+    }
+  ],
+  "awards": [],
+  "certificates": [
+    {
+      "name": "Data Scientist with R",
+      "issuer": "DataCamp",
+      "url": "https://www.datacamp.com/tracks/data-scientist-with-r"
+    },
+    {
+      "name": "Dataiku Core Designer",
+      "issuer": "Dataiku",
+      "startDate": "2022-09-01",
+      "url": "https://verify.skilljar.com/c/ox4isr2y3kjt"
+    },
+    {
+      "name": "Dataiku ML Practitioner",
+      "issuer": "Dataiku",
+      "startDate": "2022-09-01",
+      "url": "https://verify.skilljar.com/c/7yhtzp8qvwki"
+    }
+  ],
+  "publications": [],
+  "skills": [
+    {
+      "name": "LLM",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Nuxt.js",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Redis",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "PHP",
+      "level": "",
+      "keywords": []
+    },
+
+    {
+      "name": "Gestion de projet",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "ElasticSearch",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Machine Learning",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Unix",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "SQL",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "CSS",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Hadoop",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Git",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "React.js",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "R",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Go",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Recrutement",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Python",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "MongoDB",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Project Management",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Vue.js",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Data Analytics",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Docker",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Intelligence artificielle",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "HTML",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "PostgreSQL",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Bash",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Java",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "Node.js",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "TypeScript",
+      "level": "",
+      "keywords": []
+    },
+    {
+      "name": "GraphQL",
+      "level": "",
+      "keywords": []
+    }
+  ],
+  "languages": [
+    {
+      "language": "fr",
+      "fluency": "Native Speaker"
+    },
+    {
+      "language": "en",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "de",
+      "fluency": "Intermediate"
+    }
+  ],
+  "interests": [],
+  "references": [],
+  "projects": [
+    {
+      "name": "Encadrement loyers",
+      "startDate": "2019-09-01",
+      "summary": "Extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers.",
+      "url": "https://www.encadrement-loyers.fr",
+      "endDate": "2026-09-30"
+    },
+    {
+      "name": "Brevity",
+      "startDate": "2025-04-01",
+      "summary": "Application d'agglomération de news avec auto transcription et auto résumé pour limiter la surconsommation de contenu en NuxtJS et Vercel AI SDK.",
+      "url": "https://github.com/DnzzL/brevity",
+      "endDate": "2025-05-01"
+    },
+    {
+      "name": "Myditate",
+      "startDate": "2025-01-01",
+      "summary": "Application de méditation générée par IA, avec Text To Speech en NuxtJS et Vercel AI SDK.",
+      "url": "https://github.com/dnzzl/myditate",
+      "endDate": "2025-03-01"
+    },
+    {
+      "name": "Encadrement loyers",
+      "startDate": "2019-09-01",
+      "summary": "Extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers.",
+      "url": "https://www.encadrement-loyers.fr",
+      "endDate": "2026-09-30"
+    },
+    {
+      "name": "Molkky",
+      "startDate": "2020-04-01",
+      "summary": "Première mise en pratique de mon auto apprentissage de React. On crée une partie en rentrant le nom de chaque joueur, puis on peut renseigner le score effectué. On peut également consulter l’historique des derniers lancers et annuler une mauvaise entrée. PWA en React.",
+      "url": "https://www.github.com/DnzzL/molkky",
+      "endDate": "2020-04-22"
+    },
+    {
+      "name": "Velibetter",
+      "startDate": "2020-01-30",
+      "summary": "Alternative avec une meilleure expérience utilisateur à l’application officielle Velib de Paris. PWA en Angular permet de consulter le nombre de vélos et places disponibles aux stations Velib les plus proches de soi grâce à des séries temporelles. Utilisation de l’accéléromètre pour effectuer un guidage.",
+      "url": "https://github.com/aymericdo/velibetter",
+      "endDate": "2020-04-04"
+    }
+  ],
+  "meta": {
+    "version": "v1.0.0",
+    "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"
+  }
+}

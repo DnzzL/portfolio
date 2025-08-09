@@ -1,0 +1,335 @@
+---
+import { Image } from 'astro:assets';
+import resumeData from '@config/resume.json';
+import config from '@config/config.json';
+
+const { basics = {}, work = [], education = [], skills = [], projects = [] } = resumeData || {};
+
+// Robust formatter: returns "Present" when no date is supplied
+const formatDate = (dateString) => {
+  if (!dateString) return 'Present';
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date);
+  } catch (e) {
+    return dateString;
+  }
+};
+
+// Exact months/years difference (no 30-day approximation)
+const calculateDuration = (startDate, endDate) => {
+  if (!startDate) return '';
+  const s = new Date(startDate);
+  const e = endDate ? new Date(endDate) : new Date();
+
+  // Calculate total months between dates
+  let totalMonths = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+  // If day of month in end is earlier than start, subtract one month
+  if (e.getDate() < s.getDate()) totalMonths -= 1;
+  if (totalMonths < 0) totalMonths = 0;
+
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  if (years === 0 && months === 0) return '0mo';
+  if (years === 0) return `${months}mo`;
+  if (months === 0) return `${years}y`;
+  return `${years}y ${months}mo`;
+};
+
+// Defensive: make sure skills is an array of objects with name
+const mainSkills = ['TypeScript', 'React.js', 'Vue.js', 'Node.js', 'LLM', 'Python', 'MongoDB', 'PostgreSQL', 'GraphQL', 'Docker'];
+const techSkills = Array.isArray(skills) ? skills.filter(s => mainSkills.includes(s.name)) : [];
+const otherSkills = Array.isArray(skills) ? skills.filter(s => !mainSkills.includes(s.name)) : [];
+
+// Sort experiences: ongoing jobs (no endDate) first, then by startDate desc
+const workExperience = (Array.isArray(work) ? work.slice() : []).sort((a, b) => {
+  const aOngoing = !a.endDate;
+  const bOngoing = !b.endDate;
+  if (aOngoing && !bOngoing) return -1;
+  if (bOngoing && !aOngoing) return 1;
+  return new Date(b.startDate || 0) - new Date(a.startDate || 0);
+}).map(job => ({
+  ...job,
+  duration: calculateDuration(job.startDate, job.endDate),
+}));
+
+const educationData = (Array.isArray(education) ? education : []).map(edu => ({
+  ...edu,
+  formattedDate: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`,
+}));
+
+const projectData = (Array.isArray(projects) ? projects : []).map(project => ({
+  ...project,
+  formattedDate: `${formatDate(project.startDate)} - ${formatDate(project.endDate)}`,
+}));
+
+const linkedInProfile = basics.profiles ? basics.profiles.find(p => /linkedin/i.test(p.network || p.url || '')) : null;
+const githubProfile = basics.profiles ? basics.profiles.find(p => /github/i.test(p.network || p.url || '')) : null;
+
+// Create basic JSON-LD for SEO / structured data (Person)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": basics.name || '',
+  "email": basics.email ? `mailto:${basics.email}` : undefined,
+  "jobTitle": basics.label || undefined,
+  "sameAs": basics.profiles ? basics.profiles.map(p => p.url) : undefined
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{basics.name ? `${basics.name} — Resume` : 'Resume'}</title>
+    <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+    <style>
+      /* Minimal, print-first friendly base styles */
+      :root{
+        --bg: #fff;
+        --muted: #6b7280;
+        --accent-from: #6366f1; /* indigo-500 */
+        --accent-to: #ec4899; /* pink-500 */
+        --radius: 12px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        color-scheme: light dark;
+      }
+
+      /* Layout helpers */
+      .container{max-width:1100px;margin:0 auto;padding:24px}
+      .card{background:var(--card-bg, white);border-radius:var(--radius);padding:20px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+
+      /* Prevent splitting important blocks across pages */
+      .avoid-break{break-inside: avoid;page-break-inside: avoid;}
+
+      /* Print styles: remove shadows and backgrounds that may not print well */
+      @media print{
+        :root{--card-bg: white}
+        *{color-adjust:exact; -webkit-print-color-adjust:exact}
+        body{background: white;margin:0}
+        .print-hidden{display:none !important}
+        .print-only{display:block !important}
+        .container{padding:0;margin:0}
+        .card{box-shadow:none;border-radius:0;padding:12px}
+        a::after{content: " (" attr(href) ")";font-size:90%;}
+        img{max-width:120px}
+        .avoid-break{page-break-inside: avoid}
+        .contact {
+            break-inside: auto !important;
+            page-break-inside: auto !important;
+            -webkit-column-break-inside: auto !important;
+          }
+          .experience-section {
+              break-inside: auto !important;
+              page-break-inside: auto !important;
+              -webkit-column-break-inside: auto !important;
+            }
+        /* Compact typographic scale for printing */
+        h1{font-size:18pt}
+        h2{font-size:12pt}
+        p, li{font-size:10pt}
+      }
+
+      /* Dark mode convenience */
+      @media (prefers-color-scheme: dark){
+        :root{--card-bg:#0f172a;color:white}
+        body{background:linear-gradient(135deg,#0b1220,#0f172a)}
+      }
+
+      /* Small utilities */
+      .muted{color:var(--muted)}
+      .caps{font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+      .grid{display:grid;grid-template-columns:1fr;gap:20px}
+
+      /* Desktop grid */
+      @media(min-width:1024px){
+        .grid{grid-template-columns:320px 1fr}
+      }
+
+      /* Simple skill pill */
+      .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:13px;margin:4px 6px 4px 0;background:#f1f5f9}
+
+      /* Small print-button style */
+      .print-btn{background:#111827;color:white;padding:8px 14px;border-radius:8px;border:0;cursor:pointer}
+
+      /* Accessibility: focus outlines */
+      a:focus, button:focus{outline:3px solid rgba(99,102,241,0.2);outline-offset:3px}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- Condensed header for print and small screens -->
+      <header class="card avoid-break print-only" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div>
+            <div style="font-weight:700;font-size:16pt">{basics.name}</div>
+            <div class="muted">{basics.label}</div>
+            <div class="muted">{basics.email} {basics.phone ? `• ${basics.phone}` : ''}</div>
+          </div>
+          {config.author?.avatar ? (
+            <div style="text-align:right">
+              <img src={config.author.avatar} alt={config.author.name || 'avatar'} style="width:88px;height:88px;border-radius:999px;object-fit:cover" />
+            </div>
+          ) : null}
+        </div>
+      </header>
+
+      <div class="grid" role="main">
+
+        <!-- Left column (sidebar) - hidden in print to keep print compact; replaced by print-only header above -->
+        <aside class="print-hidden">
+
+          <section class="card avoid-break" aria-labelledby="skills-heading">
+            <h2 id="skills-heading" class="caps">Skills</h2>
+            <p class="muted" style="margin-top:6px">Core</p>
+            <div style="margin-top:8px">
+              {techSkills.map(s => (
+                <span class="pill" key={s.name}>{s.name}{s.level ? ` • ${s.level}` : ''}</span>
+              ))}
+            </div>
+
+            <p class="muted" style="margin-top:12px">Other</p>
+            <div style="margin-top:8px">
+              {otherSkills.map(s => (
+                <span class="pill" key={s.name}>{s.name}</span>
+              ))}
+            </div>
+          </section>
+
+          <section class="card avoid-break" aria-labelledby="education-heading" style="margin-top:16px">
+            <h2 id="education-heading" class="caps">Education</h2>
+            <div style="margin-top:8px">
+              {educationData.map(edu => (
+                <div key={edu.institution} style="margin-bottom:12px">
+                  <div style="font-weight:600">{edu.institution}</div>
+                  <div class="muted">{edu.area}</div>
+                  <div class="muted" style="font-size:12px">{edu.formattedDate}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+        </aside>
+
+        <!-- Main column -->
+        <main>
+
+          <!-- Hero (hidden in print) -->
+          <section class="card print-hidden avoid-break" aria-labelledby="hero-heading">
+            <div style="display:flex;gap:18px;align-items:center">
+              <div style="flex:1">
+                <h1 id="hero-heading" style="margin:0;font-size:28px">{basics.name}</h1>
+                <div class="muted" style="margin-top:6px">{basics.label}</div>
+                <p class="muted" style="margin-top:12px;line-height:1.45">{basics.summary}</p>
+
+                <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px">
+                  {basics.email ? (
+                    <a href={`mailto:${basics.email}`} class="print-hidden" aria-label={`Email ${basics.email}`}>{basics.email}</a>
+                  ) : null}
+
+                  {basics.profiles ? basics.profiles.map(p => (
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" class="print-hidden" key={p.network}>{p.network}</a>
+                  )) : null}
+                </div>
+              </div>
+
+              {config.author?.avatar ? (
+                <div style="width:90px;flex-shrink:0">
+                  <Image src={config.author.avatar} alt={config.author.name || 'avatar'} width={180} height={180} class="rounded-full" />
+                </div>
+              ) : null}
+            </div>
+          </section>
+
+          <!-- Contact / Quick Info (print-friendly) -->
+          <section class="card contact avoid-break" style="margin-top:16px">
+            <h2 class="caps">Contact</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:12px">
+              <div>
+                <div style="font-weight:600">{basics.name}</div>
+                <div class="muted">{basics.label}</div>
+                <div class="muted">{basics.email}{basics.phone ? ` • ${basics.phone}` : ''}</div>
+                {basics.location ? (<div class="muted">{basics.location.city}{basics.location.region ? `, ${basics.location.region}` : ''}</div>) : null}
+              </div>
+
+              <div style="text-align:right">
+                {linkedInProfile ? (<a href={linkedInProfile.url} target="_blank" rel="noopener noreferrer">LinkedIn</a>) : null}
+                {githubProfile ? (<div><a href={githubProfile.url} target="_blank" rel="noopener noreferrer">GitHub</a></div>) : null}
+              </div>
+            </div>
+          </section>
+
+          <!-- Experience -->
+          <section class="card avoid-break experience-section" style="margin-top:16px">
+            <h2 class="caps">Professional Experience</h2>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+              {workExperience.map(job => (
+                <article key={`${job.name}-${job.position}`} class="avoid-break" aria-labelledby={`job-${job.position}`}>
+                  <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+                    <div>
+                      <div style="font-weight:700">{job.position}</div>
+                      <div class="muted">{job.name} {job.location ? `• ${job.location}` : ''}</div>
+                    </div>
+                    <div style="text-align:right" class="muted">
+                      <div>{formatDate(job.startDate)} — {formatDate(job.endDate)}</div>
+                      <div style="font-size:12px">{job.duration}</div>
+                    </div>
+                  </div>
+
+                  {job.summary ? (<p style="margin-top:8px" class="muted">{job.summary}</p>) : null}
+
+                  {job.highlights && job.highlights.length ? (
+                    <ul style="margin-top:8px">
+                      {job.highlights.map(h => (<li key={h}>{h}</li>))}
+                    </ul>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <!-- Projects -->
+          {projectData.length ? (
+            <section class="card avoid-break" style="margin-top:16px">
+              <h2 class="caps">Projects</h2>
+              <div style="margin-top:12px">
+                {projectData.map(p => (
+                  <div key={p.name} style="margin-bottom:10px">
+                    <div style="font-weight:600">{p.name} <span class="muted" style="font-weight:400">• {p.formattedDate}</span></div>
+                    {p.summary ? (<div class="muted" style="margin-top:6px">{p.summary}</div>) : null}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+        </main>
+
+      </div>
+
+      <div style="margin-top:18px;display:flex;justify-content:center;gap:12px" class="print-hidden">
+        <button id="printBtn" class="print-btn" type="button" aria-label="Print resume">Print / Save PDF</button>
+        <a href="#" id="downloadJson" class="print-btn" style="background:#1f2937;text-decoration:none">Download JSON</a>
+      </div>
+
+    </div>
+
+    <script>
+      // Use event listeners rather than inline handlers
+      document.getElementById('printBtn')?.addEventListener('click', () => window.print());
+
+      // offer the JSON resume file as a download client-side
+      const downloadBtn = document.getElementById('downloadJson');
+      if (downloadBtn) {
+        const data = JSON.stringify({ basics: basics || {}, work: work || [], education: education || [], skills: skills || [], projects: projects || [] }, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        downloadBtn.setAttribute('href', url);
+        downloadBtn.setAttribute('download', (basics.name || 'resume').toLowerCase().replace(/\s+/g,'-') + '.json');
+      }
+    </script>
+  </body>
+</html>
