@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import resumeData from '@config/resume.json';
 import config from '@config/config.json';
 
-const { basics = {}, work = [], education = [], skills = [], projects = [] } = resumeData || {};
+// Defensive destructuring
+const { basics = {}, work = [], education = [], skills = [], projects = [], volunteer = [] } = resumeData || {};
 
 // Robust formatter: returns "Present" when no date is supplied
 const formatDate = (dateString) => {
@@ -37,10 +38,20 @@ const calculateDuration = (startDate, endDate) => {
   return `${years}y ${months}mo`;
 };
 
-// Defensive: make sure skills is an array of objects with name
+// Normalize skills: JSON Resume "skills" might be array of objects or strings
+const normalizeSkills = (skillsInput) => {
+  if (!Array.isArray(skillsInput)) return [];
+  return skillsInput.map(s => {
+    if (typeof s === 'string') return { name: s };
+    if (s && typeof s === 'object') return { name: s.name || s.label || '', level: s.level };
+    return { name: String(s) };
+  }).filter(Boolean);
+};
+
+const normalizedSkills = normalizeSkills(skills);
 const mainSkills = ['TypeScript', 'React.js', 'Vue.js', 'Node.js', 'LLM', 'Python', 'MongoDB', 'PostgreSQL', 'GraphQL', 'Docker'];
-const techSkills = Array.isArray(skills) ? skills.filter(s => mainSkills.includes(s.name)) : [];
-const otherSkills = Array.isArray(skills) ? skills.filter(s => !mainSkills.includes(s.name)) : [];
+const techSkills = normalizedSkills.filter(s => mainSkills.includes(s.name));
+const otherSkills = normalizedSkills.filter(s => !mainSkills.includes(s.name));
 
 // Sort experiences: ongoing jobs (no endDate) first, then by startDate desc
 const workExperience = (Array.isArray(work) ? work.slice() : []).sort((a, b) => {
@@ -64,8 +75,13 @@ const projectData = (Array.isArray(projects) ? projects : []).map(project => ({
   formattedDate: `${formatDate(project.startDate)} - ${formatDate(project.endDate)}`,
 }));
 
-const linkedInProfile = basics.profiles ? basics.profiles.find(p => /linkedin/i.test(p.network || p.url || '')) : null;
-const githubProfile = basics.profiles ? basics.profiles.find(p => /github/i.test(p.network || p.url || '')) : null;
+const volunteerData = (Array.isArray(volunteer) ? volunteer : []).map(v => ({
+  ...v,
+  formattedDate: `${formatDate(v.startDate)} - ${formatDate(v.endDate)}`,
+}));
+
+const linkedInProfile = basics.profiles ? basics.profiles.find(p => /linkedin/i.test((p.network || '') + (p.url || ''))) : null;
+const githubProfile = basics.profiles ? basics.profiles.find(p => /github/i.test((p.network || '') + (p.url || ''))) : null;
 
 // Create basic JSON-LD for SEO / structured data (Person)
 const jsonLd = {
@@ -76,6 +92,9 @@ const jsonLd = {
   "jobTitle": basics.label || undefined,
   "sameAs": basics.profiles ? basics.profiles.map(p => p.url) : undefined
 };
+
+// Expose a safe, serialized version for client-side scripts (download button)
+const __RESUME_FOR_CLIENT = JSON.stringify({ basics: basics || {}, work: work || [], education: education || [], skills: normalizedSkills || [], projects: projectData || [], volunteer: volunteerData || [] });
 ---
 
 <!doctype html>
@@ -86,204 +105,228 @@ const jsonLd = {
     <title>{basics.name ? `${basics.name} — Resume` : 'Resume'}</title>
     <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
     <style>
-      /* Minimal, print-first friendly base styles */
       :root{
         --bg: #fff;
+        --text: #0f1724;
         --muted: #6b7280;
-        --accent-from: #6366f1; /* indigo-500 */
-        --accent-to: #ec4899; /* pink-500 */
-        --radius: 12px;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-        color-scheme: light dark;
+        --accent: linear-gradient(90deg,#7c3aed 0%, #06b6d4 100%);
+        --accent-solid: #7c3aed;
+        --accent-2: #06b6d4;
+        --border: #e6eef6;
+        --card-bg: #fff;
+        --radius: 10px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        font-size: 14px; /* base */
+        color: var(--text);
       }
 
-      /* Layout helpers */
-      .container{max-width:1100px;margin:0 auto;padding:24px}
-      .card{background:var(--card-bg, white);border-radius:var(--radius);padding:20px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #020617;
+          --text: #e6eef6;
+          --muted: #9aa7b6;
+          --border: #122031;
+          --card-bg: #061126;
+        }
+        body { background: var(--bg); }
+      }
 
-      /* Prevent splitting important blocks across pages */
-      .avoid-break{break-inside: avoid;page-break-inside: avoid;}
+      /* Basic layout */
+      body { background: var(--bg); margin:0; padding:0; line-height:1.4; -webkit-font-smoothing:antialiased; }
+      .container { max-width: 980px; margin: 0 auto; padding: 20px; }
 
-      /* Print styles: remove shadows and backgrounds that may not print well */
+      /* Typographic rhythm and coherence */
+      h1 { font-size: 1.6rem; margin: 0 0 4px 0; font-weight:800; letter-spacing: -0.01em; }
+      h2 { font-size: 1rem; margin: 0; font-weight:700; }
+      h3 { font-size: 0.9375rem; margin: 0; font-weight:600; }
+      p, li { font-size: 0.95rem; margin: 0; }
+      .text-sm { font-size: 0.9rem; }
+      .text-xs { font-size: 0.8125rem; }
+
+      /* Grid */
+      .grid { display: grid; gap: 18px; grid-template-columns: 1fr; }
+      @media (min-width: 1024px) { .grid { grid-template-columns: 280px 1fr; align-items: start; } }
+
+      .card{ background: var(--card-bg); border-radius: var(--radius); padding: 14px; border: 1px solid var(--border); box-shadow: 0 6px 18px rgba(12,12,20,0.04); }
+
+      /* Header / hero */
+      .hero { display:flex; gap:16px; align-items:center; }
+      .hero .meta { flex:1; }
+      .avatar { width:84px; height:84px; border-radius: 12px; overflow:hidden; flex-shrink:0; }
+      .avatar img{ width:100%; height:100%; object-fit:cover; }
+      .summary { color: var(--muted); margin-top:10px; }
+
+      /* Sidebar */
+      .caps { font-size: 0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--muted); }
+      .skill-pill{ display:inline-block; padding:6px 10px; border-radius:999px; font-size:0.82rem; margin:4px 6px 4px 0; background: rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.08); }
+
+      /* Experience list */
+      .experience-section article{ padding: 10px 0; border-bottom: 1px dashed var(--border); }
+      .experience-section article:last-child{ border-bottom: none; padding-bottom:0; }
+      .job-head{ display:flex; justify-content:space-between; gap:12px; }
+      .job-meta { color:var(--muted); font-size:0.9rem; }
+      .job-dates{ text-align:right; min-width:120px; color:var(--muted); font-size:0.85rem; }
+
+      /* Compact summaries to fit more on a page. screen: 4 lines, print: 2 lines */
+      .job-summary{ margin-top:8px; color:var(--muted); font-size:0.95rem; display:-webkit-box; -webkit-box-orient:vertical; overflow:hidden; }
+      /*.job-summary.screen-clamp { -webkit-line-clamp:4; }*/
+      /*@media print { .job-summary.screen-clamp { -webkit-line-clamp:2; } }*/
+
+      ul.job-highlights{ margin-top:8px; padding-left:18px; color:var(--text); font-size:0.95rem; }
+      ul.job-highlights li{ margin-bottom:6px; }
+
+      /* Projects/Volunteer */
+      .muted { color:var(--muted); }
+      .project-row, .vol-row{ margin-bottom:10px; }
+
+      /* Buttons */
+      .controls { display:flex; gap:10px; justify-content:center; margin-top:14px; }
+      .btn { background:var(--accent-solid); color:white; padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
+      .btn.secondary { background:transparent; color:var(--accent-solid); border:1px solid rgba(124,58,237,0.12); }
+
+      /* Print styles */
       @media print{
-        :root{--card-bg: white}
-        *{color-adjust:exact; -webkit-print-color-adjust:exact}
-        body{background: white;margin:0}
-        .print-hidden{display:none !important}
-        .print-only{display:block !important}
-        .container{padding:0;margin:0}
-        .card{box-shadow:none;border-radius:0;padding:12px}
-        a::after{content: " (" attr(href) ")";font-size:90%;}
-        img{max-width:120px}
-        .avoid-break{page-break-inside: avoid}
-        .contact {
-            break-inside: auto !important;
-            page-break-inside: auto !important;
-            -webkit-column-break-inside: auto !important;
+        :root{ font-size: 12px; }
+        body{ background: #fff; color:#000; }
+        .print-hidden{ display:none !important; }
+        .print-only {
+            display: block !important;
           }
-          .experience-section {
-              break-inside: auto !important;
-              page-break-inside: auto !important;
-              -webkit-column-break-inside: auto !important;
-            }
-        /* Compact typographic scale for printing */
-        h1{font-size:18pt}
-        h2{font-size:12pt}
-        p, li{font-size:10pt}
+        .card{ box-shadow:none; border-radius:0; border:none; padding:6px 0; }
+        .container{ padding:0; max-width:100%; }
+        .grid{ gap:8px; }
+        a::after{ content: " (" attr(href) ")"; font-size:90%; }
+        /* Make sure we don't break inside items */
+        .avoid-break{ page-break-inside: avoid; }
+        /* Squeeze vertical rhythm */
+        .experience-section article{ padding:6px 0; }
+        /*.job-summary.screen-clamp{ -webkit-line-clamp:2; }*/
       }
 
-      /* Dark mode convenience */
-      @media (prefers-color-scheme: dark){
-        :root{--card-bg:#0f172a;color:white}
-        body{background:linear-gradient(135deg,#0b1220,#0f172a)}
-      }
-
-      /* Small utilities */
-      .muted{color:var(--muted)}
-      .caps{font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
-      .grid{display:grid;grid-template-columns:1fr;gap:20px}
-
-      /* Desktop grid */
-      @media(min-width:1024px){
-        .grid{grid-template-columns:320px 1fr}
-      }
-
-      /* Simple skill pill */
-      .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:13px;margin:4px 6px 4px 0;background:#f1f5f9}
-
-      /* Small print-button style */
-      .print-btn{background:#111827;color:white;padding:8px 14px;border-radius:8px;border:0;cursor:pointer}
-
-      /* Accessibility: focus outlines */
-      a:focus, button:focus{outline:3px solid rgba(99,102,241,0.2);outline-offset:3px}
+      /* Small helpers */
+      .flex{ display:flex; }
+      .justify-between{ justify-content:space-between; }
+      .text-right{ text-align:right; }
+      .mb-1{ margin-bottom:6px; }
     </style>
   </head>
   <body>
     <div class="container">
-
-      <!-- Condensed header for print and small screens -->
-      <header class="card avoid-break print-only" style="display:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <div>
-            <div style="font-weight:700;font-size:16pt">{basics.name}</div>
-            <div class="muted">{basics.label}</div>
-            <div class="muted">{basics.email} {basics.phone ? `• ${basics.phone}` : ''}</div>
-          </div>
-          {config.author?.avatar ? (
-            <div style="text-align:right">
-              <img src={config.author.avatar} alt={config.author.name || 'avatar'} style="width:88px;height:88px;border-radius:999px;object-fit:cover" />
-            </div>
-          ) : null}
-        </div>
-      </header>
-
       <div class="grid" role="main">
+        <!-- Sidebar -->
+        <aside class="card print-hidden avoid-break">
+          <div class="hero">
+            <div class="meta">
+                <div class="flex">
+                    <div class="flex flex-col">
+                        <h1>{basics.name}</h1>
+                        <div class="muted text-sm">{basics.label}</div>
+                    </div>
+                    {config.author?.avatar ? (
+                      <div class="avatar" title={config.author.name || ''}>
+                        <Image src={config.author.avatar} alt={config.author.name || 'avatar'} width={160} height={160} />
+                      </div>
+                    ) : null}
+                </div>
+              <div class="summary text-sm">{basics.summary}</div>
+            </div>
 
-        <!-- Left column (sidebar) - hidden in print to keep print compact; replaced by print-only header above -->
-        <aside class="print-hidden">
+          </div>
 
-          <section class="card avoid-break" aria-labelledby="skills-heading">
+          <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)" />
+
+          <section aria-labelledby="skills-heading">
             <h2 id="skills-heading" class="caps">Skills</h2>
-            <p class="muted" style="margin-top:6px">Core</p>
-            <div style="margin-top:8px">
-              {techSkills.map(s => (
-                <span class="pill" key={s.name}>{s.name}{s.level ? ` • ${s.level}` : ''}</span>
-              ))}
+            <div style="margin-top:8px;">
+              {techSkills.length ? techSkills.map(s => (
+                <span class="skill-pill" key={s.name}>{s.name}{s.level ? ` • ${s.level}` : ''}</span>
+              )) : <div class="muted text-sm">No core skills listed</div>}
             </div>
 
-            <p class="muted" style="margin-top:12px">Other</p>
-            <div style="margin-top:8px">
-              {otherSkills.map(s => (
-                <span class="pill" key={s.name}>{s.name}</span>
-              ))}
-            </div>
-          </section>
-
-          <section class="card avoid-break" aria-labelledby="education-heading" style="margin-top:16px">
-            <h2 id="education-heading" class="caps">Education</h2>
-            <div style="margin-top:8px">
-              {educationData.map(edu => (
-                <div key={edu.institution} style="margin-bottom:12px">
-                  <div style="font-weight:600">{edu.institution}</div>
-                  <div class="muted">{edu.area}</div>
-                  <div class="muted" style="font-size:12px">{edu.formattedDate}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-        </aside>
-
-        <!-- Main column -->
-        <main>
-
-          <!-- Hero (hidden in print) -->
-          <section class="card print-hidden avoid-break" aria-labelledby="hero-heading">
-            <div style="display:flex;gap:18px;align-items:center">
-              <div style="flex:1">
-                <h1 id="hero-heading" style="margin:0;font-size:28px">{basics.name}</h1>
-                <div class="muted" style="margin-top:6px">{basics.label}</div>
-                <p class="muted" style="margin-top:12px;line-height:1.45">{basics.summary}</p>
-
-                <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px">
-                  {basics.email ? (
-                    <a href={`mailto:${basics.email}`} class="print-hidden" aria-label={`Email ${basics.email}`}>{basics.email}</a>
-                  ) : null}
-
-                  {basics.profiles ? basics.profiles.map(p => (
-                    <a href={p.url} target="_blank" rel="noopener noreferrer" class="print-hidden" key={p.network}>{p.network}</a>
-                  )) : null}
-                </div>
+            {otherSkills.length > 0 && (
+              <div style="margin-top:10px;">
+                <h3 class="caps text-xs">Other</h3>
+                <div style="margin-top:6px;">{otherSkills.map(s => (<span class="skill-pill" key={s.name}>{s.name}</span>))}</div>
               </div>
+            )}
+          </section>
 
-              {config.author?.avatar ? (
-                <div style="width:90px;flex-shrink:0">
-                  <Image src={config.author.avatar} alt={config.author.name || 'avatar'} width={180} height={180} class="rounded-full" />
+          <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)" />
+
+          <section aria-labelledby="edu-heading">
+            <h2 id="edu-heading" class="caps">Education</h2>
+            <div style="margin-top:8px;">
+              {educationData.length ? educationData.map(edu => (
+                <div key={edu.institution} class="mb-1">
+                  <h3 class="m-0 text-sm">{edu.institution}</h3>
+                  <div class="muted text-xs">{edu.area}</div>
+                  <div class="muted text-xs">{edu.formattedDate}</div>
                 </div>
-              ) : null}
+              )) : <div class="muted text-sm">No formal education listed</div>}
             </div>
           </section>
 
-          <!-- Contact / Quick Info (print-friendly) -->
-          <section class="card contact avoid-break" style="margin-top:16px">
-            <h2 class="caps">Contact</h2>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:12px">
-              <div>
-                <div style="font-weight:600">{basics.name}</div>
-                <div class="muted">{basics.label}</div>
-                <div class="muted">{basics.email}{basics.phone ? ` • ${basics.phone}` : ''}</div>
-                {basics.location ? (<div class="muted">{basics.location.city}{basics.location.region ? `, ${basics.location.region}` : ''}</div>) : null}
-              </div>
+          <hr style="margin:12px 0;border:none;border-top:1px solid var(--border)" />
 
-              <div style="text-align:right">
-                {linkedInProfile ? (<a href={linkedInProfile.url} target="_blank" rel="noopener noreferrer">LinkedIn</a>) : null}
+          <section aria-labelledby="contact-heading">
+            <h2 id="contact-heading" class="caps">Contact</h2>
+            <div style="margin-top:8px;" class="text-sm muted">
+              {basics.email ? (<div>{basics.email}</div>) : null}
+              {basics.phone ? (<div>{basics.phone}</div>) : null}
+              {basics.location ? (<div>{basics.location.city}{basics.location.region ? `, ${basics.location.region}` : ''}</div>) : null}
+              <div style="margin-top:6px;">
+                {linkedInProfile ? (<div><a href={linkedInProfile.url} target="_blank" rel="noopener noreferrer">LinkedIn</a></div>) : null}
                 {githubProfile ? (<div><a href={githubProfile.url} target="_blank" rel="noopener noreferrer">GitHub</a></div>) : null}
               </div>
             </div>
           </section>
+        </aside>
+
+        <!-- Main column -->
+        <main>
+          <!-- Compact contact header for print / small screens -->
+          <header class="card avoid-break print-only" style="display:none">
+            <div class="flex justify-between -mt-12">
+              <div>
+                <h1 class="m-0">{basics.name}</h1>
+                <div class="muted text-sm">{basics.label}</div>
+                <div class="muted text-xs">{basics.email} {basics.phone ? `• ${basics.phone}` : ''}</div>
+              </div>
+              {config.author?.avatar ? (
+                <div>
+                  <img src={config.author.avatar} alt={config.author.name || 'avatar'} style="width:64px;height:64px;border-radius:8px;object-fit:cover" />
+                </div>
+              ) : null}
+            </div>
+          </header>
 
           <!-- Experience -->
-          <section class="card avoid-break experience-section" style="margin-top:16px">
-            <h2 class="caps">Professional Experience</h2>
-            <div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+          <section class="card experience-section">
+            <h2 class="caps mb-1">Professional Experience</h2>
+            <div>
               {workExperience.map(job => (
-                <article key={`${job.name}-${job.position}`} class="avoid-break" aria-labelledby={`job-${job.position}`}>
-                  <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+                <article key={`${job.name}-${job.position}`} class="avoid-break">
+                  <div class="job-head">
                     <div>
-                      <div style="font-weight:700">{job.position}</div>
-                      <div class="muted">{job.name} {job.location ? `• ${job.location}` : ''}</div>
+                      <h3>{job.position}</h3>
+                      <div class="job-meta">{job.name} {job.location ? `• ${job.location}` : ''}</div>
                     </div>
-                    <div style="text-align:right" class="muted">
+                    <div class="job-dates">
                       <div>{formatDate(job.startDate)} — {formatDate(job.endDate)}</div>
-                      <div style="font-size:12px">{job.duration}</div>
+                      <div class="text-xs muted">{job.duration}</div>
                     </div>
                   </div>
 
-                  {job.summary ? (<p style="margin-top:8px" class="muted">{job.summary}</p>) : null}
+                  {job.summary?.split("\n").map((line, index) => (
+                      <Fragment key={index}>
+                        {line}
+                        <br />
+                      </Fragment>
+                    ))}
 
                   {job.highlights && job.highlights.length ? (
-                    <ul style="margin-top:8px">
-                      {job.highlights.map(h => (<li key={h}>{h}</li>))}
+                    <ul class="job-highlights">
+                      {job.highlights.map((h, idx) => (<li key={idx}>{h}</li>))}
                     </ul>
                   ) : null}
                 </article>
@@ -291,15 +334,42 @@ const jsonLd = {
             </div>
           </section>
 
+          <!-- Educations -->
+          <section class="card avoid-break print-only mt-3 print-only" style="display:none">
+            <h2 class="caps mb-1">Education</h2>
+            <div>
+              {educationData.map(e => (
+                <div key={e.institution} class="edu-row">
+                    <h3 class="m-0">{e.institution} <span class="muted text-xs">• {e.formattedDate}</span> <span class="muted text-xs">• {e.area}</h3>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <!-- Projects -->
           {projectData.length ? (
-            <section class="card avoid-break" style="margin-top:16px">
-              <h2 class="caps">Projects</h2>
-              <div style="margin-top:12px">
+            <section class="card avoid-break mt-3">
+              <h2 class="caps mb-1">Projects</h2>
+              <div>
                 {projectData.map(p => (
-                  <div key={p.name} style="margin-bottom:10px">
-                    <div style="font-weight:600">{p.name} <span class="muted" style="font-weight:400">• {p.formattedDate}</span></div>
-                    {p.summary ? (<div class="muted" style="margin-top:6px">{p.summary}</div>) : null}
+                  <div key={p.name} class="project-row">
+                    <h3 class="m-0">{p.name} <span class="muted text-xs">• {p.formattedDate}</span></h3>
+                    {p.summary ? (<div class="muted text-sm">{p.summary}</div>) : null}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          <!-- Volunteer -->
+          {volunteerData.length ? (
+            <section class="card avoid-break mt-3">
+              <h2 class="caps mb-1">Volunteer</h2>
+              <div>
+                {volunteerData.map(v => (
+                  <div key={v.organization} class="vol-row">
+                    <h3 class="m-0">{v.position || v.organization} <span class="muted text-xs">• {v.formattedDate}</span></h3>
+                    {v.summary ? (<div class="muted text-sm">{v.summary}</div>) : null}
                   </div>
                 ))}
               </div>
@@ -307,28 +377,27 @@ const jsonLd = {
           ) : null}
 
         </main>
-
       </div>
 
-      <div style="margin-top:18px;display:flex;justify-content:center;gap:12px" class="print-hidden">
-        <button id="printBtn" class="print-btn" type="button" aria-label="Print resume">Print / Save PDF</button>
-        <a href="#" id="downloadJson" class="print-btn" style="background:#1f2937;text-decoration:none">Download JSON</a>
+      <div class="controls print-hidden">
+        <button id="printBtn" class="btn" type="button" onclick="window.print()">Print / Save PDF</button>
+        <a id="downloadJson" class="btn secondary" style="text-decoration:none">Download JSON</a>
       </div>
-
     </div>
 
-    <script>
-      // Use event listeners rather than inline handlers
+    <script type="module">
+      // client-side helpers — safe because data is serialized server-side above
+      const RESUME = JSON.parse({JSON.stringify(__RESUME_FOR_CLIENT)});
+
       document.getElementById('printBtn')?.addEventListener('click', () => window.print());
 
-      // offer the JSON resume file as a download client-side
       const downloadBtn = document.getElementById('downloadJson');
       if (downloadBtn) {
-        const data = JSON.stringify({ basics: basics || {}, work: work || [], education: education || [], skills: skills || [], projects: projects || [] }, null, 2);
+        const data = JSON.stringify(RESUME, null, 2);
         const blob = new Blob([data], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         downloadBtn.setAttribute('href', url);
-        downloadBtn.setAttribute('download', (basics.name || 'resume').toLowerCase().replace(/\s+/g,'-') + '.json');
+        downloadBtn.setAttribute('download', (RESUME.basics.name || 'resume').toLowerCase().replace(/\s+/g,'-') + '.json');
       }
     </script>
   </body>

@@ -10,7 +10,8 @@
     "summary": "Développeur Full stack Typescript, VueJS, ReactJS.\nEx-Data Scientist passionné par l'analyse de données, le machine learning, et les nouvelles technologies en général.\n\nFier co-développeur d'Encadrement, l'extension qui vous aide dans votre recherche d'appart (https://encadrement-loyers.fr/)!\n\nMembre des pôles Organisation, Technique et Communauté de Data4Good.",
     "location": {
       "countryCode": "FR",
-      "address": "France"
+      "address": "France",
+      "city": "Nice"
     },
     "profiles": [
       {
@@ -87,15 +88,6 @@
       "location": "Région de Metz, France"
     },
     {
-      "name": "AIESEC",
-      "position": "Membre pôle événementiel",
-      "startDate": "2016-09-01",
-      "endDate": "2017-01-31",
-      "highlights": [],
-      "summary": "Membre de l'équipe organisatrice du Global Village 2017 de Télécom SudParis à Evry, événement accueillant plusieurs centaines de visiteurs pour découvrir les cultures des pays présents sur le campus, goûter les spécialités culinaires, assister à des spectacles et remise de prix.",
-      "url": "https://www.linkedin.com/company/aiesec/"
-    },
-    {
       "name": "efluid SAS",
       "position": "Stagiaire informatique",
       "startDate": "2016-06-01",
@@ -104,15 +96,6 @@
       "summary": "Développement de tests d’intégration automatisés en Java pour les processus TP \n- Etude des cas d’utilisation à tester \n- Recherche des processus à tester \n- Mise en œuvre des tests dans le cadre d’un composant permettant la réutilisation des contextes \n\nConception de tests d’intégration automatisés en Java pour les processus Batch \n- Etude du composant à utiliser en cours de mise au point \n- Mise en œuvre de la phase de préparation des contextes à tester sur le principe du composant TP \n- Mise en œuvre de l’exécution d’un premier test.",
       "url": "https://www.linkedin.com/company/efluid-sas/",
       "location": "Région de Metz, France"
-    },
-    {
-      "name": "AIESEC",
-      "position": "Chargé de recrutement international",
-      "startDate": "2015-09-01",
-      "endDate": "2016-06-30",
-      "highlights": [],
-      "summary": "AIESEC est la plus grande association étudiante au monde, présente dans 125 pays, 100 000 membres. C'est un réseau mondial de jeunes impactant le monde à travers des expériences de développement du leadership. \n\nThe Incoming Exchange (ICX) team goals are to contact local companies and sell the AIESEC product, recruit interns, help them along the way by finding them accommodation, opening a bank account, helping with the visa procedures and organizing social events.",
-      "url": "https://www.linkedin.com/company/aiesec/"
     }
   ],
   "volunteer": [
@@ -120,10 +103,18 @@
       "organization": "Data for Good",
       "position": "Data Scientist bénévole",
       "startDate": "2021-08-01",
-      "endDate": "2021-08-31",
+      "endDate": "",
       "summary": "- Membre du pôle technique: Définition des standards techniques et accompagnement des projets\n- Membre du pôle communauté: Animer la communauté de bénévole et développer l'antenne de Nice\n- Offseason sur l'industrialisation des projets Data For Good\n- Offseason et Saison 10: BechdelAI créer des outils et des études pour sensibiliser autour des enjeux de parité et d'inégalités dans le cinéma",
       "highlights": [],
       "url": "https://www.linkedin.com/company/10627994"
+    },
+    {
+      "organization": "AIESEC",
+      "position": "Chargé de recrutement international & Membre du pôle événementiel.",
+      "startDate": "2015-09-01",
+      "endDate": "2017-01-31",
+      "summary": "Membre de l'équipe organisatrice du Global Village 2017 de Télécom SudParis à Evry, événement accueillant plusieurs centaines de visiteurs pour découvrir les cultures des pays présents sur le campus, goûter les spécialités culinaires, assister à des spectacles et remise de prix. \nThe Incoming Exchange (ICX) team goals are to contact local companies and sell the AIESEC product, recruit interns, help them along the way by finding them accommodation, opening a bank account, helping with the visa procedures and organizing social events",
+      "url": "https://www.linkedin.com/company/aiesec/"
     }
   ],
   "education": [
@@ -349,9 +340,9 @@
     {
       "name": "Encadrement loyers",
       "startDate": "2019-09-01",
-      "summary": "Extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers.",
+      "summary": "Extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers. Travail en conj",
       "url": "https://www.encadrement-loyers.fr",
-      "endDate": "2026-09-30"
+      "endDate": ""
     },
     {
       "name": "Brevity",
