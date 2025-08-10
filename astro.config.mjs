@@ -9,6 +9,8 @@ import { manifest } from './src/utils/manifest';
 
 import tailwindcss from '@tailwindcss/vite';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://thomas.legrand.sh',
@@ -22,19 +24,14 @@ export default defineConfig({
       wrap: true,
     },
   },
-  integrations: [
-    mdx({
-      syntaxHighlight: 'shiki',
-      shikiConfig: {
-        theme: 'material-theme-palenight',
-        wrap: true,
-      },
-      drafts: true,
-    }),
-    Compress(),
-    sitemap(),
-    robotsTxt(),
-  ],
+  integrations: [mdx({
+    syntaxHighlight: 'shiki',
+    shikiConfig: {
+      theme: 'material-theme-palenight',
+      wrap: true,
+    },
+    drafts: true,
+  }), Compress(), sitemap(), robotsTxt(), react()],
   vite: {
     plugins: [VitePWA({
       registerType: 'autoUpdate',
