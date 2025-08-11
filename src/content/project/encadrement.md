@@ -3,7 +3,7 @@ title: 'Encadrement-loyers.fr'
 pubDate: '2022-09-15'
 github: 'https://github.com/aymericdo/loyer-paris-be'
 url: 'https://www.encadrement-loyers.fr'
-heroImage: '/thumbnails/encadrement.jpeg'
+heroImage: '/thumbnails/encadrement.webp'
 categories: ['Housing']
 tags: ['Javascript', 'Typescript', 'Express', 'Vue', 'Encadrement']
 authors: ['Thomas Legrand', 'Aymeric Dominique']

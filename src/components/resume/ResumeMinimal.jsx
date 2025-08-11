@@ -98,7 +98,7 @@ const ResumeMinimal = () => {
   // Expose a safe, serialized version for client-side scripts (download button)
   const resumeForClient = JSON.stringify({ basics: basics || {}, work: work || [], education: education || [], skills: normalizedSkills || [], projects: projectData || [], volunteer: volunteerData || [] });
 
-  
+
 
   const handlePrint = () => {
     window.print();
@@ -120,10 +120,10 @@ const ResumeMinimal = () => {
   return (
     <div className="container mx-auto px-5">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      
+
       <div className="grid gap-5 md:grid-cols-[280px_1fr] md:gap-5 lg:gap-8" role="main">
         {/* Sidebar */}
-        <aside className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm print:hidden break-inside-avoid">
+        <aside className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm print:border-0 print:shadow-none print:hidden break-inside-avoid">
           <div className="hero flex gap-4 items-center">
             <div className="meta flex-1">
               <div className="flex">
@@ -133,9 +133,9 @@ const ResumeMinimal = () => {
                 </div>
                 {config.author?.avatar ? (
                   <div className="avatar w-21 h-21 rounded-lg overflow-hidden flex-shrink-0 ml-4">
-                    <img 
-                      src={config.author.avatar} 
-                      alt={config.author.name || 'avatar'} 
+                    <img
+                      src={config.author.avatar}
+                      alt={config.author.name || 'avatar'}
                       className="w-full h-full object-cover"
                       width={160}
                       height={160}
@@ -153,8 +153,8 @@ const ResumeMinimal = () => {
             <h2 id="skills-heading" className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Skills</h2>
             <div className="mt-2">
               {techSkills.length ? techSkills.map(s => (
-                <span 
-                  key={s.name} 
+                <span
+                  key={s.name}
                   className="inline-block px-2.5 py-1.5 rounded-full text-xs mr-1.5 mb-1 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-900/30 text-purple-700 dark:text-purple-300"
                 >
                   {s.name}{s.level ? ` • ${s.level}` : ''}
@@ -167,8 +167,8 @@ const ResumeMinimal = () => {
                 <h3 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Other</h3>
                 <div className="mt-1.5">
                   {otherSkills.map(s => (
-                    <span 
-                      key={s.name} 
+                    <span
+                      key={s.name}
                       className="inline-block px-2.5 py-1.5 rounded-full text-xs mr-1.5 mb-1 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-900/30 text-purple-700 dark:text-purple-300"
                     >
                       {s.name}
@@ -213,36 +213,37 @@ const ResumeMinimal = () => {
         {/* Main column */}
         <main>
           {/* Compact contact header for print / small screens */}
-          <header className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm hidden print:block break-inside-avoid -mt-3">
-            <div className="flex justify-between">
-              <div>
-                <h1 className="m-0 text-lg font-bold">{basics.name}</h1>
-                <div className="text-gray-500 dark:text-gray-400 text-sm">{basics.label}</div>
-                <div className="text-gray-500 dark:text-gray-400 text-xs">{basics.email} {basics.phone ? `• ${basics.phone}` : ''}</div>
+          <header className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm hidden print:block print:border-0 print:shadow-none break-inside-avoid -mt-3">
+            <div className="grid grid-cols-12 items-start">
+              <div className='col-span-9'>
+                <h1 className="m-0 text-lg font-bold">{basics.name} <span className='text-gray-500 dark:text-gray-400 text-sm'>- {basics.label}</span></h1>
+                <div className="text-gray-500 dark:text-gray-400 text-sm mb-4">{basics.location.city} - {basics.email}</div>
+                <div className="text-gray-500 dark:text-gray-400 text-xs">{basics.summary}</div>
               </div>
-              {config.author?.avatar ? (
-                <div>
-                  <img 
-                    src={config.author.avatar} 
-                    alt={config.author.name || 'avatar'} 
-                    className="w-16 h-16 rounded-lg object-cover"
-                    width={64}
-                    height={64}
-                  />
-                </div>
-              ) : null}
+                {config.author?.avatar ? (
+                  <div className="col-span-3 flex justify-end">
+                    <img
+                      src={config.author.avatar}
+                      alt={config.author.name || 'avatar'}
+                      className="w-24 h-24 rounded-lg object-cover"
+                      width={80}
+                      height={80}
+                    />
+                  </div>
+                ) : null}
+
             </div>
           </header>
 
           {/* Experience */}
-          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-0 md:mt-0">
+          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-0 md:mt-0 print:border-0 print:shadow-none">
             <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Professional Experience</h2>
             <div>
               {workExperience.map(job => (
                 <article key={`${job.name}-${job.position}`} className="py-2.5 border-b border-dashed border-gray-200 dark:border-gray-800 last:border-0 last:pb-0 break-inside-avoid">
                   <div className="job-head flex justify-between gap-3">
                     <div>
-                      <h3 className="font-semibold text-base">{job.position}</h3>
+                      <h3 className="font-semibold text-sm">{job.position}</h3>
                       <div className="text-gray-500 dark:text-gray-400 text-sm">{job.name} {job.location ? `• ${job.location}` : ''}</div>
                     </div>
                     <div className="job-dates text-right min-w-[120px] text-gray-500 dark:text-gray-400 text-sm">
@@ -251,7 +252,7 @@ const ResumeMinimal = () => {
                     </div>
                   </div>
 
-                  <div className="job-summary mt-2 text-gray-500 dark:text-gray-400 text-sm">
+                  <div className="job-summary mt-2 text-gray-500 dark:text-gray-400 text-sm print:text-xs text-justify">
                     {job.summary?.split("\n").map((line, index) => (
                       <Fragment key={index}>
                         {line}
@@ -271,14 +272,14 @@ const ResumeMinimal = () => {
           </section>
 
           {/* Educations */}
-          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 hidden print:block break-inside-avoid">
+          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 hidden print:block print:border-0 print:shadow-none break-inside-avoid">
             <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Education</h2>
             <div>
               {educationData.map(e => (
                 <div key={e.institution} className="edu-row">
                   <h3 className="m-0 text-sm">
-                    {e.institution} 
-                    <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {e.formattedDate}</span> 
+                    {e.institution}
+                    <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {e.formattedDate}</span>
                     <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {e.area}</span>
                   </h3>
                 </div>
@@ -286,36 +287,34 @@ const ResumeMinimal = () => {
             </div>
           </section>
 
-          {/* Projects */}
-          {projectData.length ? (
-            <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 break-inside-avoid">
-              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Projects</h2>
+          {/* Volunteer */}
+          {volunteerData.length ? (
+            <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 break-inside-avoid print:border-0 print:shadow-none">
+              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Volunteer</h2>
               <div>
-                {projectData.map(p => (
-                  <div key={p.name} className="project-row mb-2.5">
+                {volunteerData.map(v => (
+                  <div key={v.organization} className="vol-row mb-2.5">
                     <h3 className="m-0 text-sm">
-                      {p.name} 
-                      <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {p.formattedDate}</span>
+                      {v.position} @ {v.organization}
+                      <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {v.formattedDate}</span>
                     </h3>
-                    {p.summary ? (<div className="text-gray-500 dark:text-gray-400 text-sm mt-1">{p.summary}</div>) : null}
+                    {v.summary ? (<div className="text-gray-500 dark:text-gray-400 text-sm print:text-xs mt-1 text-justify">{v.summary}</div>) : null}
                   </div>
                 ))}
               </div>
             </section>
           ) : null}
 
-          {/* Volunteer */}
-          {volunteerData.length ? (
-            <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 break-inside-avoid">
-              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Volunteer</h2>
+          {/* Projects */}
+          {projectData.length ? (
+            <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 print:border-0 print:shadow-none">
+              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Projects</h2>
               <div>
-                {volunteerData.map(v => (
-                  <div key={v.organization} className="vol-row mb-2.5">
-                    <h3 className="m-0 text-sm">
-                      {v.position || v.organization} 
-                      <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {v.formattedDate}</span>
+                {projectData.map(p => (
+                  <div key={p.name} className="break-inside-avoid">
+                    <h3 className="m-0 text-sm text-justify">
+                      {p.name}: <span className="text-gray-500 dark:text-gray-400 print:text-xs ml-1">{p.summary}</span>
                     </h3>
-                    {v.summary ? (<div className="text-gray-500 dark:text-gray-400 text-sm mt-1">{v.summary}</div>) : null}
                   </div>
                 ))}
               </div>
@@ -325,7 +324,7 @@ const ResumeMinimal = () => {
       </div>
 
       <div className="controls flex gap-2.5 justify-center mt-3.5 print:hidden">
-        <button 
+        <button
           className="bg-purple-600 text-white px-3 py-2 rounded-md border-0 cursor-pointer font-semibold hover:bg-purple-700 transition-colors"
           onClick={handlePrint}
         >

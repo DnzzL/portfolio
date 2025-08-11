@@ -5,16 +5,16 @@
       "url": "/"
     },
     {
-      "name": "About",
-      "url": "/about"
+      "name": "Resume",
+      "url": "/resume"
     },
     {
       "name": "Projects",
       "url": "/projects"
     },
     {
-      "name": "Resume",
-      "url": "/resume"
+      "name": "Blog",
+      "url": "/blog"
     },
     {
       "name": "Tags",

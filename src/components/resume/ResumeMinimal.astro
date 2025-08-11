@@ -346,21 +346,6 @@ const __RESUME_FOR_CLIENT = JSON.stringify({ basics: basics || {}, work: work ||
             </div>
           </section>
 
-          <!-- Projects -->
-          {projectData.length ? (
-            <section class="card avoid-break mt-3">
-              <h2 class="caps mb-1">Projects</h2>
-              <div>
-                {projectData.map(p => (
-                  <div key={p.name} class="project-row">
-                    <h3 class="m-0">{p.name} <span class="muted text-xs">• {p.formattedDate}</span></h3>
-                    {p.summary ? (<div class="muted text-sm">{p.summary}</div>) : null}
-                  </div>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
           <!-- Volunteer -->
           {volunteerData.length ? (
             <section class="card avoid-break mt-3">
@@ -370,6 +355,21 @@ const __RESUME_FOR_CLIENT = JSON.stringify({ basics: basics || {}, work: work ||
                   <div key={v.organization} class="vol-row">
                     <h3 class="m-0">{v.position || v.organization} <span class="muted text-xs">• {v.formattedDate}</span></h3>
                     {v.summary ? (<div class="muted text-sm">{v.summary}</div>) : null}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          <!-- Projects -->
+          {projectData.length ? (
+            <section class="card avoid-break mt-3">
+              <h2 class="caps mb-1">Projects</h2>
+              <div>
+                {projectData.map(p => (
+                  <div key={p.name} class="project-row">
+                    <h3 class="m-0">{p.name} <span class="muted text-xs">• {p.formattedDate}</span></h3>
+                    {p.summary ? (<div class="muted text-sm">{p.summary}</div>) : null}
                   </div>
                 ))}
               </div>
