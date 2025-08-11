@@ -9,10 +9,10 @@ const { basics = {}, work = [], education = [], skills = [], projects = [], volu
 
 // Robust formatter: returns "Present" when no date is supplied
 const formatDate = (dateString) => {
-  if (!dateString) return 'Present';
+  if (!dateString) return 'Présent';
   try {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date);
+    return new Intl.DateTimeFormat('fr', { month: 'short', year: 'numeric' }).format(date);
   } catch (e) {
     return dateString;
   }
@@ -33,10 +33,20 @@ const calculateDuration = (startDate, endDate) => {
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
 
-  if (years === 0 && months === 0) return '0mo';
-  if (years === 0) return `${months}mo`;
-  if (months === 0) return `${years}y`;
-  return `${years}y ${months}mo`;
+  if (years === 0 && months === 0) return '0 mois';
+
+  let result = '';
+  if (years > 0) {
+    result += `${years} an${years > 1 ? 's' : ''}`;
+  }
+  if (months > 0) {
+    if (result !== '') {
+      result += ' et ';
+    }
+    result += `${months} mois`;
+  }
+
+  return result;
 };
 
 // Normalize skills: JSON Resume "skills" might be array of objects or strings
@@ -150,7 +160,7 @@ const ResumeMinimal = () => {
           <hr className="my-3 border-gray-200 dark:border-gray-800" />
 
           <section aria-labelledby="skills-heading">
-            <h2 id="skills-heading" className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Skills</h2>
+            <h2 id="skills-heading" className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Compétences</h2>
             <div className="mt-2">
               {techSkills.length ? techSkills.map(s => (
                 <span
@@ -164,7 +174,7 @@ const ResumeMinimal = () => {
 
             {otherSkills.length > 0 && (
               <div className="mt-2.5">
-                <h3 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Other</h3>
+                <h3 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Autres</h3>
                 <div className="mt-1.5">
                   {otherSkills.map(s => (
                     <span
@@ -182,7 +192,7 @@ const ResumeMinimal = () => {
           <hr className="my-3 border-gray-200 dark:border-gray-800" />
 
           <section aria-labelledby="edu-heading">
-            <h2 id="edu-heading" className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Education</h2>
+            <h2 id="edu-heading" className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Formations</h2>
             <div className="mt-2">
               {educationData.length ? educationData.map(edu => (
                 <div key={edu.institution} className="mb-1.5">
@@ -216,28 +226,27 @@ const ResumeMinimal = () => {
           <header className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm hidden print:block print:border-0 print:shadow-none break-inside-avoid -mt-3">
             <div className="grid grid-cols-12 items-start">
               <div className='col-span-9'>
-                <h1 className="m-0 text-lg font-bold">{basics.name} <span className='text-gray-500 dark:text-gray-400 text-sm'>- {basics.label}</span></h1>
-                <div className="text-gray-500 dark:text-gray-400 text-sm mb-4">{basics.location.city} - {basics.email}</div>
+                <h1 className="m-0 text-lg font-bold">{basics.name} <span>- {basics.label}</span></h1>
+                <div className="text-gray-500 dark:text-gray-400 text-sm mb-2">{basics.location.city} - {basics.email}</div>
                 <div className="text-gray-500 dark:text-gray-400 text-xs">{basics.summary}</div>
               </div>
-                {config.author?.avatar ? (
-                  <div className="col-span-3 flex justify-end">
-                    <img
-                      src={config.author.avatar}
-                      alt={config.author.name || 'avatar'}
-                      className="w-24 h-24 rounded-lg object-cover"
-                      width={80}
-                      height={80}
-                    />
-                  </div>
-                ) : null}
-
+              {config.author?.avatar ? (
+                <div className="col-span-3 flex justify-end">
+                  <img
+                    src={config.author.avatar}
+                    alt={config.author.name || 'avatar'}
+                    className="w-24 h-24 rounded-lg object-cover"
+                    width={80}
+                    height={80}
+                  />
+                </div>
+              ) : null}
             </div>
           </header>
 
           {/* Experience */}
-          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-0 md:mt-0 print:border-0 print:shadow-none">
-            <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Professional Experience</h2>
+          <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm -mt-2 md:mt-0 print:border-0 print:shadow-none">
+            <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Expériences</h2>
             <div>
               {workExperience.map(job => (
                 <article key={`${job.name}-${job.position}`} className="py-2.5 border-b border-dashed border-gray-200 dark:border-gray-800 last:border-0 last:pb-0 break-inside-avoid">
@@ -273,7 +282,7 @@ const ResumeMinimal = () => {
 
           {/* Educations */}
           <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 hidden print:block print:border-0 print:shadow-none break-inside-avoid">
-            <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Education</h2>
+            <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Formations</h2>
             <div>
               {educationData.map(e => (
                 <div key={e.institution} className="edu-row">
@@ -290,7 +299,7 @@ const ResumeMinimal = () => {
           {/* Volunteer */}
           {volunteerData.length ? (
             <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 break-inside-avoid print:border-0 print:shadow-none">
-              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Volunteer</h2>
+              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Bénévolat</h2>
               <div>
                 {volunteerData.map(v => (
                   <div key={v.organization} className="vol-row mb-2.5">
@@ -298,7 +307,14 @@ const ResumeMinimal = () => {
                       {v.position} @ {v.organization}
                       <span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {v.formattedDate}</span>
                     </h3>
-                    {v.summary ? (<div className="text-gray-500 dark:text-gray-400 text-sm print:text-xs mt-1 text-justify">{v.summary}</div>) : null}
+                    <div className="mt-2 text-gray-500 dark:text-gray-400 text-sm print:text-xs text-justify">
+                      {v.summary?.split("\n").map((line, index) => (
+                        <Fragment key={index}>
+                          {line}
+                          <br />
+                        </Fragment>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -308,12 +324,12 @@ const ResumeMinimal = () => {
           {/* Projects */}
           {projectData.length ? (
             <section className="card bg-white dark:bg-gray-900 rounded-lg p-3.5 border border-gray-200 dark:border-gray-800 shadow-sm mt-3 print:-mt-2 print:border-0 print:shadow-none">
-              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Projects</h2>
+              <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400 mb-1">Projets</h2>
               <div>
                 {projectData.map(p => (
                   <div key={p.name} className="break-inside-avoid">
                     <h3 className="m-0 text-sm text-justify">
-                      {p.name}: <span className="text-gray-500 dark:text-gray-400 print:text-xs ml-1">{p.summary}</span>
+                      {p.name}<span className="text-gray-500 dark:text-gray-400 text-xs ml-1">• {p.formattedDate}</span>: <span className="text-gray-500 dark:text-gray-400 print:text-xs ml-1">{p.summary}</span>
                     </h3>
                   </div>
                 ))}
