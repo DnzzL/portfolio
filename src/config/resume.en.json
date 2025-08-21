@@ -2,12 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Thomas Legrand",
-    "label": "Ingénieur Logiciel IA",
+    "label": "AI Software Engineer",
     "image": "",
     "email": "legrand.thomas5@hotmail.fr",
     "phone": "",
     "url": "https://thomas.legrand.sh",
-    "summary": "Développeur Full Stack (TypeScript, Vue.js, React.js) et ancien Data Scientist (Python, SQL), passionné d’intelligence artificielle et des LLMs. Fort d’un parcours alliant analyse de données, machine learning et développement, j’accompagne la mise en œuvre et l’intégration de solutions IA innovantes dans les applications métier. Membre des pôles Organisation, Technique et Communauté de Data4Good.",
+    "summary": "Full Stack Developer (TypeScript, Vue.js, React.js) and former Data Scientist (Python, SQL), passionate about artificial intelligence and LLMs. With a background combining data analysis, machine learning, and development, I support the implementation and integration of innovative AI solutions in business applications. Member of the Organization, Technical, and Community poles at Data4Good.",
     "location": {
       "countryCode": "FR",
       "address": "France",
@@ -29,20 +29,20 @@
   "work": [
     {
       "name": "FREELANCEREPUBLIK",
-      "position": "Ingénieur logiciel Fullstack",
+      "position": "Fullstack Software Engineer",
       "startDate": "2023-01-09",
       "endDate": "",
       "highlights": [],
-      "summary": "- Développement et refactoring du back office de recrutement interne avec tests E2E Cypress\n- Développement d'une brique de synchronisation back office interne <> CRM\n- Développement d'une brique de synchronisation back office interne <> Outil de gestion de contrats\n- Conception et développement de microservices Deno 2 avec gestion de la charge via worker BullMQ\n- Conception et développement d'aide au recrutement Fiche de poste <> Candidats via IA\n- Développement d'un parsing de CV maison par IA\n- Co-création d'un SaaS de matching de candidats par IA\nTechnologies: Node, Vue, GraphQL, Typescript, BullMQ, Redis, LLM, Deno, Recherche vectorielle, n8n, Cypress, Jest, Hubspot, Gemini, OpenAI, MongoDB, Supabase, Postgres, Nuxt3",
+      "summary": "- Development and refactoring of internal recruitment back office with Cypress E2E tests\n- Development of a synchronization module between internal back office <> CRM\n- Development of a synchronization module between internal back office <> Contract management tool\n- Design and development of Deno 2 microservices with load management via BullMQ worker\n- Design and development of recruitment assistance Postings <> Candidates via AI\n- Development of in-house CV parsing by AI\n- Co-creation of an AI candidate matching SaaS\nTechnologies: Node, Vue, GraphQL, Typescript, BullMQ, Redis, LLM, Deno, Vector search, n8n, Cypress, Jest, Hubspot, Gemini, OpenAI, MongoDB, Supabase, Postgres, Nuxt3",
       "url": "https://www.linkedin.com/company/freelancerepublik/",
-      "location": "Nice, Provence-Alpes-Côte d’Azur, France"
+      "location": "Nice, Provence-Alpes-Côte d'Azur, France"
     },
     {
       "name": "Huvy",
-      "position": "Frontend Developer Freelance - 30 jours",
+      "position": "Frontend Developer Freelance - 30 days",
       "startDate": "2022-09-01",
       "endDate": "2023-01-01",
-      "summary": "MVP de l'application à partir d'une maquette. (Authentification, portail, upload photos, API détection mélanome, dashboard patient). Technologies: Next.js, React, React-Query, Tailwind, Django",
+      "summary": "MVP of the application from a mockup. (Authentication, portal, photo upload, melanoma detection API, patient dashboard). Technologies: Next.js, React, React-Query, Tailwind, Django",
       "url": "https://www.linkedin.com/company/huvy/posts/?feedView=all",
       "location": "Paris, Île-de-France, France"
     },
@@ -51,7 +51,7 @@
       "position": "Machine Learning Engineer",
       "startDate": "2020-05-01",
       "endDate": "2023-01-02",
-      "summary": "- Modélisation de la connaissance des élèves via Knowledge Tracing et recommandations pour de l'apprentissage personnalisé\n- Publication d'un article sur le premier projet de Machine Learning chez Ornikar\n- Modélisation du risque assurantiel des élèves de la conduite\n- Analytical Engineering: consolidation de la stack dbt, ajout de documentation, de tests unitaires et de data quality\n- Algorithme prédictif de la probabilité de succès au code de la route (+150k vues / mois)\n- Algorithme de Lead Scoring\n- Automatisation de pipelines d'inférence via DAG Airflow\n- Reconnaissance Optique de caractères (OCR) pour papiers administratifs\n- Déploiement de Cloud Run sur Google Cloud Platform via Terraform\nTechnologies: dbt, SQL, DVC, Python, Airflow, Docker, LightGBM, Scikit-learn, Bigquery, GCP, Terraform",
+      "summary": "- Student knowledge modeling via Knowledge Tracing and recommendations for personalized learning\n- Publication of an article on the first Machine Learning project at Ornikar\n- Modeling the insurance risk of driving school students\n- Analytical Engineering: consolidation of the dbt stack, addition of documentation, unit tests and data quality\n- Predictive algorithm for the probability of success in the theory test (+150k views / month)\n- Lead Scoring algorithm\n- Automation of inference pipelines via Airflow DAG\n- Optical Character Recognition (OCR) for administrative documents\n- Deployment of Cloud Run on Google Cloud Platform via Terraform\nTechnologies: dbt, SQL, DVC, Python, Airflow, Docker, LightGBM, Scikit-learn, Bigquery, GCP, Terraform",
       "url": "https://www.linkedin.com/company/ornikar/",
       "location": "Paris, Île-de-France, France"
     },
@@ -61,48 +61,48 @@
       "startDate": "2018-08-01",
       "endDate": "2020-04-30",
       "highlights": [],
-      "summary": "- Analyse de sentiment à partir de réseau de neurones pré-entraîné (+ 1000 requêtes/s)\n- Extraction de mots clés,  Reconnaissance d'entités\n- Clustering du flux d'information\n- Création de graphes de texte\n- Détection d'anomalies en temps-réel\n- Suggestion du meilleur moment pour publier\n- Rapport de tendances Instagram\n- Détection de logos dans les images\n- Graph de connaissances\nTechnologies: Python, NLP, spaCy, Scikit-learn,  Pytorch, Keras, Tensorflow, Docker, BigQuery, gRPC",
+      "summary": "- Sentiment analysis from pre-trained neural networks (+ 1000 requests/s)\n- Keyword extraction, Named Entity Recognition\n- Information stream clustering\n- Text graph creation\n- Real-time anomaly detection\n- Suggestion of the best time to publish\n- Instagram trend report\n- Logo detection in images\n- Knowledge graph\nTechnologies: Python, NLP, spaCy, Scikit-learn, Pytorch, Keras, Tensorflow, Docker, BigQuery, gRPC",
       "url": "https://www.linkedin.com/company/mention/",
       "location": "Paris, France"
     },
     {
       "name": "Mention",
-      "position": "Stagiaire Data Scientist",
+      "position": "Data Scientist Intern",
       "startDate": "2018-02-01",
       "endDate": "2018-08-01",
       "highlights": [],
-      "summary": "Travail avec les API Twitter, Facebook et Instagram. Travaux réalisés: Assignation automatique d'intérêts, suggestion d'heure de publication, mise en avant mentions pertinentes, amélioration du parsing de page webs.",
+      "summary": "Work with Twitter, Facebook and Instagram APIs. Completed projects: Automatic interest assignment, publication time suggestion, highlighting relevant mentions, improving web page parsing.",
       "url": "https://www.linkedin.com/company/mention/",
       "location": "Paris, France"
     },
     {
       "name": "efluid SAS",
-      "position": "Stagiaire en informatique",
+      "position": "Computer Science Intern",
       "startDate": "2017-06-01",
       "endDate": "2017-08-31",
       "highlights": [],
-      "summary": "Mise en place d'un outil d’indexation des documents de l’équipe de développement (format ADOC) avec moteur de recherche (lunr.js) avec indexation réalisée via NodeJs. Mise en place d'un outil de conversion de document ADOC en présentation Html. Automatisation via Maven",
+      "summary": "Implementation of a document indexing tool for the development team (ADOC format) with search engine (lunr.js) with indexing performed via NodeJs. Implementation of a tool to convert ADOC documents to Html presentation. Automation via Maven",
       "url": "https://www.linkedin.com/company/efluid-sas/",
-      "location": "Région de Metz, France"
+      "location": "Metz Region, France"
     },
     {
       "name": "efluid SAS",
-      "position": "Stagiaire informatique",
+      "position": "Computer Science Intern",
       "startDate": "2016-06-01",
       "endDate": "2016-08-31",
       "highlights": [],
-      "summary": "Développement de tests d’intégration automatisés en Java pour les processus TP avec JUnit.",
+      "summary": "Development of automated integration tests in Java for TP processes with JUnit.",
       "url": "https://www.linkedin.com/company/efluid-sas/",
-      "location": "Région de Metz, France"
+      "location": "Metz Region, France"
     }
   ],
   "volunteer": [
     {
       "organization": "Data for Good",
-      "position": "Organisation et Pôle Tech",
+      "position": "Organization and Tech Pole",
       "startDate": "2021-08-01",
       "endDate": "",
-      "summary": "Association +7500 membres avec saison d'une douzaine de projets par an. \n\n- Membre du pôle technique: Définition des standards techniques, accompagnement des projets, contribution à l'hébergement d'une stack souveraine et Open Source via notre infrastructure Ansible. \n- Membre du pôle communauté: Animer la communauté de bénévole et développer l'antenne de Nice\n - Offseason et Saison 10: BechdelAI créer des outils et des études pour sensibiliser autour des enjeux de parité et d'inégalités dans le cinéma",
+      "summary": "Association with +7500 members with a season of a dozen projects per year.\n\n- Technical pole member: Definition of technical standards, project support, contribution to hosting a sovereign and Open Source stack via our Ansible infrastructure.\n- Community pole member: Animating the volunteer community and developing the Nice branch\n- Off-season and Season 10: BechdelAI creating tools and studies to raise awareness of gender equality and inequality issues in cinema",
       "highlights": [],
       "url": "https://www.dataforgood.fr/"
     }
@@ -110,7 +110,7 @@
   "education": [
     {
       "institution": "Télécom SudParis",
-      "area": "Majeure Modélisations Statistiques et Applications",
+      "area": "Major in Statistical Modeling and Applications",
       "studyType": "",
       "startDate": "2015-01-01",
       "endDate": "2018-12-31",
@@ -128,7 +128,7 @@
     },
     {
       "institution": "Lycée Fabert",
-      "area": "PSI* : Physique Science de l'Ingénieur",
+      "area": "PSI* : Physics Engineering Science",
       "studyType": "",
       "startDate": "2013-01-01",
       "endDate": "2015-12-31",
@@ -180,7 +180,7 @@
     },
 
     {
-      "name": "Gestion de projet",
+      "name": "Project Management",
       "level": "",
       "keywords": []
     },
@@ -235,7 +235,7 @@
       "keywords": []
     },
     {
-      "name": "Recrutement",
+      "name": "Recruitment",
       "level": "",
       "keywords": []
     },
@@ -270,7 +270,7 @@
       "keywords": []
     },
     {
-      "name": "Intelligence artificielle",
+      "name": "Artificial Intelligence",
       "level": "",
       "keywords": []
     },
@@ -328,37 +328,37 @@
   "references": [],
   "projects": [
     {
-      "name": "Encadrement loyers",
+      "name": "Rent Control",
       "startDate": "2019-09-01",
-      "summary": "Co-créateur d'une extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers. Travail en collaboration avec plusieurs mairies françaises et fournisseur de données à la Fondation pour le Logement des Défavorisés pour son baromètre annuel.",
+      "summary": "Co-creator of a browser extension analyzing real estate listings to indicate whether the rent complies with rent control regulations. Work in collaboration with several French municipalities and data provider to the Foundation for Housing the Disadvantaged for its annual barometer.",
       "url": "https://www.encadrement-loyers.fr",
       "endDate": ""
     },
     {
       "name": "Brevity",
       "startDate": "2025-04-01",
-      "summary": "Application d'agglomération de news avec auto transcription et auto résumé pour limiter la surconsommation de contenu en NuxtJS et Vercel AI SDK.",
+      "summary": "News aggregation application with auto transcription and auto summary to limit overconsumption of content in NuxtJS and Vercel AI SDK.",
       "url": "https://github.com/DnzzL/brevity",
       "endDate": "2025-05-01"
     },
     {
       "name": "Myditate",
       "startDate": "2025-01-01",
-      "summary": "Application de méditation générée par IA, avec Text To Speech en NuxtJS et Vercel AI SDK.",
+      "summary": "AI-generated meditation application, with Text To Speech in NuxtJS and Vercel AI SDK.",
       "url": "https://github.com/dnzzl/myditate",
       "endDate": "2025-03-01"
     },
     {
       "name": "Molkky",
       "startDate": "2020-04-01",
-      "summary": "PWA en React pour le suivi d'une partie de Molkky avec l’historique des derniers lancers et annulation d'une mauvaise entrée.",
+      "summary": "React PWA for tracking a Molkky game with history of last throws and cancellation of incorrect entries.",
       "url": "https://www.github.com/DnzzL/molkky",
       "endDate": "2020-04-22"
     },
     {
       "name": "Velibetter",
       "startDate": "2020-01-30",
-      "summary": "PWA en Angular alternative à l'app officielle Velib permet de consulter le nombre de vélos et places disponibles aux stations Velib les plus proches de soi grâce à des séries temporelles. Utilisation de l’accéléromètre pour effectuer un guidage.",
+      "summary": "Angular PWA alternative to the official Velib app that allows you to check the number of bikes and available spaces at the nearest Velib stations using time series. Uses accelerometer for guidance.",
       "url": "https://github.com/aymericdo/velibetter",
       "endDate": "2020-04-04"
     }

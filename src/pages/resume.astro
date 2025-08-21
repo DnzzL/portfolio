@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/Base.astro';
 import ResumeMinimal from '../components/resume/ResumeMinimal.jsx';
+
 ---
 
 <BaseLayout title="Resume - Thomas Legrand" minimalist>
   <main class="min-h-screen bg-white dark:bg-gray-900">
-    <ResumeMinimal />
+    <ResumeMinimal client:load />
   </main>
 </BaseLayout>
