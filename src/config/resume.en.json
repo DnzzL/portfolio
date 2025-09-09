@@ -335,6 +335,13 @@
       "endDate": ""
     },
     {
+      "name": "Allobobo",
+      "startDate": "2025-07-01",
+      "summary": "RAG chatbot for health questions based only on reliable sources (HAS) vectorized in Qdrant. Web interface in React / Hono and Mistral via Vercel AI SDK.",
+      "url": "https://allobobo.legrand.sh",
+      "endDate": "2025-07-31"
+    },
+    {
       "name": "Brevity",
       "startDate": "2025-04-01",
       "summary": "News aggregation application with auto transcription and auto summary to limit overconsumption of content in NuxtJS and Vercel AI SDK.",
@@ -347,6 +354,13 @@
       "summary": "AI-generated meditation application, with Text To Speech in NuxtJS and Vercel AI SDK.",
       "url": "https://github.com/dnzzl/myditate",
       "endDate": "2025-03-01"
+    },
+    {
+      "name": "DishNow",
+      "startDate": "2024-01-01",
+      "summary": "Recipe saving social network powered by AI and news feed with dish sharing, likes, and comments. Pocketbase, and several rewrites in NuxtJS, HTMX and Astro, React/Hono.",
+      "url": "https://github.com/dnzzl/dishnow",
+      "endDate": "2024-10-01"
     },
     {
       "name": "Molkky",
