@@ -328,6 +328,13 @@
   "references": [],
   "projects": [
     {
+      "name": "Site DataForGood",
+      "startDate": "2025-01-01",
+      "summary": "Co-développeur de la refonte totale du site en NextJS connecté à un CMS (Strapi) hébergé sur notre infrastructure via Ansible",
+      "url": "https://www.dataforgood.fr",
+      "endDate": ""
+    },
+    {
       "name": "Encadrement loyers",
       "startDate": "2019-09-01",
       "summary": "Co-créateur d'une extension navigateur analysant les annonces immobilières pour indiquer si le loyer est conforme à l'encadrement des loyers. Travail en collaboration avec plusieurs mairies françaises et fournisseur de données à la Fondation pour le Logement des Défavorisés pour son baromètre annuel.",

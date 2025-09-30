@@ -328,6 +328,13 @@
   "references": [],
   "projects": [
     {
+      "name": "DataForGood website",
+      "startDate": "2025-01-01",
+      "summary": "Co-developer of the total site refactoring in NextJS connected to a CMS (Strapi) hosted on our infrastructure via Ansible",
+      "url": "https://www.dataforgood.fr",
+      "endDate": ""
+    },
+    {
       "name": "Rent Control",
       "startDate": "2019-09-01",
       "summary": "Co-creator of a browser extension analyzing real estate listings to indicate whether the rent complies with rent control regulations. Work in collaboration with several French municipalities and data provider to the Foundation for Housing the Disadvantaged for its annual barometer.",
