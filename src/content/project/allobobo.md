@@ -9,6 +9,8 @@ authors: ['Thomas Legrand']
 
 A Retrieval-Augmented Generation (RAG) chatbot for French health data from Haute Autorité de Santé (HAS). Provides intelligent responses based on processed health data using embeddings and semantic search.
 
+![allobobo](/project-images/allobobo/allobobo.gif)
+
 ## 🚀 Key Features
 
 - **🤖 RAG Chatbot**: Context-aware AI responses using Mistral LLM
