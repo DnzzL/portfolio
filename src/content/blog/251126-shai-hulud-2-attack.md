@@ -29,7 +29,7 @@ When I investigated my personal GitHub account, I found new public repositories 
 The Shai Hulud 2 attack, discovered in late November 2025, was a sophisticated supply chain attack that compromised over 600 npm packages. The attackers used malicious preinstall scripts that:
 
 1. Stole GitHub tokens and credentials
-2. Created malicious GitHub workflows 
+2. Created malicious GitHub workflows
 3. Uploaded stolen data to other victims' repositories
 4. Deleted repository history and created fake "init" commits
 
@@ -66,6 +66,7 @@ I discovered [AikidoSec/safe-chain](https://github.com/AikidoSec/safe-chain) as 
 - Integrates with CI/CD pipelines
 
 Installation is simple:
+
 ```bash
 npm install -g @aikidosec/safe-chain
 safe-chain setup
@@ -82,6 +83,23 @@ Some thoughts:
 3. **Implement dependency pinning** and SBOM management
 4. **Monitor outbound network access** from build systems
 5. **Regular security audits** of dependencies and build processes
+
+## Recovery Process
+
+After the initial panic, I had to figure out how to recover my repositories. Unfortunately, GitHub doesn't offer a built-in "restore old commit state" beyond what Git itself retains.
+
+If the repository hasn't been deleted but lost files (or pushed an overwrite, malicious commit, etc.), here's what you need to know:
+
+- **If the commits still exist in Git history/branches**, you might revert to a previous commit (locally or via GitHub) to restore files
+- **If history was rewritten** (force-push, history rewriting, etc.), which is the case here — GitHub can't help you recover what Git itself doesn't retain
+
+My recovery steps:
+
+1. **Cleaned my local environment** - I ran `npkill -D` globally to ensure no malicious code remained on my computer
+2. **Checked local Git history** - Fortunately, I had local copies with the original commit history intact for some repositories
+3. **Force-pushed to restore** - I used `git push --all origin --force` to overwrite the malicious state with my clean local repositories
+
+This worked because I had local copies. Without them, the repositories would have been gone forever.
 
 ## Moving Forward
 
