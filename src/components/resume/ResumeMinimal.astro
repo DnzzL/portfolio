@@ -387,7 +387,7 @@ const __RESUME_FOR_CLIENT = JSON.stringify({ basics: basics || {}, work: work ||
 
     <script type="module">
       // client-side helpers — safe because data is serialized server-side above
-      const RESUME = JSON.parse({JSON.stringify(__RESUME_FOR_CLIENT)});
+      const RESUME = JSON.parse(__RESUME_FOR_CLIENT__);
 
       document.getElementById('printBtn')?.addEventListener('click', () => window.print());
 
