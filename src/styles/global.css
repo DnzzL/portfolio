@@ -1,2 +1,133 @@
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+:root {
+  --color-text-body: 55 65 81;
+  --color-text-heading: 31 41 55;
+  --color-text-muted: 107 114 128;
+  --color-text-link: 37 99 235;
+  --color-text-link-hover: 29 78 216;
+  --color-code-bg: 248 250 252;
+  --color-code-text: 30 41 59;
+  --color-pre-bg: 30 41 55;
+  --color-pre-text: 248 250 252;
+  --color-accent: 37 99 235;
+  --color-surface: 255 255 255;
+  --color-surface-secondary: 248 250 252;
+  --color-border: 226 232 240;
+}
+
+.dark {
+  --color-text-body: 203 213 225;
+  --color-text-heading: 248 250 252;
+  --color-text-muted: 148 163 184;
+  --color-text-link: 96 165 250;
+  --color-text-link-hover: 147 197 253;
+  --color-code-bg: 30 41 55;
+  --color-code-text: 226 232 240;
+  --color-pre-bg: 15 23 42;
+  --color-pre-text: 226 232 240;
+  --color-accent: 96 165 250;
+  --color-surface: 15 23 42;
+  --color-surface-secondary: 30 41 55;
+  --color-border: 51 65 85;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(156 163 175 / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(156 163 175 / 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99 / 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99 / 0.5);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styles */
+::selection {
+  background-color: rgb(59 130 246 / 0.2);
+  color: rgb(17 24 39);
+}
+
+.dark ::selection {
+  background-color: rgb(96 165 250 / 0.3);
+  color: rgb(243 244 246);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
+.dark *:focus-visible {
+  outline-color: rgb(96 165 250);
+}
+
+/* Enhanced link hover effects */
+a {
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* Gradient text animation */
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Glass morphism effect */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+}
+
+.dark .glass {
+  background-color: rgba(17, 24, 39, 0.75);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}

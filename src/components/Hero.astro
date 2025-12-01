@@ -6,43 +6,58 @@ import social from "@config/social";
 const socialItems = social.networks;
 ---
 
-<section class="bg-zinc-50 dark:bg-zinc-900 print:hidden">
-  <div class="mx-auto max-w-screen-lg px-4 py-0 sm:px-6 pb-6 sm:pb-12 lg:px-8">
-    <div class="flex items-start justify-between">
-      <div class="rounded-lg w-3/5">
-        <h1
-          class="text-lg md:text-2xl font-bold text-zinc-900 dark:text-white sm:text-3xl mb-0"
-        >
-          {config.author.name}
+<section class="relative bg-gradient-to-br from-white via-primary-50 to-accent-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-primary-950 print:hidden overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-radial from-primary-100/20 via-transparent to-transparent dark:from-primary-900/20"></div>
+  <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+  
+  <div class="relative mx-auto max-w-7xl px-6 py-32 sm:px-8 sm:py-40 lg:px-12 lg:py-48">
+    <div class="text-center">
+      <div class="animate-fade-in">
+        <h1 class="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-zinc-900 via-primary-600 to-accent-600 dark:from-white dark:via-primary-400 dark:to-accent-400 bg-clip-text text-transparent">
+          Thomas Legrand
         </h1>
-        <p class="mt-1.5 text-sm md:text-lg text-zinc-500 dark:text-zinc-400">
-          {config.author.bio}
-        </p>
-        <div class="flex space-x-5 pt-8 m-auto">
-          {
-            socialItems?.map((item) => (
-              <a href={item.url} target="_blank" rel="noopener noreferrer">
-                <figure>
-                  <Fragment set:html={item.svg} />
-                </figure>
-              </a>
-            ))
-          }
-        </div>
       </div>
-      <div class="rounded-lg">
-        <figure class="right-0">
-          <Image
-            class="rounded-lg w-24 md:w-32"
-            width={512}
-            height={512}
-            src={config.author.avatar}
-            alt={config.author.name}
-            decoding="async"
-            loading="lazy"
-          />
-        </figure>
+      
+      <div class="mt-8 animate-fade-in-up" style="animation-delay: 0.2s">
+        <p class="text-xl leading-8 text-zinc-600 dark:text-zinc-300 max-w-3xl mx-auto lg:text-2xl">
+          Building elegant solutions to complex problems. 
+          <span class="block mt-2 text-primary-600 dark:text-primary-400 font-medium">
+            Software engineer • Open source contributor • Technology enthusiast
+          </span>
+        </p>
+      </div>
+      
+      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4 animate-fade-in-up" style="animation-delay: 0.4s">
+        <a href="/blog" class="group relative inline-flex items-center justify-center rounded-xl bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-soft hover:shadow-medium hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-300 hover:scale-105 dark:bg-primary-500 dark:hover:bg-primary-600">
+          <span class="relative z-10">View my work</span>
+          <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-600 to-accent-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+        <a href="/resume" class="group inline-flex items-center text-base font-semibold leading-6 text-zinc-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300">
+          Resume 
+          <span class="ml-2 transform transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+        </a>
+      </div>
+      
+      <div class="mt-16 flex items-center justify-center gap-x-8 animate-fade-in" style="animation-delay: 0.6s">
+        {
+          socialItems?.map((item, index) => (
+            <a 
+              href={item.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="group relative text-zinc-400 hover:text-primary-600 dark:text-zinc-500 dark:hover:text-primary-400 transition-all duration-300 hover:scale-110"
+              style="animation-delay: `${0.8 + index * 0.1}s`"
+            >
+              <figure class="w-6 h-6">
+                <Fragment set:html={item.svg} />
+              </figure>
+              <div class="absolute -inset-2 rounded-full bg-primary-100 dark:bg-primary-900 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>
+  
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-800"></div>
 </section>

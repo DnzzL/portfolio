@@ -1,23 +1,14 @@
 ---
-import HeartIcon from '@components/icons/HeartIcon.astro';
 import config from '@config/config.json';
 const year = new Date().getFullYear();
 ---
 
-<footer class="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8  print:hidden">
-  <div class="border-t border-zinc-100 dark:border-zinc-900">
-    <p class="mb-8 mt-8 text-center text-xs/relaxed text-zinc-500 dark:text-zinc-400">
-      &copy; {year}. {config.site.title}
-      <span class="mt-2 block">
-        Made with
-        <HeartIcon />
-         in Nice, France. by
-        <a
-          href="https://thomas.legrand.sh"
-          class="text-zinc-700 decoration-dashed transition hover:text-zinc-700/75 dark:text-zinc-200 dark:hover:text-zinc-200/75"
-          >Thomas Legrand</a
-        >
-      </span>
-    </p>
+<footer class="bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 print:hidden">
+  <div class="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+    <div class="text-center">
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        &copy; {year} {config.site.title}. Built with passion in Nice, France.
+      </p>
+    </div>
   </div>
 </footer>

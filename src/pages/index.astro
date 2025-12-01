@@ -1,15 +1,193 @@
 ---
 import { getCollection } from "astro:content";
-import HomePagination from "@components/HomePagination.astro";
 import Base from "@layouts/Base.astro";
-import Posts from "@layouts/Posts.astro";
+import Hero from "@components/Hero.astro";
+import { Image } from 'astro:assets';
+import { slugify } from '@utils/slug';
+import FormattedDate from '@components/FormattedDate.astro';
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const projects = (await getCollection("project")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+type PostType = {
+  id: string;
+  slug: string;
+  body: string;
+  collection: string;
+  data: {
+    title: string;
+    description: string;
+    heroImage: string;
+    pubDate: Date;
+    categories: string[];
+    tags: string[];
+    autors: string[];
+  };
+};
 ---
 
 <Base>
-  <Posts posts={posts} />
-  <HomePagination />
+  <Hero />
+  
+  <!-- Featured Projects Section -->
+  <section class="relative bg-gradient-to-b from-neutral-50 to-white dark:from-zinc-900/50 dark:to-zinc-950 py-24 sm:py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%239C92AC" fill-opacity="0.02"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E')]"></div>
+    
+    <div class="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div class="mx-auto max-w-3xl text-center mb-20">
+        <div class="inline-flex items-center rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-800 dark:bg-primary-900/50 dark:text-primary-200 mb-6">
+          <span class="w-2 h-2 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
+          Featured Projects
+        </div>
+        <h2 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-5xl lg:text-6xl">
+          Recent Work
+        </h2>
+        <p class="mt-6 text-xl leading-8 text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">
+          A selection of projects I've worked on, from web applications to open source contributions.
+        </p>
+      </div>
+      
+      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
+        {
+          projects?.slice(0, 6).map((project: PostType, index) => (
+            <article class="group relative bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-fade-in-up" style={`animation-delay: ${index * 0.1}s`}>
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-accent-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <div class="relative">
+                <div class="flex items-center justify-between mb-4">
+                  <FormattedDate date={project.data.pubDate} />
+                  {project.data.categories.slice(0, 1).map((item) => (
+                    <a
+                      href={`/categories/${slugify(item)}`}
+                      class="relative z-10 rounded-full bg-primary-100 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-200 dark:bg-primary-900/50 dark:text-primary-300 dark:hover:bg-primary-900/70 transition-colors duration-200"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+                
+                <div class="group relative">
+                  <h3 class="text-xl font-bold leading-6 text-zinc-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+                    <a href={`/projects/${project.slug}/`} class="block">
+                      {project.data.title}
+                    </a>
+                  </h3>
+                  <p class="mt-3 line-clamp-3 text-base leading-6 text-zinc-600 dark:text-zinc-400">{project.data.description}</p>
+                </div>
+                
+                <div class="mt-6 flex items-center text-primary-600 dark:text-primary-400 font-medium group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors duration-200">
+                  <a href={`/projects/${project.slug}/`} class="flex items-center">
+                    View project
+                    <svg class="ml-2 w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      
+      <div class="mt-20 flex justify-center">
+        <a href="/projects" class="group inline-flex items-center px-8 py-4 text-base font-semibold text-zinc-900 dark:text-white border-2 border-zinc-200 dark:border-zinc-700 rounded-xl hover:border-primary-500 dark:hover:border-primary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 hover:shadow-soft">
+          View all projects
+          <svg class="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Posts Section -->
+  <section class="relative bg-gradient-to-b from-white to-neutral-50 dark:from-zinc-950 dark:to-zinc-900/50 py-24 sm:py-32">
+    <div class="absolute inset-0 bg-gradient-radial from-accent-100/10 via-transparent to-transparent dark:from-accent-900/10"></div>
+    
+    <div class="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div class="mx-auto max-w-3xl text-center mb-20">
+        <div class="inline-flex items-center rounded-full bg-accent-100 px-4 py-2 text-sm font-medium text-accent-800 dark:bg-accent-900/50 dark:text-accent-200 mb-6">
+          <span class="w-2 h-2 bg-accent-500 rounded-full mr-2 animate-pulse"></span>
+          Latest Articles
+        </div>
+        <h2 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-5xl lg:text-6xl">
+          From the Blog
+        </h2>
+        <p class="mt-6 text-xl leading-8 text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto">
+          Thoughts on software development, technology trends, and occasional tutorials.
+        </p>
+      </div>
+      
+      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
+        {
+          posts?.slice(0, 6).map((post: PostType, index) => (
+            <article class="group relative bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-fade-in-up" style={`animation-delay: ${index * 0.1}s`}>
+              {post.data.heroImage && (
+                <div class="relative h-48 overflow-hidden">
+                  <a href={`/blog/${post.slug}/`} class="block h-full">
+                    <Image
+                      class="h-full w-full object-cover transition duration-500 ease-in-out group-hover:scale-110"
+                      src={post.data.heroImage}
+                      alt={post.data.title}
+                      width={960}
+                      height={480}
+                      decoding="async"
+                      loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </a>
+                </div>
+              )}
+              
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <FormattedDate date={post.data.pubDate} />
+                  {post.data.categories.slice(0, 1).map((item) => (
+                    <a
+                      href={`/categories/${slugify(item)}`}
+                      class="relative z-10 rounded-full bg-accent-100 px-3 py-1.5 text-sm font-medium text-accent-700 hover:bg-accent-200 dark:bg-accent-900/50 dark:text-accent-300 dark:hover:bg-accent-900/70 transition-colors duration-200"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+                
+                <div class="group relative">
+                  <h3 class="text-xl font-bold leading-6 text-zinc-900 dark:text-white group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200">
+                    <a href={`/blog/${post.slug}/`} class="block">
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  <p class="mt-3 line-clamp-3 text-base leading-6 text-zinc-600 dark:text-zinc-400">{post.data.description}</p>
+                </div>
+                
+                <div class="mt-6 flex items-center text-accent-600 dark:text-accent-400 font-medium group-hover:text-accent-700 dark:group-hover:text-accent-300 transition-colors duration-200">
+                  <a href={`/blog/${post.slug}/`} class="flex items-center">
+                    Read article
+                    <svg class="ml-2 w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      
+      <div class="mt-20 flex justify-center">
+        <a href="/blog" class="group inline-flex items-center px-8 py-4 text-base font-semibold text-zinc-900 dark:text-white bg-gradient-to-r from-accent-500 to-primary-500 hover:from-accent-600 hover:to-primary-600 rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:scale-105">
+          View all articles
+          <svg class="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 </Base>
