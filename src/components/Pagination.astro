@@ -6,14 +6,14 @@ const { length, currentPage, firstUrl, prevUrl, nextUrl } = Astro.props;
 const paginationList = Array.from({ length }, (_, i) => i + 1);
 ---
 
-<nav class="mt-12">
-  <ol class="flex justify-center gap-3 text-xs font-medium">
+<nav class="mt-16">
+  <ol class="flex justify-center items-center gap-2 text-sm">
     {
       prevUrl ? (
         <li>
           <a
             href={prevUrl}
-            class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100  text-zinc-900 rtl:rotate-180 dark:text-white"
+            class="inline-flex h-10 w-10 items-center justify-center border border-[rgba(255,255,255,0.1)] text-[#718096] hover:border-[#d69e2e] hover:text-[#f7f7f5] transition-colors duration-200"
           >
             <span class="sr-only">Prev Page</span>
             <PrevIcon />
@@ -26,11 +26,13 @@ const paginationList = Array.from({ length }, (_, i) => i + 1);
         <li>
           <a
             href={`${firstUrl}${num == 1 ? '' : '' + num}`}
-            class={`block h-8 w-8 rounded border text-center leading-8 text-zinc-900 dark:text-white ${
-              currentPage == num ? 'border-indigo-600 bg-indigo-500 !text-white' : ''
+            class={`block h-10 w-10 border text-center leading-10 transition-colors duration-200 ${
+              currentPage == num 
+                ? 'border-[#d69e2e] bg-[rgba(214,158,46,0.1)] text-[#d69e2e]' 
+                : 'border-[rgba(255,255,255,0.1)] text-[#718096] hover:border-[#d69e2e] hover:text-[#f7f7f5]'
             }`}
           >
-            {num}
+            {String(num).padStart(2, '0')}
           </a>
         </li>
       ))
@@ -40,7 +42,7 @@ const paginationList = Array.from({ length }, (_, i) => i + 1);
         <li>
           <a
             href={nextUrl}
-            class="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-zinc-900 rtl:rotate-180 dark:text-white"
+            class="inline-flex h-10 w-10 items-center justify-center border border-[rgba(255,255,255,0.1)] text-[#718096] hover:border-[#d69e2e] hover:text-[#f7f7f5] transition-colors duration-200"
           >
             <span class="sr-only">Next Page</span>
             <NextIcon />

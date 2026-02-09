@@ -1,203 +1,164 @@
-# 🚀 EV0 Astro Theme - Blog Template
+# Thomas Legrand - Personal Portfolio
 
-EV0 Astro Theme is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript. It serves as a starting point for creating your personal portfolio website or showcasing your projects online. The template is open-source and released under the MIT license, meaning you are free to use, modify, and distribute it for personal or commercial purposes.
+A personal portfolio and blog built with Astro, featuring the **Industrial Elegance** design system. Built on top of the EV0 Astro Theme.
 
-<p align="center">
-  <img align="center" alt="EV0 Astro Theme" src="https://s3.amazonaws.com/gndx.dev/ev0-astro-theme.webp"/>
-</p>
+## Design System: Industrial Elegance
 
-<a href="https://astro.build"><img src="https://astro.badg.es/v2/built-with-astro/tiny.svg" alt="Built with Astro" width="120" height="20"></a>
+The site follows a distinctive "Industrial Elegance" design philosophy that combines technical precision with European sophistication.
 
-## 🔥 DEMOS
+### Philosophy
 
-- [EV0 Astro Theme - DEMO](https://ev0.gndx.io/)
-- [GNDX - My Personal Blog (ES)](https://gndx.dev)
+- **Dark-first**: Default dark mode with deep charcoal backgrounds
+- **Monospace typography**: JetBrains Mono for technical, code-like aesthetics
+- **Technical precision**: Grid layouts, sharp corners, utilitarian borders
+- **Amber accents**: French sophistication through strategic gold/amber highlights
+- **Content-first**: No decorative fluff, pure information hierarchy
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gndx/ev0-astro-theme#NODE_VERSION=18)
+### Color Palette
 
-## 🔥 Features
+| Token                | Value     | Usage                       |
+| -------------------- | --------- | --------------------------- |
+| `--charcoal`         | `#1a1a2e` | Primary background          |
+| `--charcoal-light`   | `#252540` | Secondary backgrounds       |
+| `--charcoal-lighter` | `#2d2d4a` | Tertiary surfaces           |
+| `--steel`            | `#4a5568` | Muted text, borders         |
+| `--steel-light`      | `#718096` | Secondary text              |
+| `--amber`            | `#d69e2e` | Primary accent, links hover |
+| `--amber-light`      | `#ecc94b` | Secondary accent            |
+| `--offwhite`         | `#f7f7f5` | Primary text                |
 
-- ✅ Minimal styling (Tailwind CSS)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Dark Mode
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-- ✅ View Transitions
-- ✅ PWA-ready
-- ✅ Fully responsive
-- ✅ Robots.txt & Humans.txt
-- ✅ TypeScript support
-- ✅ Syntax highlighting
-- ✅ YouTube Integration
-- ✅ CLI for adding new posts
+### Typography
 
-## ⚓ Lighthouse Score - PWA Ready
+- **Font**: JetBrains Mono (Google Fonts)
+- **Weights**: 400, 500, 600
+- **Style**: Monospace throughout for technical consistency
+- **Hierarchy**: Section numbering (01, 02, 03...), uppercase tracking for labels
 
-<p align="center">
-  <img align="center" alt="Lighthouse Score" src="https://s3.amazonaws.com/gndx.dev/EV0-astro-theme-lighthouse.webp"/>
-</p>
+### Layout Principles
 
-## 🚀 Getting Started
+1. **Grid-based**: 60px grid pattern background
+2. **Sharp corners**: No border-radius (utilitarian aesthetic)
+3. **Technical borders**: 1px borders with subtle opacity (`rgba(255,255,255,0.06)`)
+4. **Numbered sections**: Content organized with technical indexing (01, 02, 03...)
+5. **Terminal-inspired**: `$` and `~/` prefixes in hero section
 
-Clone this repository to your local machine using Git.
+### Components
 
-```scheme
-git clone https://github.com/gndx/ev0-astro-theme.git your-project-name
-```
+#### Cards
 
-| Command           | Action                                       |
-| :---------------- | :------------------------------------------- |
-| `npm install`     | Installs dependencies                        |
-| `npm run dev`     | Starts local dev server at `localhost:4321`  |
-| `npm run build`   | Build your production site to `./dist/`      |
-| `npm run preview` | Preview your build locally, before deploying |
-| `npm run youtube` | Fetches the Latest YouTube Channel Videos    |
-| `npm run newpost` | Generate a New Blogpost Markdown Entry       |
+- Background: `--charcoal-light` or `--bg-secondary`
+- Border: 1px solid `rgba(255,255,255,0.06)`
+- Hover: Border transitions to amber
+- No border-radius
 
-Edit the HTML files in the `src/pages` directory to add your projects, experiences, and personal information.
+#### Navigation
 
-## 📝 Configuration Blog
+- Fixed header with backdrop blur
+- `$` prefix before site title
+- Minimal links with hover color transition to amber
 
-To configure your blog, edit the `src/config/config.json` file. This file contains the following options:
+#### Buttons/Links
 
-```scheme
-{
-  "site": {
-    "title": "EV0 Astro Theme",
-    "base_url": "https://ev0.gndx.io",
-    "base_path": "/",
-    "favicon": "/favicon.webp",
-    "logo": "https://s3.amazonaws.com/gndx.dev/ev0-astro-logo.webp",
-    "lang": "en",
-    "description": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript.",
-    "pageSize": 6
-  },
-  "features": {
-    "youtube": true
-  },
-  "metadata": {
-    "meta_author": "Oscar Barajas @gndx",
-    "meta_description": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript."
-  },
-  "author": {
-    "name": "Oscar Barajas Tavares @gndx",
-    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.webp",
-    "bio": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript."
-  }
-}
-```
+- Border: 1px with low opacity white
+- Hover: Border and text transition to amber
+- Uppercase tracking for CTAs
 
-The menu is configured in the `src/config/menu.json` file. This file contains the following options:
-
-```scheme
-[
-  {
-    "name": "Home",
-    "url": "/"
-  },
-  {
-    "name": "Blog",
-    "url": "/blog"
-  },
-]
-```
-
-Social networks are configured in the `src/config/social.json` file. This file contains the following options:
-
-```scheme
-  {
-    "name": "Instagram",
-    "url": "https://instagram.com/gndx"
-    "svg": "...."
-  }
-```
-
-## 🎥 YouTube Integration
-
-To integrate your YouTube channel, you need to create a new file called `.env` in the root directory of your project. Then add the `CHANNEL_ID` and `API_KEY` to get the latest videos from your YouTube channel in `src/config/youtube.json`.
-
-```scheme
-npm run youtube
-```
-
-Your YouTube API is not used in production.
-
-Requires an API KEY for YouTube API V3 - [Google Console](https://console.cloud.google.com/)
-
-You can disable the youtube integration by modifying the `src/config/config.json`.
-
-```json
-  "features": {
-    "youtube": false
-  },
-```
-
-## 📝 Adding New Posts
-
-To add a new post, run the following command:
-
-```scheme
-npm run newpost
-```
-
-Follow the instructions and this will generate a new markdown file in the `src/content/blog` directory. Edit the file to add your post content.
-
-## 📂 Project Structure
+### File Structure
 
 ```
-/
-├── public/
-│   └── favicons/
-│   └── fonts/
-│   └── blog-placeholder.webp
-│   └── favicon.webp
-│   └── humans.txt
-├── scripts/
-│   └── youtube.cjs
-├── src/
-│   ├── components/
-│   ├── config/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-│   └── styles/
-│   └── env.d.ts
-└── package.json
-└── astro.config.mjs
-└── tailwind.config.js
-└── tsconfig.json
-└── .gitignore
+src/
+├── components/
+│   ├── Header.astro          # Fixed nav with monospace branding
+│   ├── Hero.astro            # Terminal-inspired hero section
+│   ├── Footer.astro          # Technical footer with echo command
+│   └── Pagination.astro      # Square pagination buttons
+├── layouts/
+│   ├── Base.astro            # Dark mode default, JetBrains Mono
+│   ├── BlogPost.astro        # Article layout with breadcrumb
+│   ├── Posts.astro           # Blog listing layout
+│   └── Projects.astro        # Project grid layout
+├── pages/
+│   ├── index.astro           # Homepage with numbered sections
+│   ├── blog/[...page].astro  # Blog listing
+│   ├── blog/[...slug].astro  # Blog posts
+│   ├── projects/[...page].astro # Projects listing
+│   ├── projects/[...slug].astro # Project detail
+│   ├── tags/index.astro      # Tags page
+│   ├── categories/index.astro # Categories page
+│   └── 404.astro             # Error page
+└── styles/
+    └── global.css            # Industrial Elegance design tokens
 ```
 
-## 💻 Contributing
+## Development
 
-Contributions to this project are welcome. If you find a bug or have a suggestion for improvement, please open an issue or submit a pull request.
+### Getting Started
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://gndx.io"><img src="https://avatars.githubusercontent.com/u/10554486?v=4?s=100" width="100px;" alt="Oscar Barajas Tavares"/><br /><sub><b>Oscar Barajas Tavares</b></sub></a><br /><a href="#doc-gndx" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://jhonachata.dev/"><img src="https://avatars.githubusercontent.com/u/7337141?v=4?s=100" width="100px;" alt="Jhon Achata Limachi"/><br /><sub><b>Jhon Achata Limachi</b></sub></a><br /><a href="#bug-dcyar" title="Bug reports">🐛</a> <a href="#ideas-dcyar" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://erasmoh.dev"><img src="https://avatars.githubusercontent.com/u/12125288?v=4?s=100" width="100px;" alt="Erasmo Hernández"/><br /><sub><b>Erasmo Hernández</b></sub></a><br /><a href="#bug-erasmoh" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://francisco-araujo.com"><img src="https://avatars.githubusercontent.com/u/49659840?v=4?s=100" width="100px;" alt="Francisco Araujo"/><br /><sub><b>Francisco Araujo</b></sub></a><br /><a href="#design-franciscoagx" title="Design">🎨</a> <a href="#bug-franciscoagx" title="Bug reports">🐛</a></td>
-    </tr>
-  </tbody>
-</table>
+```bash
+# Install dependencies
+npm install
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+# Start development server
+npm run dev
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+# Build for production
+npm run build
 
-## 📃 License
+# Preview production build
+npm run preview
+```
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+### Content Management
 
-## ☕ Support
+#### Adding Blog Posts
 
-If this project helped you learn something new, or if you're feeling particularly generous, you can buy me a coffee. It's greatly appreciated! 😊 [GitHub Sponsors](https://github.com/sponsors/gndx)
+Create a new markdown file in `src/content/blog/`:
+
+```markdown
+---
+title: 'Your Post Title'
+description: 'Brief description of the post'
+pubDate: '2025-01-15'
+categories: ['AI', 'Development']
+heroImage: '/thumbnails/your-image.webp'
+tags: ['tag1', 'tag2']
+---
+
+Your content here...
+```
+
+#### Adding Projects
+
+Create a new markdown file in `src/content/project/`:
+
+```markdown
+---
+title: 'Project Name'
+pubDate: '2025-01-15'
+heroImage: '/thumbnails/project.webp'
+categories: ['Webdev']
+tags: ['Vue', 'Nuxt', 'TypeScript']
+authors: ['Thomas Legrand']
+github: 'https://github.com/username/repo'
+url: 'https://project-url.com'
+---
+
+Description of the project...
+```
+
+## Technology Stack
+
+- **Framework**: Astro 5.x
+- **Styling**: Tailwind CSS 4.x
+- **Language**: TypeScript
+- **Typography**: JetBrains Mono (Google Fonts)
+- **Icons**: Custom SVG components
+
+## License
+
+MIT License - based on the EV0 Astro Theme.
+
+## Credits
+
+- Original theme: [EV0 Astro Theme](https://github.com/gndx/ev0-astro-theme) by Oscar Barajas
+- Design system: Industrial Elegance by Thomas Legrand
