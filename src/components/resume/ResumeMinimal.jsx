@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
-// Import config data
 import frenchResume from '../../config/resume.json';
 import englishResume from '../../config/resume.en.json';
 import config from '../../config/config.json';
@@ -19,7 +18,6 @@ const ResumeMinimal = () => {
     setResumeData(newResumeData);
   }, [chosenLanguage]);
 
-  // Robust formatter: returns "Present" when no date is supplied
   const formatDate = (dateString) => {
     if (!dateString) return chosenLanguage === 'fr' ? 'Présent' : 'Present';
     try {
@@ -30,38 +28,22 @@ const ResumeMinimal = () => {
     }
   };
 
-  // Exact months/years difference (no 30-day approximation)
   const calculateDuration = (startDate, endDate) => {
     if (!startDate) return '';
     const s = new Date(startDate);
     const e = endDate ? new Date(endDate) : new Date();
-
-    // Calculate total months between dates
     let totalMonths = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
-    // If day of month in end is earlier than start, subtract one month
     if (e.getDate() < s.getDate()) totalMonths -= 1;
     if (totalMonths < 0) totalMonths = 0;
-
     const years = Math.floor(totalMonths / 12);
     const months = totalMonths % 12;
-
-    if (years === 0 && months === 0) return '0 mois';
-
+    if (years === 0 && months === 0) return '';
     let result = '';
-    if (years > 0) {
-      result += `${years} an${years > 1 ? 's' : ''}`;
-    }
-    if (months > 0) {
-      if (result !== '') {
-        result += ' et ';
-      }
-      result += `${months} mois`;
-    }
-
-    return result;
+    if (years > 0) result += `${years}y`;
+    if (months > 0) result += `${months}m`;
+    return result ? `(${result})` : '';
   };
 
-  // Normalize skills: JSON Resume "skills" might be array of objects or strings
   const normalizeSkills = (skillsInput) => {
     if (!Array.isArray(skillsInput)) return [];
     return skillsInput
@@ -73,7 +55,7 @@ const ResumeMinimal = () => {
       .filter(Boolean);
   };
 
-  const { basics, work, education, skills, projects, volunteer } = useMemo(() => {
+  const { basics, work, education, skills, projects } = useMemo(() => {
     const data = resumeData || {};
     return {
       basics: data.basics || {},
@@ -81,70 +63,28 @@ const ResumeMinimal = () => {
       education: data.education || [],
       skills: data.skills || [],
       projects: data.projects || [],
-      volunteer: data.volunteer || [],
     };
   }, [resumeData]);
 
   const normalizedSkills = useMemo(() => normalizeSkills(skills), [skills]);
-  const mainSkills = [
-    'TypeScript',
-    'React.js',
-    'Vue.js',
-    'Node.js',
-    'LLM',
-    'Python',
-    'MongoDB',
-    'PostgreSQL',
-    'GraphQL',
-    'Docker',
-  ];
-  const techSkills = useMemo(() => normalizedSkills.filter((s) => mainSkills.includes(s.name)), [normalizedSkills]);
-  const otherSkills = useMemo(() => normalizedSkills.filter((s) => !mainSkills.includes(s.name)), [normalizedSkills]);
 
-  // Sort experiences: ongoing jobs (no endDate) first, then by startDate desc
-  const workExperience = useMemo(
-    () =>
-      (Array.isArray(work) ? work.slice() : [])
-        .sort((a, b) => {
-          const aOngoing = !a.endDate;
-          const bOngoing = !b.endDate;
-          if (aOngoing && !bOngoing) return -1;
-          if (bOngoing && !aOngoing) return 1;
-          return new Date(b.startDate || 0) - new Date(a.startDate || 0);
-        })
-        .map((job) => ({
-          ...job,
-          duration: calculateDuration(job.startDate, job.endDate),
-        })),
-    [work]
-  );
+  // Only top 4 most recent jobs for print
+  const workExperience = useMemo(() => {
+    const sorted = (Array.isArray(work) ? work.slice() : []).sort(
+      (a, b) => new Date(b.startDate || 0) - new Date(a.startDate || 0)
+    );
+    return sorted.slice(0, 4).map((job) => ({
+      ...job,
+      duration: calculateDuration(job.startDate, job.endDate),
+    }));
+  }, [work]);
 
-  const educationData = useMemo(
-    () =>
-      (Array.isArray(education) ? education : []).map((edu) => ({
-        ...edu,
-        formattedDate: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`,
-      })),
-    [education]
-  );
-
-  const projectData = useMemo(
-    () =>
-      (Array.isArray(projects) ? projects : []).map((project) => ({
-        ...project,
-        formattedDate: `${formatDate(project.startDate)} - ${formatDate(project.endDate)}`,
-      })),
-    [projects]
-  );
-
-  const volunteerData = useMemo(
-    () =>
-      (Array.isArray(volunteer) ? volunteer : []).map((v) => ({
-        ...v,
-        formattedDate: `${formatDate(v.startDate)} - ${formatDate(v.endDate)}`,
-      })),
-    [volunteer]
-  );
+  const educationData = useMemo(() => {
+    return (Array.isArray(education) ? education.slice(0, 2) : []).map((edu) => ({
+      ...edu,
+      formattedDate: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`,
+    }));
+  }, [education]);
 
   const linkedInProfile = useMemo(
     () => (basics.profiles ? basics.profiles.find((p) => /linkedin/i.test((p.network || '') + (p.url || ''))) : null),
@@ -155,26 +95,12 @@ const ResumeMinimal = () => {
     [basics.profiles]
   );
 
-  // Expose a safe, serialized version for client-side scripts (download button)
-  const resumeForClient = useMemo(
-    () =>
-      JSON.stringify({
-        basics: basics || {},
-        work: work || [],
-        education: education || [],
-        skills: normalizedSkills || [],
-        projects: projectData || [],
-        volunteer: volunteerData || [],
-      }),
-    [basics, work, education, normalizedSkills, projectData, volunteerData]
-  );
-
   const handlePrint = () => {
     window.print();
   };
 
   const handleDownload = () => {
-    const data = JSON.stringify(JSON.parse(resumeForClient), null, 2);
+    const data = JSON.stringify(resumeData, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -187,314 +113,354 @@ const ResumeMinimal = () => {
   };
 
   return (
-    <div className="container mx-auto px-5 -my-6">
-      <div className="mb-4">
-        <LanguageSwitcher onLanguageChange={(language) => setChosenLanguage(language)} />
-      </div>
+    <>
+      {/* Print Styles - Force backgrounds and colors */}
+      <style>{`
+        @media print {
+          @page {
+            margin: 0;
+            size: A4;
+          }
+          body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          .resume-print {
+            background: white !important;
+            color: #1a1a2e !important;
+            padding: 40px 50px !important;
+            min-height: 100vh;
+            box-sizing: border-box;
+          }
+          .resume-print * {
+            color: #1a1a2e !important;
+          }
+          .resume-print .print-header {
+            border-bottom: 2px solid #d69e2e !important;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+          }
+          .resume-print .print-name {
+            font-size: 28px !important;
+            font-weight: 600 !important;
+            margin-bottom: 4px;
+          }
+          .resume-print .print-title {
+            font-size: 14px !important;
+            color: #4a5568 !important;
+            margin-bottom: 8px;
+          }
+          .resume-print .print-contact {
+            font-size: 11px !important;
+            color: #718096 !important;
+          }
+          .resume-print .print-section-title {
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            margin-top: 18px;
+            color: #d69e2e !important;
+          }
+          .resume-print .print-job {
+            margin-bottom: 12px;
+          }
+          .resume-print .print-job-title {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            margin-bottom: 2px;
+          }
+          .resume-print .print-job-company {
+            font-size: 11px !important;
+            color: #4a5568 !important;
+            margin-bottom: 2px;
+          }
+          .resume-print .print-job-date {
+            font-size: 10px !important;
+            color: #718096 !important;
+            margin-bottom: 4px;
+          }
+          .resume-print .print-job-summary {
+            font-size: 10px !important;
+            line-height: 1.4 !important;
+            color: #4a5568 !important;
+          }
+          .resume-print .print-skill {
+            display: inline-block;
+            font-size: 10px !important;
+            margin-right: 12px;
+            margin-bottom: 4px;
+          }
+          .resume-print .print-edu {
+            font-size: 11px !important;
+            margin-bottom: 4px;
+          }
+          .resume-print .print-edu-school {
+            font-weight: 600 !important;
+          }
+          .resume-print .print-two-col {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+          }
+        }
+      `}</style>
 
-      {resumeData && (
-        <div className="grid gap-5 md:grid-cols-[280px_1fr] md:gap-5 lg:gap-8 print:-my-14" role="main">
-          {/* Sidebar */}
-          <aside className="card break-inside-avoid rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 print:hidden print:border-0 print:shadow-none">
-            <div className="hero flex items-center gap-4">
-              <div className="meta flex-1">
-                <div className="flex">
-                  <div className="flex flex-col">
-                    <h1 className="text-xl leading-tight font-bold tracking-tight">{basics.name}</h1>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{basics.label}</div>
-                  </div>
-                  {config.author?.avatar ? (
-                    <div className="avatar ml-4 h-21 w-21 flex-shrink-0 overflow-hidden rounded-lg">
-                      <img
-                        src={config.author.avatar}
-                        alt={config.author.name || 'avatar'}
-                        className="h-full w-full object-cover"
-                        width={160}
-                        height={160}
-                      />
+      <div className="container mx-auto">
+        {/* Header with language switcher */}
+        <div className="mb-8 flex items-center justify-between print:hidden">
+          <div>
+            <span className="mb-2 block text-xs tracking-[0.2em] text-[#4a5568] uppercase">~/resume</span>
+            <h1 className="text-3xl font-medium text-[#f7f7f5]">{basics.name}</h1>
+            <p className="mt-1 text-[#718096]">{basics.label}</p>
+          </div>
+          <LanguageSwitcher onLanguageChange={(language) => setChosenLanguage(language)} />
+        </div>
+
+        {resumeData && (
+          <>
+            {/* Screen Layout */}
+            <div className="grid gap-6 md:grid-cols-[280px_1fr] md:gap-8 print:hidden" role="main">
+              {/* Sidebar */}
+              <aside>
+                <div className="mb-6 border border-[rgba(255,255,255,0.06)] bg-[#252540] p-6">
+                  <div className="mb-4 flex items-start gap-4">
+                    <div className="flex-1">
+                      <h2 className="text-lg font-medium text-[#f7f7f5]">{basics.name}</h2>
+                      <p className="text-sm text-[#718096]">{basics.label}</p>
                     </div>
-                  ) : null}
+                    {config.author?.avatar ? (
+                      <div className="h-16 w-16 flex-shrink-0 overflow-hidden border border-[rgba(255,255,255,0.1)]">
+                        <img
+                          src={config.author.avatar}
+                          alt={config.author.name || 'avatar'}
+                          className="h-full w-full object-cover"
+                          width={64}
+                          height={64}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                  <p className="text-sm text-[#718096]">{basics.summary}</p>
                 </div>
-                <div className="summary mt-2.5 text-sm text-gray-500 dark:text-gray-400">{basics.summary}</div>
-              </div>
-            </div>
 
-            <hr className="my-3 border-gray-200 dark:border-gray-800" />
-
-            <section aria-labelledby="skills-heading">
-              <h2
-                id="skills-heading"
-                className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Compétences
-              </h2>
-              <div className="mt-2">
-                {techSkills.length ? (
-                  techSkills.map((s) => (
-                    <span
-                      key={s.name}
-                      className="mr-1.5 mb-1 inline-block rounded-full border border-purple-100 bg-purple-50 px-2.5 py-1.5 text-xs text-purple-700 dark:border-purple-900/30 dark:bg-purple-900/20 dark:text-purple-300"
-                    >
-                      {s.name}
-                      {s.level ? ` • ${s.level}` : ''}
-                    </span>
-                  ))
-                ) : (
-                  <div className="text-sm text-gray-500 dark:text-gray-400">No core skills listed</div>
-                )}
-              </div>
-
-              {otherSkills.length > 0 && (
-                <div className="mt-2.5">
-                  <h3 className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                    Autres
-                  </h3>
-                  <div className="mt-1.5">
-                    {otherSkills.map((s) => (
+                {/* Skills */}
+                <div className="mb-6 border border-[rgba(255,255,255,0.06)] bg-[#252540] p-6">
+                  <h2 className="mb-4 text-xs font-bold tracking-wider text-[#4a5568] uppercase">
+                    {chosenLanguage === 'fr' ? 'Compétences' : 'Skills'}
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {normalizedSkills.slice(0, 12).map((s) => (
                       <span
                         key={s.name}
-                        className="mr-1.5 mb-1 inline-block rounded-full border border-purple-100 bg-purple-50 px-2.5 py-1.5 text-xs text-purple-700 dark:border-purple-900/30 dark:bg-purple-900/20 dark:text-purple-300"
+                        className="inline-block border border-[rgba(214,158,46,0.3)] bg-[rgba(214,158,46,0.1)] px-3 py-1.5 text-xs text-[#d69e2e]"
                       >
                         {s.name}
                       </span>
                     ))}
                   </div>
                 </div>
-              )}
-            </section>
 
-            <hr className="my-3 border-gray-200 dark:border-gray-800" />
-
-            <section aria-labelledby="edu-heading">
-              <h2
-                id="edu-heading"
-                className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Formations
-              </h2>
-              <div className="mt-2">
-                {educationData.length ? (
-                  educationData.map((edu) => (
-                    <div key={edu.institution} className="mb-1.5">
-                      <h3 className="m-0 text-sm">{edu.institution}</h3>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{edu.area}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{edu.formattedDate}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-sm text-gray-500 dark:text-gray-400">No formal education listed</div>
-                )}
-              </div>
-            </section>
-
-            <hr className="my-3 border-gray-200 dark:border-gray-800" />
-
-            <section aria-labelledby="contact-heading">
-              <h2
-                id="contact-heading"
-                className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
-              >
-                Contact
-              </h2>
-              <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                {basics.email ? <div>{basics.email}</div> : null}
-                {basics.phone ? <div>{basics.phone}</div> : null}
-                {basics.location ? (
-                  <div>
-                    {basics.location.city}
-                    {basics.location.region ? `, ${basics.location.region}` : ''}
+                {/* Education */}
+                <div className="mb-6 border border-[rgba(255,255,255,0.06)] bg-[#252540] p-6">
+                  <h2 className="mb-4 text-xs font-bold tracking-wider text-[#4a5568] uppercase">
+                    {chosenLanguage === 'fr' ? 'Formations' : 'Education'}
+                  </h2>
+                  <div className="space-y-4">
+                    {educationData.map((edu) => (
+                      <div key={edu.institution}>
+                        <h3 className="text-sm font-medium text-[#f7f7f5]">{edu.institution}</h3>
+                        <div className="text-xs text-[#718096]">{edu.area}</div>
+                        <div className="mt-1 text-xs text-[#4a5568]">{edu.formattedDate}</div>
+                      </div>
+                    ))}
                   </div>
-                ) : null}
-                <div className="mt-1.5">
-                  {linkedInProfile ? (
-                    <div>
-                      <a
-                        href={linkedInProfile.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-600 hover:underline dark:text-purple-400"
-                      >
-                        LinkedIn
-                      </a>
-                    </div>
-                  ) : null}
-                  {githubProfile ? (
-                    <div>
-                      <a
-                        href={githubProfile.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-600 hover:underline dark:text-purple-400"
-                      >
-                        GitHub
-                      </a>
-                    </div>
-                  ) : null}
                 </div>
-              </div>
-            </section>
-          </aside>
 
-          {/* Main column */}
-          <main>
-            {/* Compact contact header for print / small screens */}
-            <header className="card -mt-3 hidden break-inside-avoid rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 print:block print:border-0 print:shadow-none">
-              <div className="grid grid-cols-12 items-start">
-                <div className="col-span-9">
-                  <h1 className="m-0 text-lg font-bold">
-                    {basics.name} <span>- {basics.label}</span>
-                  </h1>
-                  <div className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    {basics.location.city} - {basics.email}
-                  </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{basics.summary}</div>
-                </div>
-                {config.author?.avatar ? (
-                  <div className="col-span-3 flex justify-end print:mt-1">
-                    <img
-                      src={config.author.avatar}
-                      alt={config.author.name || 'avatar'}
-                      className="h-24 w-24 rounded-lg object-cover"
-                      width={80}
-                      height={80}
-                    />
-                  </div>
-                ) : null}
-              </div>
-            </header>
-
-            {/* Experience */}
-            <section className="card -mt-2 rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm md:mt-0 dark:border-gray-800 dark:bg-gray-900 print:border-0 print:shadow-none">
-              <h2 className="mb-1 text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                Expériences
-              </h2>
-              <div>
-                {workExperience.map((job) => (
-                  <article
-                    key={`${job.name}-${job.position}-${job.startDate}`}
-                    className="break-inside-avoid border-b border-dashed border-gray-200 py-2.5 last:border-0 last:pb-0 dark:border-gray-800"
-                  >
-                    <div className="job-head flex justify-between gap-3">
+                {/* Contact */}
+                <div className="border border-[rgba(255,255,255,0.06)] bg-[#252540] p-6">
+                  <h2 className="mb-4 text-xs font-bold tracking-wider text-[#4a5568] uppercase">
+                    {chosenLanguage === 'fr' ? 'Contact' : 'Contact'}
+                  </h2>
+                  <div className="space-y-1 text-sm text-[#718096]">
+                    {basics.email ? <div>{basics.email}</div> : null}
+                    {basics.location ? (
                       <div>
-                        <h3 className="text-sm font-semibold">{job.position}</h3>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {job.name} {job.location ? `• ${job.location}` : ''}
-                        </div>
+                        {basics.location.city}
+                        {basics.location.region ? `, ${basics.location.region}` : ''}
                       </div>
-                      <div className="job-dates min-w-[120px] text-right text-sm text-gray-500 dark:text-gray-400">
+                    ) : null}
+                    <div className="mt-3 space-y-1">
+                      {linkedInProfile ? (
                         <div>
-                          {formatDate(job.startDate)} — {formatDate(job.endDate)}
+                          <a
+                            href={linkedInProfile.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#d69e2e] transition-colors hover:text-[#ecc94b]"
+                          >
+                            LinkedIn
+                          </a>
                         </div>
-                        <div className="text-xs">{job.duration}</div>
-                      </div>
+                      ) : null}
+                      {githubProfile ? (
+                        <div>
+                          <a
+                            href={githubProfile.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#d69e2e] transition-colors hover:text-[#ecc94b]"
+                          >
+                            GitHub
+                          </a>
+                        </div>
+                      ) : null}
                     </div>
+                  </div>
+                </div>
+              </aside>
 
-                    <div className="job-summary mt-2 text-justify text-sm text-gray-500 dark:text-gray-400 print:text-xs">
-                      {job.summary?.split('\\n').map((line, index) => (
-                        <Fragment key={index}>
-                          {line}
-                          <br />
-                        </Fragment>
+              {/* Main column */}
+              <main>
+                {/* Experience */}
+                <section className="border border-[rgba(255,255,255,0.06)] bg-[#1a1a2e] p-6">
+                  <h2 className="mb-6 text-xs font-bold tracking-wider text-[#4a5568] uppercase">
+                    {chosenLanguage === 'fr' ? 'Expériences' : 'Experience'}
+                  </h2>
+                  <div className="space-y-6">
+                    {workExperience.map((job) => (
+                      <article
+                        key={`${job.name}-${job.position}-${job.startDate}`}
+                        className="border-b border-[rgba(255,255,255,0.06)] pb-6 last:border-0 last:pb-0"
+                      >
+                        <div className="mb-2 flex justify-between gap-4">
+                          <div>
+                            <h3 className="text-base font-medium text-[#f7f7f5]">{job.position}</h3>
+                            <div className="text-sm text-[#718096]">
+                              {job.name} {job.location ? `• ${job.location}` : ''}
+                            </div>
+                          </div>
+                          <div className="text-right text-sm text-[#718096]">
+                            <div>
+                              {formatDate(job.startDate)} — {formatDate(job.endDate)}
+                            </div>
+                            <div className="text-xs text-[#4a5568]">{job.duration}</div>
+                          </div>
+                        </div>
+                        <div className="text-sm leading-relaxed whitespace-pre-line text-[#718096]">{job.summary}</div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              </main>
+            </div>
+
+            {/* PRINT LAYOUT - Single Page Minimalist */}
+            <div className="resume-print hidden print:block">
+              {/* Header */}
+              <header className="print-header">
+                <h1 className="print-name">{basics.name}</h1>
+                <div className="print-title">{basics.label}</div>
+                <div className="print-contact">
+                  {basics.email} • {basics.location?.city}
+                  {basics.location?.region ? `, ${basics.location.region}` : ''}
+                  {linkedInProfile ? ` • linkedin.com/in/${linkedInProfile.username || 'thomas-d-legrand'}` : ''}
+                  {githubProfile ? ` • github.com/${githubProfile.username || 'dnzzl'}` : ''}
+                </div>
+              </header>
+
+              <div className="print-two-col">
+                <div>
+                  {/* Experience */}
+                  <section>
+                    <h2 className="print-section-title">{chosenLanguage === 'fr' ? 'Expérience' : 'Experience'}</h2>
+                    {workExperience.map((job) => (
+                      <div key={`${job.name}-${job.position}`} className="print-job">
+                        <div className="print-job-title">{job.position}</div>
+                        <div className="print-job-company">
+                          {job.name} {job.location ? `• ${job.location.split(',')[0]}` : ''}
+                        </div>
+                        <div className="print-job-date">
+                          {formatDate(job.startDate)} — {formatDate(job.endDate)} {job.duration}
+                        </div>
+                        <div className="print-job-summary">
+                          {job.summary?.substring(0, 120)}
+                          {job.summary?.length > 120 ? '...' : ''}
+                        </div>
+                      </div>
+                    ))}
+                  </section>
+
+                  {/* Education */}
+                  <section>
+                    <h2 className="print-section-title">{chosenLanguage === 'fr' ? 'Formation' : 'Education'}</h2>
+                    {educationData.map((edu) => (
+                      <div key={edu.institution} className="print-edu">
+                        <span className="print-edu-school">{edu.institution}</span>
+                        <span style={{ marginLeft: '8px', color: '#718096' }}>• {edu.formattedDate}</span>
+                      </div>
+                    ))}
+                  </section>
+                </div>
+
+                <div>
+                  {/* Skills */}
+                  <section>
+                    <h2 className="print-section-title">{chosenLanguage === 'fr' ? 'Compétences' : 'Skills'}</h2>
+                    <div>
+                      {normalizedSkills.slice(0, 20).map((s) => (
+                        <div key={s.name} className="print-skill">
+                          {s.name}
+                        </div>
                       ))}
                     </div>
+                  </section>
 
-                    {job.highlights && job.highlights.length ? (
-                      <ul className="job-highlights mt-2 list-disc pl-4 text-sm text-gray-700 dark:text-gray-300">
-                        {job.highlights.map((h, idx) => (
-                          <li key={idx} className="mb-1.5">
-                            {h}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            {/* Educations */}
-            <section className="card mt-3 hidden break-inside-avoid rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 print:-mt-2 print:block print:border-0 print:shadow-none">
-              <h2 className="mb-1 text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                Formations
-              </h2>
-              <div>
-                {educationData.map((e) => (
-                  <div key={e.institution} className="edu-row">
-                    <h3 className="m-0 text-sm">
-                      {e.institution}
-                      <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">• {e.formattedDate}</span>
-                      <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">• {e.area}</span>
-                    </h3>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Volunteer */}
-            {volunteerData.length ? (
-              <section className="card mt-3 break-inside-avoid rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 print:-mt-2 print:border-0 print:shadow-none">
-                <h2 className="mb-1 text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                  Bénévolat
-                </h2>
-                <div>
-                  {volunteerData.map((v) => (
-                    <div key={v.organization} className="vol-row mb-2.5">
-                      <h3 className="m-0 text-sm">
-                        {v.position} @ {v.organization}
-                        <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">• {v.formattedDate}</span>
-                      </h3>
-                      <div className="mt-2 text-justify text-sm text-gray-500 dark:text-gray-400 print:text-xs">
-                        {v.summary?.split('\\n').map((line, index) => (
-                          <Fragment key={index}>
-                            {line}
-                            <br />
-                          </Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                  {/* Summary */}
+                  <section>
+                    <h2 className="print-section-title">{chosenLanguage === 'fr' ? 'Profil' : 'Profile'}</h2>
+                    <div style={{ fontSize: '10px', lineHeight: '1.4', color: '#4a5568' }}>{basics.summary}</div>
+                  </section>
                 </div>
-              </section>
-            ) : null}
+              </div>
+            </div>
+          </>
+        )}
 
-            {/* Projects */}
-            {projectData.length ? (
-              <section className="card mt-3 rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 print:-mt-2 print:border-0 print:shadow-none">
-                <h2 className="mb-1 text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                  Projets
-                </h2>
-                <div>
-                  {projectData.map((p) => (
-                    <div key={p.name} className="break-inside-avoid">
-                      <h3 className="m-0 text-justify text-sm">
-                        {p.name}
-                        <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">• {p.formattedDate}</span>:{' '}
-                        <span className="ml-1 text-gray-500 dark:text-gray-400 print:text-xs">{p.summary}</span>
-                      </h3>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-          </main>
+        {/* Action buttons */}
+        <div className="mt-12 flex justify-center gap-4 print:hidden">
+          <button
+            className="inline-flex items-center gap-2 border border-[rgba(255,255,255,0.1)] px-6 py-3 text-sm tracking-[0.15em] text-[#f7f7f5] uppercase transition-colors duration-200 hover:border-[#d69e2e]"
+            onClick={handlePrint}
+          >
+            <svg className="h-4 w-4 text-[#d69e2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+              />
+            </svg>
+            {chosenLanguage === 'fr' ? 'Imprimer / PDF' : 'Print / PDF'}
+          </button>
+          <button
+            className="inline-flex items-center gap-2 border border-[rgba(255,255,255,0.1)] px-6 py-3 text-sm tracking-[0.15em] text-[#718096] uppercase transition-colors duration-200 hover:border-[#d69e2e] hover:text-[#f7f7f5]"
+            onClick={handleDownload}
+          >
+            <svg className="h-4 w-4 text-[#d69e2e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            JSON
+          </button>
         </div>
-      )}
-
-      <div className="controls mt-3.5 flex justify-center gap-2.5 print:hidden">
-        <button
-          className="cursor-pointer rounded-md border-0 bg-purple-600 px-3 py-2 font-semibold text-white transition-colors hover:bg-purple-700"
-          onClick={handlePrint}
-        >
-          Print / Save PDF
-        </button>
-        <button
-          className="cursor-pointer rounded-md border border-purple-100 bg-transparent px-3 py-2 font-semibold text-purple-600 transition-colors hover:bg-purple-50 dark:border-purple-900/30 dark:hover:bg-purple-900/20"
-          onClick={handleDownload}
-        >
-          Download JSON
-        </button>
       </div>
-    </div>
+    </>
   );
 };
 
