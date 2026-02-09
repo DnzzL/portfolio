@@ -16,15 +16,27 @@ const { page } = Astro.props;
 ---
 
 <Base meta_title="Projects">
-  <h1 class="mb-8 text-2xl font-bold md:text-3xl">Projects</h1>
-  <Projects projects={page.data} />
-  <Pagination
-    length={page.lastPage}
-    currentUrl={page.url.current}
-    currentPage={page.currentPage}
-    firstUrl={`/project/`}
-    prevUrl={page.url.prev}
-    nextUrl={page.url.next}
-    lastUrl={`/project/${page.lastPage}`}
-  />
+  <div class="relative py-24 sm:py-32 noise-texture">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <!-- Section header -->
+      <div class="mb-16 border-b border-[rgba(255,255,255,0.06)] pb-6">
+        <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-2 block">~/projects</span>
+        <h1 class="text-3xl sm:text-4xl font-medium text-[#f7f7f5]">All Projects</h1>
+        <p class="mt-4 text-[#718096] max-w-2xl">
+          A selection of projects I've worked on, from web applications to open source contributions.
+        </p>
+      </div>
+      
+      <Projects projects={page.data} />
+      <Pagination
+        length={page.lastPage}
+        currentUrl={page.url.current}
+        currentPage={page.currentPage}
+        firstUrl={`/project/`}
+        prevUrl={page.url.prev}
+        nextUrl={page.url.next}
+        lastUrl={`/project/${page.lastPage}`}
+      />
+    </div>
+  </div>
 </Base>

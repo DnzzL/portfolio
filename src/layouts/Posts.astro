@@ -2,7 +2,6 @@
 import FormattedDate from '@components/FormattedDate.astro';
 import config from '@config/config.json';
 import { slugify } from '@utils/slug';
-import { Image } from 'astro:assets';
 
 const { posts } = Astro.props;
 
@@ -23,48 +22,56 @@ type PostType = {
 };
 ---
 
-<div class="mx-auto grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-  {
-    posts?.slice(0, config.site.pageSize).map((post: PostType) => (
-      <article class="flex w-full flex-col items-start">
-        <div class="mb-4 block overflow-hidden rounded-lg">
-          {post.data.heroImage && (
-            <a href={`/blog/${post.slug}/`}>
-              <figure class="h-auto w-auto object-cover md:h-[150px]">
-                <Image
-                  class="cursor-progress transition duration-300 ease-in-out hover:scale-110"
-                  src={post.data.heroImage}
-                  alt={post.data.title}
-                  width={960}
-                  height={480}
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-            </a>
-          )}
-        </div>
-        <div class="flex items-center gap-x-4 text-xs text-zinc-900 dark:text-white">
+<div class="space-y-4">
+  {posts?.slice(0, config.site.pageSize).map((post: PostType, index: number) => (
+    <article class="group bg-[#1a1a2e] border border-[rgba(255,255,255,0.06)] p-6 sm:p-8 card-hover flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+      <!-- Number -->
+      <div class="hidden sm:block w-8 shrink-0">
+        <span class="text-xs text-[#4a5568] font-mono">{String(index + 1).padStart(2, '0')}</span>
+      </div>
+      
+      <!-- Date -->
+      <div class="sm:w-28 shrink-0">
+        <span class="text-xs text-[#4a5568] font-mono">
           <FormattedDate date={post.data.pubDate} />
-          {post.data.categories.slice(0, 2).map((item) => (
+        </span>
+      </div>
+      
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-3 mb-2">
+          {post.data.categories.slice(0, 1).map((item) => (
             <a
               href={`/categories/${slugify(item)}`}
-              class="text-md relative z-10 rounded-full bg-zinc-50 px-3 py-1.5 font-medium capitalize text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-400"
+              class="text-xs uppercase tracking-[0.1em] text-[#d69e2e] hover:text-[#ecc94b] transition-colors duration-200"
             >
               {item}
             </a>
           ))}
         </div>
-        <div class="relative">
-          <h2 class="mt-3 text-xl font-semibold leading-6 text-zinc-900 group-hover:text-zinc-600 dark:text-white">
-            <a href={`/blog/${post.slug}/`}>
-              <span class="absolute inset-0" />
-              {post.data.title}
-            </a>
-          </h2>
-          <p class="mt-5 line-clamp-3 text-sm leading-6 text-zinc-600">{post.data.description}</p>
-        </div>
-      </article>
-    ))
-  }
+        
+        <h2 class="text-lg font-medium text-[#f7f7f5] group-hover:text-[#d69e2e] transition-colors duration-200">
+          <a href={`/blog/${post.slug}/`}>
+            {post.data.title}
+          </a>
+        </h2>
+        
+        <p class="text-sm text-[#718096] mt-2 line-clamp-1">
+          {post.data.description}
+        </p>
+      </div>
+      
+      <!-- Arrow -->
+      <div class="hidden sm:block shrink-0">
+        <svg 
+          class="w-5 h-5 text-[#4a5568] group-hover:text-[#d69e2e] transform group-hover:translate-x-1 transition-all duration-200" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </div>
+    </article>
+  ))}
 </div>

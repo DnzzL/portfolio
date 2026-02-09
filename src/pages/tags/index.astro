@@ -3,41 +3,30 @@ import Base from "@layouts/Base.astro";
 import { getTaxonomy } from "@utils/getAllTags";
 
 const tags = await getTaxonomy("blog", "tags");
-
-const textClasses: string[] = [
-  "text-3xl text-cyan-400 capitalize",
-  "text-xl text-teal-400 capitalize",
-  "text-md text-red-400 capitalize",
-  "text-lg text-green-400 capitalize",
-  "text-sm text-orange-400 capitalize",
-  "text-lg text-zinc-400 capitalize",
-  "text-4xl text-red-400 capitalize",
-  "text-xs text-cyan-400 capitalize",
-];
-
-const getRandomClass = (classList: string[]): string => {
-  const randomIndex: number = Math.floor(Math.random() * classList.length);
-  return classList[randomIndex];
-};
 ---
 
-<Base>
-  <section class="grid grid-cols-1">
-    <h1 class="text-2xl md:text-3xl font-bold mb-8">Tags:</h1>
-    <ul class="flex justify-center flex-wrap align-center gap-3">
-      {
-        tags.map((tag) => (
-          <li>
-            <a
-              class={getRandomClass(textClasses)}
-              href={`/tags/${tag.slug}`}
-              title={`View posts with the tag: ${tag.name}`}
-            >
-              {tag.name}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+<Base meta_title="Tags">
+  <div class="relative py-24 sm:py-32 noise-texture">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <!-- Section header -->
+      <div class="mb-16 border-b border-[rgba(255,255,255,0.06)] pb-6">
+        <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-2 block">~/tags</span>
+        <h1 class="text-3xl sm:text-4xl font-medium text-[#f7f7f5]">All Tags</h1>
+      </div>
+      
+      <!-- Tags grid -->
+      <div class="flex flex-wrap gap-4">
+        {tags.map((tag) => (
+          <a
+            href={`/tags/${tag.slug}`}
+            class="group px-4 py-2 border border-[rgba(255,255,255,0.1)] hover:border-[#d69e2e] transition-colors duration-200"
+          >
+            <span class="text-sm text-[#718096] group-hover:text-[#f7f7f5] transition-colors duration-200">
+              #{tag.name}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
 </Base>

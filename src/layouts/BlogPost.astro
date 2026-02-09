@@ -1,8 +1,6 @@
 ---
 import FormattedDate from '@components/FormattedDate.astro';
 import config from '@config/config.json';
-import CalendarIcon from '@icons/CalendarIcon.astro';
-import CategoryIcon from '@icons/CategoryIcon.astro';
 import Base from '@layouts/Base.astro';
 import { slugify } from '@utils/slug';
 import { Image } from 'astro:assets';
@@ -14,71 +12,85 @@ const { title, description, pubDate, heroImage, categories, tags } = Astro.props
 ---
 
 <Base meta_title={title} description={description} image={heroImage} minimalist>
-  <article>
-    <div class="mb-8 block overflow-hidden rounded-lg">
-      {
-        heroImage && (
-          <figure class="h-auto w-auto object-cover md:h-[480px]">
+  <article class="relative py-16 sm:py-24 noise-texture">
+    <div class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
+      <!-- Breadcrumb -->
+      <div class="mb-12">
+        <a href="/blog" class="text-sm text-[#4a5568] hover:text-[#d69e2e] transition-colors duration-200 flex items-center gap-2">
+          <span>←</span>
+          <span>Back to articles</span>
+        </a>
+      </div>
+      
+      <!-- Article header -->
+      <header class="mb-12 border-b border-[rgba(255,255,255,0.06)] pb-12">
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-4 mb-6 text-xs uppercase tracking-[0.1em] text-[#4a5568]">
+          <span class="text-[#d69e2e]">
+            <FormattedDate date={pubDate} />
+          </span>
+          {categories?.map((category) => (
+            <span>•</span>
+            <a 
+              href={`/categories/${slugify(category)}`} 
+              class="hover:text-[#d69e2e] transition-colors duration-200"
+            >
+              {category}
+            </a>
+          ))}
+        </div>
+        
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#f7f7f5] leading-tight">
+          {title}
+        </h1>
+        
+        <!-- Description -->
+        {description && (
+          <p class="mt-6 text-lg text-[#718096] leading-relaxed">
+            {description}
+          </p>
+        )}
+      </header>
+      
+      <!-- Hero image -->
+      {heroImage && (
+        <div class="mb-12 border border-[rgba(255,255,255,0.06)]">
+          <figure>
             <Image
-              class="cursor-progress transition duration-300 ease-in-out hover:scale-110"
               src={heroImage}
               alt={title}
               width={960}
               height={480}
               decoding="async"
               loading="lazy"
+              class="w-full"
             />
           </figure>
-        )
-      }
-    </div>
-    <div class="md:col-10 mb-12 text-center">
-      <h1 class="text-2xl font-bold md:text-4xl">{title}</h1>
-      <div class="text-text mt-4 flex flex-wrap items-center justify-center text-zinc-800 dark:text-zinc-200">
-        <div class="mx-3 mt-2 flex flex-wrap items-center font-medium">
-          <figure>
-            <Image
-              alt={config.author.name}
-              class="mr-2 h-6 w-6 rounded-full"
-              width={50}
-              height={50}
-              src={config.author.avatar}
-              decoding="async"
-              loading="lazy"
-            />
-          </figure>
-          <span>{config.author.name}</span>
         </div>
-        <div class="mx-3 mt-2 flex flex-wrap items-center font-medium">
-          <CalendarIcon />
-          <FormattedDate date={pubDate} />
-        </div>
-        <div class="mx-3 mt-2 flex flex-wrap items-center font-medium">
-          <CategoryIcon />
-          {
-            categories?.map((category) => (
-              <a href={`/categories/${slugify(category)}`} class="hover:text-primary mr-2 font-medium capitalize">
-                {category}
-              </a>
-            ))
-          }
-        </div>
+      )}
+      
+      <!-- Article content -->
+      <div class="prose-industrial prose prose-invert max-w-none">
+        <slot />
       </div>
-    </div>
-    <div class="prose-md prose prose-green min-w-full md:prose-lg">
-      <slot />
-    </div>
-    <div class="mt-8">
-      {
-        tags?.map((tag) => (
-          <a
-            href={`/tags/${slugify(tag)}`}
-            class="mb-2 mr-2 inline-block rounded-full bg-zinc-200 px-3 py-1 text-sm font-semibold capitalize text-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
-          >
-            #{tag}
-          </a>
-        ))
-      }
+      
+      <!-- Tags -->
+      {tags && tags.length > 0 && (
+        <div class="mt-16 pt-8 border-t border-[rgba(255,255,255,0.06)]">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-xs uppercase tracking-[0.1em] text-[#4a5568]">Tags:</span>
+            {tags?.map((tag) => (
+              <a
+                href={`/tags/${slugify(tag)}`}
+                class="text-xs text-[#718096] hover:text-[#d69e2e] transition-colors duration-200"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </article>
 </Base>
