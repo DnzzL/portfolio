@@ -1,61 +1,104 @@
 ---
-import { Image } from "astro:assets";
-import config from "@config/config.json";
 import social from "@config/social";
 
 const socialItems = social.networks;
 ---
 
-<section class="relative bg-surface print:hidden overflow-hidden">
-  <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23E3B2B3" fill-opacity="0.02"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+<section class="relative min-h-[90vh] flex items-center bg-grid noise-texture overflow-hidden">
+  <!-- Technical grid overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#1a1a2e]"></div>
   
-  <div class="relative mx-auto max-w-7xl px-6 py-32 sm:px-8 sm:py-40 lg:px-12 lg:py-48">
-    <div class="text-center">
-      <div class="animate-fade-in">
-        <h1 class="text-5xl font-bold tracking-tight text-loud sm:text-6xl lg:text-7xl xl:text-8xl">
+  <!-- Corner accents -->
+  <div class="absolute top-0 left-0 w-32 h-px bg-gradient-to-r from-[#d69e2e] to-transparent"></div>
+  <div class="absolute top-0 left-0 w-px h-32 bg-gradient-to-b from-[#d69e2e] to-transparent"></div>
+  <div class="absolute top-0 right-0 w-32 h-px bg-gradient-to-l from-[#d69e2e] to-transparent"></div>
+  <div class="absolute top-0 right-0 w-px h-32 bg-gradient-to-b from-[#d69e2e] to-transparent"></div>
+  
+  <div class="relative w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-24">
+    <!-- Status indicator -->
+    <div class="animate-fade-in-up mb-12">
+      <div class="inline-flex items-center gap-3 px-4 py-2 border border-[rgba(214,158,46,0.3)] bg-[rgba(214,158,46,0.05)]">
+        <span class="w-2 h-2 bg-[#d69e2e] animate-pulse"></span>
+        <span class="text-xs uppercase tracking-[0.2em] text-[#718096]">Available for work</span>
+      </div>
+    </div>
+    
+    <!-- Main heading -->
+    <div class="animate-fade-in-up" style="animation-delay: 0.1s">
+      <div class="flex items-baseline gap-4 mb-4">
+        <span class="text-[#4a5568] text-sm">~/</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-[#f7f7f5] cursor-blink">
           Thomas Legrand
         </h1>
       </div>
       
-      <div class="mt-8 animate-fade-in-up" style="animation-delay: 0.2s">
-        <p class="text-xl leading-8 text-text max-w-3xl mx-auto lg:text-2xl">
-          Building elegant solutions to complex problems. 
-          <span class="block mt-2 text-accent-jade font-medium">
-            Software engineer • Open source contributor • Technology enthusiast
-          </span>
+      <div class="flex items-baseline gap-4 ml-0 sm:ml-8">
+        <span class="text-[#4a5568] text-sm">$</span>
+        <p class="text-lg sm:text-xl text-[#718096] max-w-2xl">
+          Software engineer building products at the intersection of AI and web development.
+          Former data scientist turned full-stack developer.
         </p>
       </div>
-      
-      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-4 animate-fade-in-up" style="animation-delay: 0.4s">
-        <a href="/blog" class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-8 py-4 text-base font-semibold text-surface shadow-soft hover:shadow-medium hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-300 hover:scale-105">
-          View my work
+    </div>
+    
+    <!-- Location / context -->
+    <div class="animate-fade-in-up mt-8 ml-0 sm:ml-8" style="animation-delay: 0.2s">
+      <div class="flex items-center gap-2 text-sm text-[#4a5568]">
+        <span class="w-4 h-px bg-[#4a5568]"></span>
+        <span>Paris, France</span>
+        <span class="text-[#d69e2e]">•</span>
+        <span>Vue / Nuxt / TypeScript / AI</span>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="animate-fade-in-up mt-16 ml-0 sm:ml-8" style="animation-delay: 0.3s">
+      <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+        <a 
+          href="/projects" 
+          class="group inline-flex items-center gap-3 px-6 py-3 border border-[rgba(255,255,255,0.1)] hover:border-[#d69e2e] transition-colors duration-200"
+        >
+          <span class="text-sm uppercase tracking-[0.15em] text-[#f7f7f5]">View projects</span>
+          <svg 
+            class="w-4 h-4 text-[#d69e2e] transform transition-transform duration-200 group-hover:translate-x-1" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
         </a>
-        <a href="/resume" class="group inline-flex items-center text-base font-semibold leading-6 text-text hover:text-primary-400 transition-colors duration-300">
-          Resume 
-          <span class="ml-2 transform transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+        
+        <a 
+          href="/blog" 
+          class="text-sm text-[#718096] hover:text-[#f7f7f5] transition-colors duration-200 flex items-center gap-2"
+        >
+          <span>Read the blog</span>
+          <span class="text-[#4a5568]">→</span>
         </a>
       </div>
-      
-      <div class="mt-16 flex items-center justify-center gap-x-8 animate-fade-in" style="animation-delay: 0.6s">
-        {
-          socialItems?.map((item, index) => (
-            <a 
-              href={item.url} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="group relative text-text-muted hover:text-primary-400 transition-all duration-300 hover:scale-110"
-              style={`animation-delay: ${0.8 + index * 0.1}s`}
-            >
-              <figure class="w-6 h-6">
-                <Fragment set:html={item.svg} />
-              </figure>
-              <div class="absolute -inset-2 rounded-full bg-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </a>
-          ))
-        }
+    </div>
+    
+    <!-- Social links - minimal -->
+    <div class="animate-fade-in-up mt-20 ml-0 sm:ml-8" style="animation-delay: 0.4s">
+      <div class="flex items-center gap-6">
+        {socialItems?.map((item) => (
+          <a 
+            href={item.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="text-[#4a5568] hover:text-[#d69e2e] transition-colors duration-200"
+            aria-label={item.name}
+          >
+            <figure class="w-5 h-5">
+              <Fragment set:html={item.svg} />
+            </figure>
+          </a>
+        ))}
       </div>
     </div>
   </div>
   
-  <div class="absolute bottom-0 left-0 right-0 h-px bg-primary-600/20"></div>
+  <!-- Bottom accent line -->
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.1)] to-transparent"></div>
 </section>

@@ -1,10 +1,7 @@
 ---
-import ThemeIcon from '@components/ThemeIcon.astro';
 import config from '@config/config.json';
 import menu from '@config/menu.json';
-import CloseIcon from '@icons/CloseIcon.astro';
 import HamburgerIcon from '@icons/HamburgerIcon.astro';
-import { Image } from 'astro:assets';
 
 export interface NavigationLink {
   name: string;
@@ -14,45 +11,38 @@ export interface NavigationLink {
 const { main }: { main: NavigationLink[] } = menu;
 ---
 
-<header class="bg-white/95 backdrop-blur-sm dark:bg-zinc-950/95 dark:backdrop-blur-sm print:hidden fixed inset-x-0 top-0 z-50 border-b border-zinc-200 dark:border-zinc-800">
-  <nav class="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12" aria-label="Global">
+<header class="fixed inset-x-0 top-0 z-50 bg-[#1a1a2e]/95 backdrop-blur-sm border-b border-[rgba(255,255,255,0.06)] print:hidden">
+  <nav class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12" aria-label="Global">
     <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
       <div class="flex items-center">
-        <a href="/" class="flex items-center space-x-3">
-          <Image
-            src={config.site.logo}
-            alt={config.site.title}
-            class="h-8 w-8 rounded"
-            width={512}
-            height={512}
-            decoding="async"
-            loading="lazy"
-          />
-          <span class="text-lg font-semibold text-zinc-900 dark:text-white">{config.site.title}</span>
+        <a href="/" class="flex items-center gap-3 group">
+          <span class="text-xs text-[#4a5568]">$</span>
+          <span class="text-sm font-medium text-[#f7f7f5] group-hover:text-[#d69e2e] transition-colors duration-200">
+            {config.site.title}
+          </span>
         </a>
       </div>
       
-      <div class="hidden lg:flex lg:gap-x-12">
-        {
-          main?.map((menu) => (
-            <a
-              href={menu?.url}
-              class="text-sm font-semibold leading-6 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            >
-              {menu?.name}
-            </a>
-          ))
-        }
+      <!-- Desktop navigation -->
+      <div class="hidden lg:flex lg:items-center lg:gap-8">
+        {main?.map((menu) => (
+          <a
+            href={menu?.url}
+            class="text-sm text-[#718096] hover:text-[#f7f7f5] transition-colors duration-200"
+          >
+            {menu?.name}
+          </a>
+        ))}
       </div>
       
-      <div class="flex items-center gap-x-4">
-        {config.features.dark_mode && <ThemeIcon />}
-        
+      <!-- Right side -->
+      <div class="flex items-center gap-4">
         <!-- Mobile menu button -->
         <div class="flex lg:hidden">
           <button
             type="button"
-            class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+            class="text-[#718096] hover:text-[#f7f7f5] transition-colors duration-200 p-2"
             onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
           >
             <span class="sr-only">Open main menu</span>
@@ -64,20 +54,18 @@ const { main }: { main: NavigationLink[] } = menu;
   </nav>
   
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden lg:hidden">
-    <div class="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
-      <div class="space-y-1 px-6 py-4">
-        {
-          main?.map((menu) => (
-            <a
-              href={menu?.url}
-              class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-50 dark:text-white dark:hover:bg-zinc-800"
-              onclick="document.getElementById('mobile-menu').classList.add('hidden')"
-            >
-              {menu?.name}
-            </a>
-          ))
-        }
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-[rgba(255,255,255,0.06)]">
+    <div class="bg-[#1a1a2e]">
+      <div class="space-y-px px-6 py-4">
+        {main?.map((menu) => (
+          <a
+            href={menu?.url}
+            class="block py-3 text-sm text-[#718096] hover:text-[#f7f7f5] transition-colors duration-200 border-b border-[rgba(255,255,255,0.06)] last:border-0"
+            onclick="document.getElementById('mobile-menu').classList.add('hidden')"
+          >
+            {menu?.name}
+          </a>
+        ))}
       </div>
     </div>
   </div>
