@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import Base from "@layouts/Base.astro";
 import Hero from "@components/Hero.astro";
-import { Image } from 'astro:assets';
 import { slugify } from '@utils/slug';
 import FormattedDate from '@components/FormattedDate.astro';
 
@@ -35,157 +34,180 @@ type PostType = {
   <Hero />
   
   <!-- Featured Projects Section -->
-  <section class="relative bg-surface-700 py-24 sm:py-32 overflow-hidden">
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23E3B2B3" fill-opacity="0.02"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E')]"></div>
-    
-    <div class="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-      <div class="mx-auto max-w-3xl text-center mb-20">
-        <div class="inline-flex items-center rounded-full bg-primary-600/10 px-4 py-2 text-sm font-medium text-primary-400 mb-6 border border-primary-600/20">
-          <span class="w-2 h-2 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
-          Featured Projects
+  <section class="relative py-24 sm:py-32 noise-texture">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <!-- Section header -->
+      <div class="flex items-baseline justify-between mb-16 border-b border-[rgba(255,255,255,0.06)] pb-6">
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-2 block">01</span>
+          <h2 class="text-2xl sm:text-3xl font-medium text-[#f7f7f5]">Projects</h2>
         </div>
-        <h2 class="text-4xl font-bold tracking-tight text-loud sm:text-5xl lg:text-6xl">
-          Recent Work
-        </h2>
-        <p class="mt-6 text-xl leading-8 text-text max-w-2xl mx-auto">
-          A selection of projects I've worked on, from web applications to open source contributions.
-        </p>
-      </div>
-      
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
-        {
-          projects?.slice(0, 6).map((project: PostType, index) => (
-            <article class="group relative bg-surface-600 rounded-2xl p-6 shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-fade-in-up border border-primary-600/10" style={`animation-delay: ${index * 0.1}s`}>
-              <div class="relative">
-                <div class="flex items-center justify-between mb-4">
-                  <FormattedDate date={project.data.pubDate} />
-                  {project.data.categories.slice(0, 1).map((item) => (
-                    <a
-                      href={`/categories/${slugify(item)}`}
-                      class="relative z-10 rounded-full bg-accent-amethyst/20 px-3 py-1.5 text-sm font-medium text-accent-amethyst hover:bg-accent-amethyst/30 transition-colors duration-200 border border-accent-amethyst/40"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                </div>
-                
-                <div class="group relative">
-                  <h3 class="text-xl font-bold leading-6 text-loud group-hover:text-primary-400 transition-colors duration-200">
-                    <a href={`/projects/${project.slug}/`} class="block">
-                      {project.data.title}
-                    </a>
-                  </h3>
-                  <p class="mt-3 line-clamp-3 text-base leading-6 text-text-muted">{project.data.description}</p>
-                </div>
-                
-                <div class="mt-6 flex items-center text-accent-jade font-medium group-hover:text-accent-jade/80 transition-colors duration-200">
-                  <a href={`/projects/${project.slug}/`} class="flex items-center">
-                    View project
-                    <svg class="ml-2 w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-      
-      <div class="mt-20 flex justify-center">
-        <a href="/projects" class="group inline-flex items-center px-8 py-4 text-base font-semibold text-loud border-2 border-primary-600/30 rounded-xl hover:border-primary-500 hover:text-primary-400 transition-all duration-300 hover:shadow-soft hover:shadow-primary-600/20">
-          View all projects
-          <svg class="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
+        <a href="/projects" class="text-sm text-[#718096] hover:text-[#d69e2e] transition-colors duration-200 flex items-center gap-2">
+          <span>View all</span>
+          <span>→</span>
         </a>
+      </div>
+      
+      <!-- Projects grid - improved layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {projects?.slice(0, 4).map((project: PostType, index) => (
+          <article class="group bg-[#252540] border border-[rgba(255,255,255,0.06)] p-8 card-hover">
+            <!-- Top row: number and date -->
+            <div class="flex items-baseline justify-between mb-6">
+              <span class="text-xs text-[#4a5568] font-mono">0{index + 1}</span>
+              <span class="text-xs text-[#4a5568]">
+                <FormattedDate date={project.data.pubDate} />
+              </span>
+            </div>
+            
+            <!-- Category -->
+            <div class="mb-4">
+              {project.data.categories.slice(0, 1).map((item) => (
+                <span class="text-xs uppercase tracking-[0.15em] text-[#d69e2e]">
+                  {item}
+                </span>
+              ))}
+            </div>
+            
+            <!-- Title -->
+            <h3 class="text-xl font-medium text-[#f7f7f5] mb-3 group-hover:text-[#d69e2e] transition-colors duration-200">
+              <a href={`/projects/${project.slug}/`}>
+                {project.data.title}
+              </a>
+            </h3>
+            
+            <!-- Description -->
+            <p class="text-sm text-[#718096] leading-relaxed mb-6 line-clamp-2">
+              {project.data.description}
+            </p>
+            
+            <!-- Link -->
+            <a 
+              href={`/projects/${project.slug}/`} 
+              class="inline-flex items-center gap-2 text-sm text-[#4a5568] group-hover:text-[#f7f7f5] transition-colors duration-200"
+            >
+              <span class="w-4 h-px bg-current"></span>
+              <span>Read case study</span>
+            </a>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Blog Posts Section -->
-  <section class="relative bg-surface-800 py-24 sm:py-32">
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23A477B2" fill-opacity="0.02"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E')]"></div>
-    
-    <div class="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-      <div class="mx-auto max-w-3xl text-center mb-20">
-        <div class="inline-flex items-center rounded-full bg-accent-amethyst/10 px-4 py-2 text-sm font-medium text-accent-amethyst mb-6 border border-accent-amethyst/20">
-          <span class="w-2 h-2 bg-accent-amethyst rounded-full mr-2 animate-pulse"></span>
-          Latest Articles
+  <!-- Latest Articles Section -->
+  <section class="relative py-24 sm:py-32 bg-[#252540] noise-texture">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <!-- Section header -->
+      <div class="flex items-baseline justify-between mb-16 border-b border-[rgba(255,255,255,0.06)] pb-6">
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-2 block">02</span>
+          <h2 class="text-2xl sm:text-3xl font-medium text-[#f7f7f5]">Writing</h2>
         </div>
-        <h2 class="text-4xl font-bold tracking-tight text-loud sm:text-5xl lg:text-6xl">
-          From the Blog
-        </h2>
-        <p class="mt-6 text-xl leading-8 text-text max-w-2xl mx-auto">
-          Thoughts on software development, technology trends, and occasional tutorials.
-        </p>
-      </div>
-      
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
-        {
-          posts?.slice(0, 6).map((post: PostType, index) => (
-            <article class="group relative bg-surface-700 rounded-2xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1 animate-fade-in-up border border-accent-amethyst/10" style={`animation-delay: ${index * 0.1}s`}>
-              {post.data.heroImage && (
-                <div class="relative h-48 overflow-hidden">
-                  <a href={`/blog/${post.slug}/`} class="block h-full">
-                    <Image
-                      class="h-full w-full object-cover transition duration-500 ease-in-out group-hover:scale-110"
-                      src={post.data.heroImage}
-                      alt={post.data.title}
-                      width={960}
-                      height={480}
-                      decoding="async"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 bg-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </a>
-                </div>
-              )}
-              
-              <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                  <FormattedDate date={post.data.pubDate} />
-                  {post.data.categories.slice(0, 1).map((item) => (
-                    <a
-                      href={`/categories/${slugify(item)}`}
-                      class="relative z-10 rounded-full bg-accent-jade/20 px-3 py-1.5 text-sm font-medium text-accent-jade hover:bg-accent-jade/30 transition-colors duration-200 border border-accent-jade/40"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                </div>
-                
-                <div class="group relative">
-                  <h3 class="text-xl font-bold leading-6 text-loud group-hover:text-accent-amethyst transition-colors duration-200">
-                    <a href={`/blog/${post.slug}/`} class="block">
-                      {post.data.title}
-                    </a>
-                  </h3>
-                  <p class="mt-3 line-clamp-3 text-base leading-6 text-text-muted">{post.data.description}</p>
-                </div>
-                
-                <div class="mt-6 flex items-center text-accent-citrine font-medium group-hover:text-accent-citrine/80 transition-colors duration-200">
-                  <a href={`/blog/${post.slug}/`} class="flex items-center">
-                    Read article
-                    <svg class="ml-2 w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-      
-      <div class="mt-20 flex justify-center">
-        <a href="/blog" class="group inline-flex items-center px-8 py-4 text-base font-semibold text-loud bg-accent-amethyst hover:bg-accent-amethyst/80 rounded-xl shadow-soft hover:shadow-medium hover:shadow-accent-amethyst/20 transition-all duration-300 hover:scale-105">
-          View all articles
-          <svg class="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
+        <a href="/blog" class="text-sm text-[#718096] hover:text-[#d69e2e] transition-colors duration-200 flex items-center gap-2">
+          <span>All articles</span>
+          <span>→</span>
         </a>
       </div>
+      
+      <!-- Articles list -->
+      <div class="space-y-4">
+        {posts?.slice(0, 5).map((post: PostType) => (
+          <article class="group bg-[#1a1a2e] border border-[rgba(255,255,255,0.06)] p-6 sm:p-8 card-hover flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+            <!-- Date -->
+            <div class="sm:w-32 shrink-0">
+              <span class="text-xs text-[#4a5568] font-mono">
+                <FormattedDate date={post.data.pubDate} />
+              </span>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-3 mb-2">
+                {post.data.categories.slice(0, 1).map((item) => (
+                  <span class="text-xs uppercase tracking-[0.1em] text-[#d69e2e]">
+                    {item}
+                  </span>
+                ))}
+              </div>
+              
+              <h3 class="text-lg font-medium text-[#f7f7f5] group-hover:text-[#d69e2e] transition-colors duration-200">
+                <a href={`/blog/${post.slug}/`}>
+                  {post.data.title}
+                </a>
+              </h3>
+              
+              <p class="text-sm text-[#718096] mt-2 line-clamp-1">
+                {post.data.description}
+              </p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="hidden sm:block shrink-0">
+              <svg 
+                class="w-5 h-5 text-[#4a5568] group-hover:text-[#d69e2e] transform group-hover:translate-x-1 transition-all duration-200" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
+  </section>
+
+  <!-- About/Contact Section -->
+  <section class="relative py-24 sm:py-32 noise-texture">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <!-- Left column -->
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-4 block">03</span>
+          <h2 class="text-2xl sm:text-3xl font-medium text-[#f7f7f5] mb-6">
+            About
+          </h2>
+          <div class="prose-industrial text-[#718096]">
+            <p>
+              I'm a software engineer with a background in data science, focused on building 
+              practical products that leverage AI and modern web technologies.
+            </p>
+            <p>
+              After years of research and experimentation in the data world, I transitioned 
+              to full-stack development to create tangible solutions. I believe the future 
+              lies in the thoughtful integration of AI into everyday tools.
+            </p>
+            <p class="text-[#f7f7f5]">
+              Currently based in Paris, working with Vue, Nuxt, TypeScript, and AI APIs.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Right column - Contact -->
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#4a5568] mb-4 block">04</span>
+          <h2 class="text-2xl sm:text-3xl font-medium text-[#f7f7f5] mb-6">
+            Contact
+          </h2>
+          <p class="text-[#718096] mb-8">
+            Open to interesting projects and conversations. Reach out if you want to collaborate 
+            or just chat about technology.
+          </p>
+          
+          <a 
+            href="mailto:contact@example.com" 
+            class="inline-flex items-center gap-3 px-6 py-3 border border-[rgba(255,255,255,0.1)] hover:border-[#d69e2e] transition-colors duration-200"
+          >
+            <span class="text-sm uppercase tracking-[0.15em] text-[#f7f7f5]">Get in touch</span>
+            <span class="text-[#d69e2e]">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom grid line -->
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-[rgba(255,255,255,0.06)]"></div>
   </section>
 </Base>
