@@ -2,35 +2,61 @@
 @plugin '@tailwindcss/typography';
 
 :root {
-  --color-text-body: 55 65 81;
-  --color-text-heading: 31 41 55;
-  --color-text-muted: 107 114 128;
-  --color-text-link: 37 99 235;
-  --color-text-link-hover: 29 78 216;
-  --color-code-bg: 248 250 252;
-  --color-code-text: 30 41 59;
-  --color-pre-bg: 30 41 55;
-  --color-pre-text: 248 250 252;
-  --color-accent: 37 99 235;
-  --color-surface: 255 255 255;
-  --color-surface-secondary: 248 250 252;
-  --color-border: 226 232 240;
-}
-
-.dark {
-  --color-text-body: 203 213 225;
-  --color-text-heading: 248 250 252;
-  --color-text-muted: 148 163 184;
-  --color-text-link: 96 165 250;
-  --color-text-link-hover: 147 197 253;
-  --color-code-bg: 30 41 55;
-  --color-code-text: 226 232 240;
-  --color-pre-bg: 15 23 42;
-  --color-pre-text: 226 232 240;
-  --color-accent: 96 165 250;
-  --color-surface: 15 23 42;
-  --color-surface-secondary: 30 41 55;
-  --color-border: 51 65 85;
+  --black: #01011b;
+  --white: #ffffff;
+  --obsidian: #14141c;
+  --roseQuartz: #f5c0c0;
+  --amethyst: #a477b2;
+  --minsk: #473982;
+  --eggplant: #31263b;
+  --jade: #5cb198;
+  --citrine: #cda849;
+  --opal: #fbf9f9;
+  --violetTopaz: #5f509d;
+  --cement: #717a94;
+  --fg100: #14141c;
+  --fg200: #191820;
+  --fg300: #201d25;
+  --fg400: #252128;
+  --fg500: #2b252c;
+  --fg600: #312a31;
+  --fg700: #3a3138;
+  --fg800: #4c3e44;
+  --fg900: #6a565b;
+  --fg1000: #786065;
+  --fg1100: #99797d;
+  --fg1200: #e3b2b3;
+  --fgA100: rgba(245, 192, 192, 0);
+  --fgA200: rgba(245, 192, 192, 0.026);
+  --fgA300: rgba(245, 192, 192, 0.056);
+  --fgA400: rgba(245, 192, 192, 0.077);
+  --fgA500: rgba(245, 192, 192, 0.103);
+  --fgA600: rgba(245, 192, 192, 0.129);
+  --fgA700: rgba(245, 192, 192, 0.172);
+  --fgA800: rgba(245, 192, 192, 0.249);
+  --fgA900: rgba(245, 192, 192, 0.386);
+  --fgA1000: rgba(245, 192, 192, 0.446);
+  --fgA1100: rgba(245, 192, 192, 0.592);
+  --fgA1200: rgba(245, 192, 192, 0.923);
+  --grid200: #252128;
+  --grid300: #2b252c;
+  --grid400: #312a31;
+  --grid500: #3a3138;
+  --grid600: #4c3e44;
+  --grid700: #6a565b;
+  --grid1200: #e3b2b3;
+  --bg300: #0f0f15;
+  --bg400: #111118;
+  --bg500: #14141c;
+  --fgLoud: #ffffff;
+  --highlightColor: #f5c0c0;
+  --fontColorDEFAULT: #f5c0c0;
+  --fontColorMUTED: #99797d;
+  --fontColorLOUD: #ffffff;
+  --texture-paper-img: url(/images/bkg-noise.webp);
+  --texture-paper-size: 200px 200px;
+  --texture-paper-mixBlendMode: normal;
+  --texture-paper-opacity: 0.0625;
 }
 
 /* Custom scrollbar */
@@ -130,4 +156,31 @@ a {
 .dark .glass {
   background-color: rgba(17, 24, 39, 0.75);
   border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Texture overlay */
+.texture-overlay {
+  position: relative;
+}
+
+.texture-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--texture-paper-img);
+  background-size: var(--texture-paper-size);
+  mix-blend-mode: var(--texture-paper-mixBlendMode);
+  opacity: var(--texture-paper-opacity);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.texture-overlay > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Premium noise texture */
+.noise-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
 }
