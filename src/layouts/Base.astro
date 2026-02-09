@@ -77,7 +77,7 @@ const ogImage = createOgImage({
 
     <ViewTransitions />
   </head>
-  <body class="bg-white dark:bg-zinc-950">
+  <body class="bg-surface texture-overlay noise-texture">
     <Header/>
     <main class="pt-16">
       <slot />
@@ -88,5 +88,7 @@ const ogImage = createOgImage({
       // This is a hack to get vite-plugin-pwa to generate a sw.js file.
       // Do not remove this script tag.
     </script>
+    <!-- Twitter embed script for tweet cards -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </body>
 </html>
