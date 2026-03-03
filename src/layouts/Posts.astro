@@ -41,12 +41,9 @@ type PostType = {
       <div class="flex-1 min-w-0">
         <div class="flex flex-wrap items-center gap-3 mb-2">
           {post.data.categories.slice(0, 1).map((item) => (
-            <a
-              href={`/categories/${slugify(item)}`}
-              class="text-xs uppercase tracking-[0.1em] text-[#d69e2e] hover:text-[#ecc94b] transition-colors duration-200"
-            >
+            <span class="text-xs uppercase tracking-[0.1em] text-[#d69e2e]">
               {item}
-            </a>
+            </span>
           ))}
         </div>
         

@@ -36,12 +36,9 @@ type ProjectType = {
       <!-- Category -->
       <div class="mb-4">
         {project.data.categories.slice(0, 1).map((item) => (
-          <a
-            href={`/categories/${slugify(item)}`}
-            class="text-xs uppercase tracking-[0.15em] text-[#d69e2e] hover:text-[#ecc94b] transition-colors duration-200"
-          >
+          <span class="text-xs uppercase tracking-[0.15em] text-[#d69e2e]">
             {item}
-          </a>
+          </span>
         ))}
       </div>
       

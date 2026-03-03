@@ -1,15 +1,13 @@
 ---
 title: 'allobobo'
 pubDate: '2025-10-02'
-heroImage: '/thumbnails/article.webp'
+heroImage: '/project-images/allobobo/allobobo.gif'
 categories: ['AI', 'Health']
 tags: ['TypeScript', 'React', 'Vite', 'Bun', 'Hono', 'Turbo', 'Qdrant', 'Vercel AI', 'Mistral AI']
 authors: ['Thomas Legrand']
 ---
 
 A Retrieval-Augmented Generation (RAG) chatbot for French health data from Haute Autorité de Santé (HAS). Provides intelligent responses based on processed health data using embeddings and semantic search.
-
-![allobobo](/project-images/allobobo/allobobo.gif)
 
 ## 🚀 Key Features
 

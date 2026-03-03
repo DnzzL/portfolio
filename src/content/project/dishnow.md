@@ -1,44 +1,55 @@
 ---
-title: 'DishNow'
+title: 'DishNow v2'
 pubDate: '2025-10-02'
 github: 'https://github.com/DnzzL/DishNow'
-heroImage: '/thumbnails/article.webp'
-categories: ['Food', 'Social']
-tags: ['Vue', 'Nuxt', 'TypeScript', 'PocketBase', 'Tailwind']
+heroImage: '/project-images/dishnow/dishnow.gif'
+categories: ['Food', 'AI']
+tags: ['Vue', 'Nuxt', 'TypeScript', 'PocketBase', 'Tailwind', 'AI', 'Mistral']
 authors: ['Thomas Legrand']
 ---
 
-It was my first Vue/Nuxt project ever that I made to learn for my recently joined company at the time for my first time as official web dev. The naive idea was to build the "Strava for food", meaning bringing social interactions to recipe saving and sharing.
+An AI-powered recipe management and meal planning application that generates recipes, plans meals, and creates shopping lists automatically. Built with Nuxt 4, TypeScript, and Mistral AI integration.
 
 ## 🚀 Key Features
 
-- **🔐 Secure Authentication**: User registration, login, and profile management with PocketBase
-- **📝 Recipe Management**: Create, edit, delete, and share detailed recipes with step-by-step instructions
-- **🍽️ Dish Discovery**: Browse and explore dishes with rich media support
-- **⭐ Rating System**: Comprehensive rating and review functionality for recipes and dishes
-- **❤️ Social Interactions**: Like, comment, and engage with community content
-- **🔍 Advanced Search**: Powerful search capabilities across recipes, dishes, and users
-- **📱 Responsive Design**: Mobile-first approach with adaptive layouts
-- **🌐 Recipe Import**: Automated scraping from popular culinary sites (750g, Marmiton, Journal des Femmes, etc.)
-- **⚡ Real-Time Updates**: Live notifications and dynamic content updates
-- **🎨 Modern UI**: Sleek interface built with Nuxt UI and DaisyUI components
+- **🤖 AI Recipe Creation**: Conversational AI interface for generating custom recipes using Mistral AI
+- **🖼️ AI Recipe Extraction**: Automatically extract recipes from URLs and images using AI vision
+- **📝 Recipe Management**: Create, edit, and organize recipes with detailed ingredients and instructions
+- **🛒 AI Shopping Lists**: Generate shopping lists from recipes with intelligent ingredient aggregation
+- **📅 AI Meal Planning**: Plan meals with AI-powered suggestions and automatic shopping list generation
+- **🔍 AI-Powered Search**: Find recipes using AI-powered filters and smart matching
+- **📚 Recipe Collections**: Organize recipes into custom collections
+- **🔐 User Authentication**: Secure user management with PocketBase
+- **💚 Supporter System**: Pay-what-you-want contributions to support development
+- **📱 Mobile Apps**: iOS and Android apps via Capacitor
 
 ## 🏗️ Architecture Highlights
 
 ### Frontend
 
-- **Nuxt 3**: Leverages server-side rendering, static generation, and API routes for optimal performance
-- **Vue 3 Composition API**: Modern reactive programming with TypeScript for type safety
-- **Nuxt UI + DaisyUI**: Consistent, accessible component library with Tailwind CSS
-- **XState Machines**: Finite state machines for complex recipe creation workflows
+- **Nuxt 4**: Modern Vue framework with SSR/SPA capabilities
+- **Vue 3 Composition API**: Modern reactive programming with TypeScript
+- **Nuxt UI**: Beautiful, accessible UI components with Tailwind CSS
+- **TanStack Vue Query**: Advanced data fetching and caching
+- **Pinia**: Client state management
+- **Zod Schemas**: Type-safe data validation and inference
 
 ### Backend
 
-- **PocketBase**: Open-source backend-as-a-service providing real-time database, authentication, and file storage
-- **Custom API Routes**: Server-side endpoints for recipe scraping and data processing
+- **PocketBase**: Self-hosted backend with real-time database, authentication, and file storage
+- **SQLite**: Database engine via PocketBase
+- **Real-time Subscriptions**: Live data updates
+
+### AI Integration
+
+- **Vercel AI SDK**: AI model integration
+- **Mistral AI**: Large language model for recipe generation
+- **Google AI**: Additional AI model support
 
 ### Development & Deployment
 
-- **TypeScript**: End-to-end type safety across the application
-- **Bun**: High-performance JavaScript runtime for development and building
-- **Docker**: Containerized deployment for consistent environments
+- **TypeScript**: Full type safety across the entire stack
+- **Turborepo**: Optimized monorepo build system
+- **Bun**: High-performance package manager and runtime
+- **Capacitor**: Cross-platform mobile apps (iOS/Android)
+- **Docker**: Containerized deployment

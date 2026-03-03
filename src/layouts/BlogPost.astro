@@ -31,12 +31,9 @@ const { title, description, pubDate, heroImage, categories, tags } = Astro.props
           </span>
           {categories?.map((category) => (
             <span>•</span>
-            <a 
-              href={`/categories/${slugify(category)}`} 
-              class="hover:text-[#d69e2e] transition-colors duration-200"
-            >
+            <span class="text-[#718096]">
               {category}
-            </a>
+            </span>
           ))}
         </div>
         
@@ -75,22 +72,19 @@ const { title, description, pubDate, heroImage, categories, tags } = Astro.props
         <slot />
       </div>
       
-      <!-- Tags -->
-      {tags && tags.length > 0 && (
-        <div class="mt-16 pt-8 border-t border-[rgba(255,255,255,0.06)]">
-          <div class="flex flex-wrap items-center gap-3">
-            <span class="text-xs uppercase tracking-[0.1em] text-[#4a5568]">Tags:</span>
-            {tags?.map((tag) => (
-              <a
-                href={`/tags/${slugify(tag)}`}
-                class="text-xs text-[#718096] hover:text-[#d69e2e] transition-colors duration-200"
-              >
-                #{tag}
-              </a>
-            ))}
+        <!-- Tags -->
+        {tags && tags.length > 0 && (
+          <div class="mt-16 pt-8 border-t border-[rgba(255,255,255,0.06)]">
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="text-xs uppercase tracking-[0.1em] text-[#4a5568]">Tags:</span>
+              {tags?.map((tag) => (
+                <span class="text-xs text-[#718096]">
+                  #{tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   </article>
 </Base>
