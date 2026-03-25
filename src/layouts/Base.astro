@@ -78,6 +78,12 @@ const ogImage = createOgImage({
     ></script>
 
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={config.site.title}
+      href={new URL("rss.xml", Astro.site).href}
+    />
 
     <ViewTransitions />
   </head>
