@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" rx="12"/>
+  
+  <!-- Abstract interconnected nodes -->
+  <g opacity="0.8">
+    <circle cx="400" cy="250" r="80" fill="url(#grad)" />
+    <circle cx="800" cy="250" r="80" fill="#10b981" />
+    <circle cx="600" cy="400" r="80" fill="#f59e0b" />
+    
+    <!-- Connecting lines -->
+    <line x1="400" y1="250" x2="800" y2="250" stroke="#94a3b8" stroke-width="8" stroke-dasharray="20,10"/>
+    <line x1="400" y1="250" x2="600" y2="400" stroke="#94a3b8" stroke-width="8" stroke-dasharray="20,10"/>
+    <line x1="800" y1="250" x2="600" y2="400" stroke="#94a3b8" stroke-width="8" stroke-dasharray="20,10"/>
+    
+    <!-- Icons inside circles -->
+    <text x="400" y="260" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48">⏰</text>
+    <text x="800" y="260" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48">🤖</text>
+    <text x="600" y="410" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48">⚡</text>
+  </g>
+  
+  <!-- Subtle text -->
+  <text x="600" y="550" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="36" font-weight="bold">
+    Hermes Agent • Automation
+  </text>
+</svg>
