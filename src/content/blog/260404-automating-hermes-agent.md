@@ -15,7 +15,7 @@ That changed when I discovered [Hermes Agent](https://github.com/NousResearch/He
 
 ## Why Hermes?
 
-I've been a fan of Nous Research's models for local inference, so when I saw they were building an agent framework, I wanted to give it a try. The Nix‑first approach meant I could define my entire setup declaratively, version it, and deploy it anywhere. (My configuration is available in [hermes‑agent‑provision](https://github.com/DnzzL/hermes‑agent‑provision), though I'm not yet using llama.cpp for the agent itself.)
+The Nix‑first approach meant I could define my entire setup declaratively, version it, and deploy it anywhere. (My configuration is available in [hermes‑agent‑provision](https://github.com/DnzzL/hermes‑agent‑provision).)
 
 The real breakthrough was **Discord integration**. I already spend most of my day in Discord — for work, communities, and friends. Having an assistant that lives in a channel, ready to respond to a ping, meant I didn't need another app, another tab, or another login. It's just there, accessible from my phone, my laptop, anywhere. This "trigger and forget" mindset became central to how I use Hermes.
 
@@ -53,6 +53,139 @@ For the technically curious, here's how it works:
 *   **Persistent Memory** — The agent maintains a user profile and memory store across sessions, so it knows my allergies, learning goals, and even my preference for a slightly sarcastic tone in certain Discord threads.
 
 It's not magic — it's a well‑designed harness that turns a capable LLM into a reliable, autonomous tool.
+
+## Infrastructure‑as‑Code with Terranix
+
+I manage my Hetzner Cloud server via **Terranix**, a Nix‑native Terraform generator. Instead of writing `.tf` files, I define the entire cloud stack in a Nix module:
+
+```nix
+# terraform/config.nix
+{ ... }:
+
+{
+  terraform.required_providers.hcloud = {
+    source  = "hetznercloud/hcloud";
+    version = "~> 1.49";
+  };
+
+  variable.hcloud_token {
+    description = "Hetzner Cloud API token";
+    type        = "string";
+    sensitive   = true;
+  };
+
+  provider.hcloud.token="\${var.hcloud_token}";
+
+  resource.hcloud_ssh_key.deployer = {
+    name       = "deployer";
+    public_key = "ssh‑ed25519 AAAA…"; # Your public key
+  };
+
+  resource.hcloud_server.null‑claw = {
+    name        = "null‑claw";
+    server_type = "cx33";          # 8 vCPU, 16 GB RAM
+    location    = "nbg1";
+    image       = "debian‑12";
+    ssh_keys    = [ "\${hcloud_ssh_key.deployer.id}" ];
+  };
+
+  output.server_ip = {
+    value       = "\${hcloud_server.null‑claw.ipv4_address}";
+    description = "Public IPv4 address";
+  };
+}
+```
+
+The flake wraps Terraform with three simple commands:
+
+```bash
+nix run .#provision   # Creates the server
+nix run .#deploy      # Installs NixOS via nixos‑anywhere
+nix run .#destroy     # Tears everything down
+```
+
+No manual Terraform steps, no scattered state files—just pure Nix.
+
+## Local LLM with llama.cpp
+
+Once the server is up, a systemd oneshot service downloads the GGUF model before llama‑cpp starts:
+
+```nix
+# nixos/configuration.nix (excerpt)
+systemd.services.download‑llm‑model = {
+  description = "Download Qwen3.5‑0.8B GGUF model";
+  wantedBy    = [ "multi‑user.target" ];
+  before      = [ "llama‑cpp.service" ];
+  serviceConfig = {
+    Type            = "oneshot";
+    RemainAfterExit = true;
+    User            = "root";
+    ExecStart = pkgs.writeShellScript "download‑llm‑model" ''
+      set ‑euo pipefail
+      MODEL_DIR="/var/lib/llama‑cpp/models"
+      MODEL_FILE="$MODEL_DIR/Qwen3.5‑0.8B.Q4_K_M.gguf"
+      if [ -f "$MODEL_FILE" ]; then
+        echo "Model already exists, skipping download."
+        exit 0
+      fi
+      mkdir ‑p "$MODEL_DIR"
+      echo "Downloading Qwen3.5‑0.8B.Q4_K_M.gguf (~527 MB)..."
+      ${pkgs.curl}/bin/curl ‑L ‑‑retry 5 ‑‑retry‑delay 10 \
+        ‑o "$MODEL_FILE.tmp" \
+        "https://huggingface.co/…/Qwen3.5‑0.8B.Q4_K_M.gguf"
+      mv "$MODEL_FILE.tmp" "$MODEL_FILE"
+      echo "Download complete."
+    '';
+  };
+};
+
+services.llama‑cpp = {
+  enable     = true;
+  model      = "/var/lib/llama‑cpp/models/Qwen3.5‑0.8B.Q4_K_M.gguf";
+  host       = "127.0.0.1";
+  port       = 8080;
+  extraFlags = [ "‑‑ctx‑size" "64000" "‑‑n‑predict" "‑1" ];
+};
+```
+
+This gives me an **OpenAI‑compatible API endpoint** at `http://127.0.0.1:8080/v1`. The model is a distilled Qwen‑3.5‑0.8B that’s surprisingly capable for its size, fine‑tuned for reasoning.
+
+## Hermes‑agent Wired to the Local LLM
+
+With llama‑cpp serving the model, configuring hermes‑agent is a one‑liner in the model settings:
+
+```nix
+# nixos/hermes.nix
+services.hermes‑agent = {
+  enable = true;
+  addToSystemPackages = true;
+
+  settings.model = {
+    default  = "Qwen3.5‑0.8B";
+    base_url = "http://127.0.0.1:8080/v1";
+  };
+
+  environment = {
+    DISCORD_REQUIRE_MENTION = "true";
+    DISCORD_IGNORE_NO_MENTION = "true";
+  };
+
+  restart = "on‑failure";
+  restartSec = 15;
+};
+```
+
+Secrets (Discord bot token, allowed‑user IDs) are encrypted with **sops‑nix** and injected as an `EnvironmentFile` at boot—never touching the Nix store.
+
+## Why This Stack Works
+
+- **Terranix** keeps infrastructure definition type‑safe and reproducible.
+- **llama.cpp** provides a zero‑fuss local inference endpoint that hermes‑agent can treat as “OpenAI”.
+- **sops‑nix** ensures secrets stay encrypted in the repo and are only decrypted on the target server.
+- The whole deployment is a single flake with two commands (`provision` + `deploy`).
+
+The result: a personal AI assistant that runs on my own hardware, answers in Discord, and costs about €14/month on Hetzner—with no external API fees.
+
 
 ## From Skeptic to Daily User
 
