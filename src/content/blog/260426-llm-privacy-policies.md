@@ -3,7 +3,7 @@ title: "LLM Privacy Policies Compared: What Data Do Providers Keep — and Can T
 description: "A deep dive into the privacy policies of ChatGPT, Claude, Gemini, Mistral, Qwen, DeepSeek, and Proton Lumo — comparing chat vs API, free vs paid."
 pubDate: '2026-04-26'
 categories: ['AI', 'Privacy', 'Comparison']
-heroImage: '/thumbnails/llm-privacy.svg'
+heroImage: '/thumbnails/llm-privacy.jpg'
 tags: ['AI', 'Privacy', 'LLM', 'Data Protection', 'OpenAI', 'Anthropic', 'Google', 'Mistral', 'Proton']
 ---
 
