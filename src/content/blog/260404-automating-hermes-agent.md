@@ -2,6 +2,7 @@
 title: "Automating My Daily Life with Hermes Agent"
 description: "How I went from skeptical to relying on an AI assistant for daily routines"
 pubDate: '2026-04-04'
+updatedDate: '2026-04-28'
 categories: ['Automation', 'AI', 'Self‑Hosting']
 heroImage: '/thumbnails/hermes-agent.svg'
 tags: ['AI', 'Automation', 'Nix', 'Discord', 'Self‑Hosting']
@@ -24,13 +25,13 @@ The real breakthrough was **Discord integration**. I already spend most of my da
 So what does an AI assistant in Discord actually do? For me, it's about automating the small, repetitive tasks that tend to slip through the cracks:
 
 ### 1. Learning the French Boat License
-I'm currently studying for the *permis bateau côtier* (French coastal boat license). Every evening at 7 PM Paris time, Hermes sends me three random concepts from the curriculum in the `#permis‑bateau` channel. No more "I should review something today" — the reminder is just there, consistently, every day.
+I'm currently studying for the *permis bateau côtier* (French coastal boat license). Every evening at 7 PM Paris time, Hermes sends me three random concepts from the curriculum in the `#permis‑bateau` channel. No more "I should review something today" — the reminder is just there, consistently, every day.
 
 ### 2. Pollen Monitoring
 Living in Nice means dealing with seasonal allergies. Hermes checks [lachainemeteo.com](https://www.lachainemeteo.com) every morning for cypress, birch, and grass pollen levels. If any exceed my threshold, I get an alert. If levels are safe, it stays silent. It's the perfect balance of information without noise.
 
 ### 3. Daily Tech News Briefing
-At 8 AM Paris time, Hermes scrapes Hacker News, TechCrunch, and The Verge, filters for my interests (AI/LLMs, TypeScript/Go/Rust/Zig, cybersecurity, science, acquisitions, open source), and delivers a curated top‑10 digest to my `#daily‑brief` channel. I stay informed without the endless scrolling.
+At 8 AM Paris time, Hermes scrapes Hacker News, TechCrunch, and The Verge, filters for my interests (AI/LLMs, TypeScript/Go/Rust/Zig, cybersecurity, science, acquisitions, open source), and delivers a curated top‑10 digest to my `#daily‑brief` channel. I stay informed without the endless scrolling.
 
 ### 4. Quick Code Changes and Checks
 Need to update a config file, run a script, or check logs? Instead of SSHing into a server, I just ask Hermes. It's like having a pair of hands on the machine 24/7, ready to handle small tasks without interrupting my flow.
@@ -148,7 +149,7 @@ services.llama‑cpp = {
 };
 ```
 
-This gives me an **OpenAI‑compatible API endpoint** at `http://127.0.0.1:8080/v1`. The model is a distilled Qwen‑3.5‑0.8B that’s surprisingly capable for its size, fine‑tuned for reasoning.
+This gives me an **OpenAI‑compatible API endpoint** at `http://127.0.0.1:8080/v1`. The model is a distilled Qwen‑3.5‑0.8B that's surprisingly capable for its size, fine‑tuned for reasoning.
 
 ## Hermes‑agent Wired to the Local LLM
 
@@ -180,18 +181,67 @@ Secrets (Discord bot token, allowed‑user IDs) are encrypted with **sops‑nix*
 ## Why This Stack Works
 
 - **Terranix** keeps infrastructure definition type‑safe and reproducible.
-- **llama.cpp** provides a zero‑fuss local inference endpoint that hermes‑agent can treat as “OpenAI”.
+- **llama.cpp** provides a zero‑fuss local inference endpoint that hermes‑agent can treat as "OpenAI".
 - **sops‑nix** ensures secrets stay encrypted in the repo and are only decrypted on the target server.
 - The whole deployment is a single flake with two commands (`provision` + `deploy`).
 
 The result: a personal AI assistant that runs on my own hardware, answers in Discord, and costs about €14/month on Hetzner—with no external API fees.
 
+## What's New Since I Wrote This
+
+A lot has happened in the three weeks since I first published this post. Hermes Agent has shipped **v0.9.0, v0.10.0, and v0.11.0** — roughly 1,500 commits and 760+ merged PRs. Here are the additions that matter most for my setup:
+
+### Profiles
+
+I can now run multiple independent Hermes instances with isolated configs, sessions, skills, and memory. This means I can have a personal profile for my daily automations and a separate work profile — or spin up throwaway profiles for experiments without risking my main config.
+
+```bash
+hermes profile create experiment
+hermes profile use experiment
+```
+
+### Backup & Restore
+
+Hermes now has built-in backup and restore. I schedule a daily cron job that snapshots everything — config, sessions, skills, memory — and cleans up anything older than a week. Migration between machines is just an import away.
+
+```bash
+hermes backup -l auto-daily   # Creates a labeled snapshot
+hermes import backup.zip       # Restores on another machine
+```
+
+### Shell Hooks
+
+I can wire any shell script into Hermes lifecycle events — `pre_tool_call`, `post_tool_call`, `on_session_start` — without writing a Python plugin. This is perfect for Nix users: I can trigger `nixos-rebuild` hooks, log rotations, or custom health checks as native shell scripts.
+
+### /steer — Mid-Run Agent Nudges
+
+The `/steer <prompt>` command injects a note that the running agent sees after its next tool call, without interrupting the turn or breaking prompt cache. If I notice the agent going off track on a long task, I can course-correct it in-flight instead of starting over.
+
+### Orchestrator Subagents
+
+The `delegate_task` tool now supports an explicit `orchestrator` role that can spawn its own workers, with configurable `max_spawn_depth`. Concurrent sibling subagents share filesystem state through a file-coordination layer, so they don't clobber each other's edits. This means I can give Hermes a complex multi-step job and it'll coordinate the parallel work itself.
+
+### Ink-Based TUI
+
+The interactive CLI got a full React/Ink rewrite (`hermes --tui`). Sticky composer, live streaming, a status bar with per-turn stopwatch and git branch, and a subagent spawn observability overlay. It looks like something out of a cyberpunk terminal and it's genuinely pleasant to use for extended sessions.
+
+### Transport Layer Abstraction + AWS Bedrock
+
+The format conversion and HTTP transport were extracted into a pluggable `agent/transports/` layer with `AnthropicTransport`, `ChatCompletionsTransport`, `ResponsesApiTransport`, and `BedrockTransport`. Native AWS Bedrock support ships on top of this abstraction. For me, this means the infrastructure is cleaner and I could route to Bedrock if I ever need it.
+
+### Expanded Plugin System
+
+Plugins can now register slash commands, dispatch tools, block tool execution from hooks, rewrite tool results, transform terminal output, ship image_gen backends, and add custom dashboard tabs. The web dashboard is also extensible with third-party tabs and a live theme switching system.
+
+### More Providers, More Platforms
+
+Hermes now supports **17 messaging platforms** (QQBot joined the roster) and 20+ model providers including NVIDIA NIM, Arcee AI, Vercel ai-gateway, and GPT-5.5 via ChatGPT Codex OAuth. The model picker does live discovery so new releases show up without catalog updates.
 
 ## From Skeptic to Daily User
 
 I've gone from eye‑rolling at AI‑assistant hype to genuinely relying on one daily. The value isn't in having something that can write a poem or summarize an article — it's in **offloading mental overhead** to a system that never forgets, never gets bored, and is always a message away.
 
-Hermes Agent made this real for me in a way that aligns with my workflow and infrastructure preferences. It's not a magic bullet — you still need to define what you want automated, write the skills, and set up the cron jobs. But once you do, it just works.
+Hermes Agent made this real for me in a way that aligns with my workflow and infrastructure preferences. It's not a magic bullet — you still need to define what you want automated, write the skills, and set up the cron jobs. But once you do, it just works. And the pace of development means it keeps getting better every week.
 
 If you're tired of manual reminders, scattered scripts, and constant context‑switching between apps, consider giving an agent a try. Start with one small cron job — checking the weather, sending a daily quote, backing up a file — and see how it feels.
 
