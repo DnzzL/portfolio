@@ -48,7 +48,7 @@ The agent remembers my preferences (stored in persistent memory), learns from co
 
 For the technically curious, here's how it works:
 
-*   **Nix Configuration** — Everything is defined in a Nix module, from the agent's model (I'm using DeepSeek‑Reasoner via a custom provider) to cron schedules and Discord webhook targets. It's reproducible and version‑controlled.
+*   **Nix Flake** — Everything is defined declaratively: the agent's model (qwen3.6‑plus via DashScope's OpenAI‑compatible endpoint), compression settings, auxiliary models for vision/search/skills, and Discord webhook targets. It's reproducible and version‑controlled.
 *   **Skills** — Each recurring task is a skill: a Markdown file with step‑by‑step instructions, pitfalls, and verification steps. The agent loads them as needed.
 *   **Cron Jobs** — Hermes includes a built‑in cron system that lets you schedule any prompt (with or without skills) and deliver output to Discord, local files, or other platforms.
 *   **Persistent Memory** — The agent maintains a user profile and memory store across sessions, so it knows my allergies, learning goals, and even my preference for a slightly sarcastic tone in certain Discord threads.
@@ -61,38 +61,41 @@ I manage my Hetzner Cloud server via **Terranix**, a Nix‑native Terraform gene
 
 ```nix
 # terraform/config.nix
-{ ... }:
+{ config, ... }:
 
+let
+  sshConfig = import ../lib/ssh.nix;
+in
 {
   terraform.required_providers.hcloud = {
     source  = "hetznercloud/hcloud";
     version = "~> 1.49";
   };
 
-  variable.hcloud_token {
+  variable.hcloud_token = {
     description = "Hetzner Cloud API token";
     type        = "string";
     sensitive   = true;
   };
 
-  provider.hcloud.token="\${var.hcloud_token}";
+  provider.hcloud.token = "\${var.hcloud_token}";
 
   resource.hcloud_ssh_key.deployer = {
     name       = "deployer";
-    public_key = "ssh‑ed25519 AAAA…"; # Your public key
+    public_key = sshConfig.sshPublicKey;
   };
 
-  resource.hcloud_server.null‑claw = {
-    name        = "null‑claw";
-    server_type = "cx33";          # 8 vCPU, 16 GB RAM
+  resource.hcloud_server.null-claw = {
+    name        = "null-claw";
+    server_type = "cx33";
     location    = "nbg1";
-    image       = "debian‑12";
+    image       = "debian-12";
     ssh_keys    = [ "\${hcloud_ssh_key.deployer.id}" ];
   };
 
   output.server_ip = {
-    value       = "\${hcloud_server.null‑claw.ipv4_address}";
-    description = "Public IPv4 address";
+    value       = "\${hcloud_server.null-claw.ipv4_address}";
+    description = "Public IPv4 address of the null-claw server";
   };
 }
 ```
@@ -100,142 +103,154 @@ I manage my Hetzner Cloud server via **Terranix**, a Nix‑native Terraform gene
 The flake wraps Terraform with three simple commands:
 
 ```bash
-nix run .#provision   # Creates the server
-nix run .#deploy      # Installs NixOS via nixos‑anywhere
+nix run .#provision   # Creates the server (with smart SSH key import)
+nix run .#deploy      # Installs NixOS via nixos-anywhere (wipes disk)
+nix run .#update      # Updates in-place (preserves crons, memories, state)
 nix run .#destroy     # Tears everything down
 ```
 
-No manual Terraform steps, no scattered state files—just pure Nix.
+The `provision` command even handles the edge case where the SSH key already exists in Hetzner under a different name — it fingerprints the key, finds the matching Hetzner ID, and imports it into Terraform state before applying. No duplicate key errors.
+
+The `update` command is the one I actually use day-to-day: it builds the new closure locally, copies it to the remote, and runs `nixos-rebuild switch` — preserving all cron jobs, memories, and session state.
+
+## Disk Partitioning with Disko
+
+Disk layout is handled by **disko**, also declared in Nix:
+
+```nix
+# nixos/disko.nix
+{ ... }:
+
+{
+  disko.devices.disk.main = {
+    type   = "disk";
+    device = "/dev/sda";
+    content = {
+      type = "gpt";
+      partitions = {
+        boot = {
+          size     = "1M";
+          type     = "EF02";
+          priority = 1;
+        };
+        ESP = {
+          size    = "512M";
+          type    = "EF00";
+          content = {
+            type       = "filesystem";
+            format     = "vfat";
+            mountpoint = "/boot";
+          };
+        };
+        root = {
+          size    = "100%";
+          content = {
+            type       = "filesystem";
+            format     = "ext4";
+            mountpoint = "/";
+          };
+        };
+      };
+    };
+  };
+}
+```
+
+No manual partitioning, no scattered state files—just pure Nix.
 
 ## Local LLM with llama.cpp
 
-Once the server is up, a systemd oneshot service downloads the GGUF model before llama‑cpp starts:
+For lighter tasks, I run llama-cpp locally via the NixOS module. It pulls the model directly from Hugging Face — no manual download scripts needed:
 
 ```nix
 # nixos/configuration.nix (excerpt)
-systemd.services.download‑llm‑model = {
-  description = "Download Qwen3.5‑0.8B GGUF model";
-  wantedBy    = [ "multi‑user.target" ];
-  before      = [ "llama‑cpp.service" ];
-  serviceConfig = {
-    Type            = "oneshot";
-    RemainAfterExit = true;
-    User            = "root";
-    ExecStart = pkgs.writeShellScript "download‑llm‑model" ''
-      set ‑euo pipefail
-      MODEL_DIR="/var/lib/llama‑cpp/models"
-      MODEL_FILE="$MODEL_DIR/Qwen3.5‑0.8B.Q4_K_M.gguf"
-      if [ -f "$MODEL_FILE" ]; then
-        echo "Model already exists, skipping download."
-        exit 0
-      fi
-      mkdir ‑p "$MODEL_DIR"
-      echo "Downloading Qwen3.5‑0.8B.Q4_K_M.gguf (~527 MB)..."
-      ${pkgs.curl}/bin/curl ‑L ‑‑retry 5 ‑‑retry‑delay 10 \
-        ‑o "$MODEL_FILE.tmp" \
-        "https://huggingface.co/…/Qwen3.5‑0.8B.Q4_K_M.gguf"
-      mv "$MODEL_FILE.tmp" "$MODEL_FILE"
-      echo "Download complete."
-    '';
-  };
-};
-
-services.llama‑cpp = {
+services.llama-cpp = {
   enable     = true;
-  model      = "/var/lib/llama‑cpp/models/Qwen3.5‑0.8B.Q4_K_M.gguf";
+  model      = null;  # No local path — uses --hf-repo instead
   host       = "127.0.0.1";
   port       = 8080;
-  extraFlags = [ "‑‑ctx‑size" "64000" "‑‑n‑predict" "‑1" ];
+  extraFlags = [
+    "--hf-repo" "unsloth/Qwen3.5-0.8B-GGUF:UD-Q4_K_XL"
+    "--threads" "4"
+    "--batch-size" "512"
+    "--mlock"
+    "--ctx-size" "64000"
+    "--n-predict" "-1"
+  ];
 };
 ```
 
-This gives me an **OpenAI‑compatible API endpoint** at `http://127.0.0.1:8080/v1`. The model is a distilled Qwen‑3.5‑0.8B that's surprisingly capable for its size, fine‑tuned for reasoning.
+This gives me an **OpenAI‑compatible API endpoint** at `http://127.0.0.1:8080/v1`. The model is the Qwen‑3.5‑0.8B in UD-Q4_K_XL quantization — surprisingly capable for its size.
 
-## Hermes‑agent Wired to the Local LLM
+## Hermes‑agent Wired to DashScope
 
-With llama‑cpp serving the model, configuring hermes‑agent is a one‑liner in the model settings:
+My main model runs via DashScope's OpenAI‑compatible endpoint, not locally. The hermes-agent config reflects that:
 
 ```nix
 # nixos/hermes.nix
-services.hermes‑agent = {
-  enable = true;
-  addToSystemPackages = true;
+{ config, ... }:
 
-  settings.model = {
-    default  = "Qwen3.5‑0.8B";
-    base_url = "http://127.0.0.1:8080/v1";
+{
+  services.hermes-agent = {
+    enable = true;
+    addToSystemPackages = true;
+
+    settings = {
+      model = {
+        base_url = "https://coding-intl.dashscope.aliyuncs.com/v1";
+        default = "qwen3.6-plus";
+      };
+      compression = {
+        enabled = true;
+        threshold = 0.85;
+        target_ratio = 0.20;
+        protect_last_n = 20;
+      };
+      auxiliary = {
+        compression = { model = "qwen3.6-plus"; provider = "main"; };
+        vision      = { model = "qwen3.6-plus"; base_url = "..."; };
+        web_extract = { model = "qwen3.6-plus"; base_url = "..."; };
+        session_search = { model = "qwen3.6-plus"; base_url = "..."; };
+        skills_hub  = { model = "qwen3.6-plus"; base_url = "..."; };
+        mcp         = { model = "qwen3.6-plus"; base_url = "..."; };
+      };
+      toolsets = [ "all" ];
+      max_turns = 100;
+    };
+
+    environment = {
+      DISCORD_REQUIRE_MENTION = "false";
+      DISCORD_IGNORE_NO_MENTION = "true";
+      DISCORD_HOME_CHANNEL_ID = "827252213880586243";
+    };
+
+    restart = "on-failure";
+    restartSec = 15;
   };
 
-  environment = {
-    DISCORD_REQUIRE_MENTION = "true";
-    DISCORD_IGNORE_NO_MENTION = "true";
+  # Secrets merged into Hermes' .env at activation
+  sops.defaultSopsFile = ../secrets/hermes-discord.yaml;
+  sops.secrets.discord_bot_token = {};
+  sops.secrets.discord_allowed_users = {};
+  sops.secrets.dashscope_api_key = {};
+
+  sops.templates."hermes-env" = {
+    content = ''
+      DISCORD_BOT_TOKEN=${config.sops.placeholder.discord_bot_token}
+      DISCORD_ALLOWED_USERS=${config.sops.placeholder.discord_allowed_users}
+      OPENAI_API_KEY=${config.sops.placeholder.dashscope_api_key}
+    '';
   };
-
-  restart = "on‑failure";
-  restartSec = 15;
-};
+}
 ```
 
-Secrets (Discord bot token, allowed‑user IDs) are encrypted with **sops‑nix** and injected as an `EnvironmentFile` at boot—never touching the Nix store.
+Key details:
 
-## Why This Stack Works
-
-- **Terranix** keeps infrastructure definition type‑safe and reproducible.
-- **llama.cpp** provides a zero‑fuss local inference endpoint that hermes‑agent can treat as "OpenAI".
-- **sops‑nix** ensures secrets stay encrypted in the repo and are only decrypted on the target server.
-- The whole deployment is a single flake with two commands (`provision` + `deploy`).
-
-The result: a personal AI assistant that runs on my own hardware, answers in Discord, and costs about €14/month on Hetzner—with no external API fees.
-
-## What's New Since I Wrote This
-
-A lot has happened in the three weeks since I first published this post. Hermes Agent has shipped **v0.9.0, v0.10.0, and v0.11.0** — roughly 1,500 commits and 760+ merged PRs. Here are the additions that matter most for my setup:
-
-### Profiles
-
-I can now run multiple independent Hermes instances with isolated configs, sessions, skills, and memory. This means I can have a personal profile for my daily automations and a separate work profile — or spin up throwaway profiles for experiments without risking my main config.
-
-```bash
-hermes profile create experiment
-hermes profile use experiment
-```
-
-### Backup & Restore
-
-Hermes now has built-in backup and restore. I schedule a daily cron job that snapshots everything — config, sessions, skills, memory — and cleans up anything older than a week. Migration between machines is just an import away.
-
-```bash
-hermes backup -l auto-daily   # Creates a labeled snapshot
-hermes import backup.zip       # Restores on another machine
-```
-
-### Shell Hooks
-
-I can wire any shell script into Hermes lifecycle events — `pre_tool_call`, `post_tool_call`, `on_session_start` — without writing a Python plugin. This is perfect for Nix users: I can trigger `nixos-rebuild` hooks, log rotations, or custom health checks as native shell scripts.
-
-### /steer — Mid-Run Agent Nudges
-
-The `/steer <prompt>` command injects a note that the running agent sees after its next tool call, without interrupting the turn or breaking prompt cache. If I notice the agent going off track on a long task, I can course-correct it in-flight instead of starting over.
-
-### Orchestrator Subagents
-
-The `delegate_task` tool now supports an explicit `orchestrator` role that can spawn its own workers, with configurable `max_spawn_depth`. Concurrent sibling subagents share filesystem state through a file-coordination layer, so they don't clobber each other's edits. This means I can give Hermes a complex multi-step job and it'll coordinate the parallel work itself.
-
-### Ink-Based TUI
-
-The interactive CLI got a full React/Ink rewrite (`hermes --tui`). Sticky composer, live streaming, a status bar with per-turn stopwatch and git branch, and a subagent spawn observability overlay. It looks like something out of a cyberpunk terminal and it's genuinely pleasant to use for extended sessions.
-
-### Transport Layer Abstraction + AWS Bedrock
-
-The format conversion and HTTP transport were extracted into a pluggable `agent/transports/` layer with `AnthropicTransport`, `ChatCompletionsTransport`, `ResponsesApiTransport`, and `BedrockTransport`. Native AWS Bedrock support ships on top of this abstraction. For me, this means the infrastructure is cleaner and I could route to Bedrock if I ever need it.
-
-### Expanded Plugin System
-
-Plugins can now register slash commands, dispatch tools, block tool execution from hooks, rewrite tool results, transform terminal output, ship image_gen backends, and add custom dashboard tabs. The web dashboard is also extensible with third-party tabs and a live theme switching system.
-
-### More Providers, More Platforms
-
-Hermes now supports **17 messaging platforms** (QQBot joined the roster) and 20+ model providers including NVIDIA NIM, Arcee AI, Vercel ai-gateway, and GPT-5.5 via ChatGPT Codex OAuth. The model picker does live discovery so new releases show up without catalog updates.
+- Using `OPENAI_API_KEY` env var to force the OpenAI-compatible client, which respects the custom `base_url`.
+- **Compression** is enabled with an 85% threshold — the context gets compressed before it hits the limit, protecting the last 20 messages.
+- **Auxiliary models** handle compression, vision, web extraction, session search, skills hub lookups, and MCP — all running on the same DashScope endpoint.
+- **Three secrets** (Discord bot token, allowed user IDs, DashScope API key) are encrypted with **sops‑nix** and injected as an `.env` file at activation — never touching the Nix store.
+- `DISCORD_REQUIRE_MENTION = "false"` means Hermes responds in its home channel without needing a `@mention`.
 
 ## From Skeptic to Daily User
 
