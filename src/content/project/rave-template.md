@@ -119,7 +119,7 @@ async function getTodos(): Promise<Todo[]> {
 
 ```bash
 # Clone
-git clone https://github.com/yourusername/rave-template.git
+git clone https://github.com/DnzzL/rave-template.git
 cd rave-template
 
 # Enter dev environment
@@ -158,7 +158,7 @@ No Docker required. No Nginx config. Axum serves the `dist/` folder as static fi
 
 ## 🔐 Authentication
 
-Need auth? See **[AUTH.md](https://github.com/yourusername/rave-template/blob/main/AUTH.md)** for a complete guide:
+Need auth? See **[AUTH.md](https://github.com/DnzzL/rave-template/blob/main/AUTH.md)** for a complete guide:
 
 - User registration & login
 - Session management with `tower-sessions`
@@ -207,10 +207,10 @@ This is a learning project. I'm exploring Rust while building something useful. 
 
 ## 🔗 Links
 
-- **[GitHub Repository](https://github.com/yourusername/rave-template)**
-- **[Full Documentation](https://github.com/yourusername/rave-template/blob/main/README.md)**
-- **[Authentication Guide](https://github.com/yourusername/rave-template/blob/main/AUTH.md)**
-- **[Devbox Setup](https://github.com/yourusername/rave-template/blob/main/DEVBOX.md)**
+- **[GitHub Repository](https://github.com/DnzzL/rave-template)**
+- **[Full Documentation](https://github.com/DnzzL/rave-template/blob/main/README.md)**
+- **[Authentication Guide](https://github.com/DnzzL/rave-template/blob/main/AUTH.md)**
+- **[Devbox Setup](https://github.com/DnzzL/rave-template/blob/main/DEVBOX.md)**
 
 ---
 

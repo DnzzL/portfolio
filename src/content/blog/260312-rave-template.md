@@ -1,56 +1,45 @@
 ---
-title: 'Introducing RAVE: A Rust + Axum Full-Stack Template'
-description: 'Building type-safe full-stack apps without the TypeScript fatigue'
+title: 'RAVE: The Full-Stack Rust Template That Respects Your TypeScript'
+description: 'Rust backend, TypeScript frontend, one binary, zero friction'
 pubDate: '2026-03-12'
+updatedDate: '2026-06-12'
 categories: ['Webdev', 'Rust']
 heroImage: '/thumbnails/rust.png'
 tags: ['Rust', 'Axum', 'TypeScript', 'Full-stack', 'Developer Experience']
 ---
 
-I'll be honest: I'm a Rust beginner. I've spent years in the TypeScript ecosystem—Vue, Nuxt, React—and I love it. But lately, everyone keeps saying Rust is "the language of 2026" and the "chosen one for LLMs". I don't know about all that hype, but I've wanted to dig deeper into Rust for a while now.
+**RAVE** is **R**ust + **A**xum + **V**ite + **E**verything else you don't need. It's a full-stack template where the backend writes your TypeScript types for you — then serves both API and frontend from a single binary.
 
-So I did what any curious developer would do: I built a full-stack template with it.
-
-Enter **RAVE** — **R**ust + **A**xum + **V**ite + **E**verything else you don't need.
-
-## Why This Stack?
-
-I like TypeScript. I came back to SPA architectures because clear separation of concerns matters to me. But I also wanted:
-
-1. **Same-origin deployment** — Backend and frontend from the same binary, no CORS headaches
-2. **Type safety without the hassle** — Let the backend define types, frontend just uses them
-3. **A reason to learn Rust** — Best way to learn is to build something real
-
-Axum seemed like the simplest way to build an API with Rust. Pair it with `serde` for serialization and `ts-rs` for TypeScript generation, and suddenly your frontend doesn't need to know anything about Rust—it just gets typed APIs.
-
-And yes, the acronym makes for a good name. So let's go for a ride.
-
-## The RAVE Stack
-
-The setup is straightforward:
-
-### Backend: Axum 0.8
-
-Axum is the most ergonomic web framework I've found in Rust. It doesn't require understanding lifetimes or async runtimes to get started. The new 0.8 version has an even cleaner route syntax.
-
-```rust
-// backend/src/api/todos.rs
-async fn get_todos(
-    State(pool): State<DbPool>,
-) -> Result<Json<Vec<Todo>>, AppError> {
-    let todos = sqlx::query_as::<_, Todo>(
-        "SELECT * FROM todos ORDER BY created_at DESC"
-    )
-    .fetch_all(&pool)
-    .await?;
-
-    Ok(Json(todos))
-}
+```bash
+git clone https://github.com/DnzzL/rave-template.git
+cd rave-template && devbox shell
+devbox run dev:examples:todo:backend:watch   # Rust hot-reloads
+devbox run dev:examples:todo:frontend        # Vite dev server
 ```
 
-### Type Safety That Actually Works
+No Docker. No Nginx. No Kubernetes degree required.
 
-This is where it gets interesting. Using `ts-rs`, your Rust models automatically generate TypeScript types:
+## What Makes RAVE Different from Other Rust Starters
+
+The Rust full-stack ecosystem has options, but they all make you compromise.
+
+|                      | **RAVE**                          | **Tauri**                   | **Leptos / Yew**              | **Axum + manual setup**        |
+|----------------------|-----------------------------------|-----------------------------|-------------------------------|--------------------------------|
+| Frontend             | Your framework (React, Vue, etc.) | Webview (no real browser)   | Rust WASM (new framework)     | Your framework                 |
+| Type safety          | Auto-generated (ts-rs)            | Manual IPC types            | Rust-only                     | Manual sync                    |
+| Deployment           | Single binary                     | Native binary                | WASM + separate backend       | Binary + static files          |
+| Learning curve       | Know TypeScript? You're ready     | Need Tauri + Rust knowledge | Need a new frontend paradigm  | Need to wire everything up     |
+| CORS                 | None (same-origin)                | None (native)               | Needs proxy                   | Needs proxy or CORS config     |
+
+**Every other Rust starter** forces you to either learn a new frontend framework (Leptos, Yew, Dioxus) or deal with CORS, proxy configs, and manual type syncing.
+
+**RAVE lets you keep your existing TypeScript skills** — React, Vue, Svelte, whatever — and get Rust on the backend without the integration headaches.
+
+## The "Wow" Demo: Your Types, Automatically
+
+This is the part that made me stop and smile when I first got it working.
+
+Define your model in Rust once:
 
 ```rust
 // backend/src/models.rs
@@ -67,7 +56,7 @@ pub struct Todo {
 Run `cargo test`, and your frontend has perfect types:
 
 ```typescript
-// frontend/src/bindings/models.ts
+// frontend/src/bindings/models.ts — auto-generated, never touch this file
 export interface Todo {
   id: number;
   title: string;
@@ -76,144 +65,73 @@ export interface Todo {
 }
 ```
 
-No manual syncing. No "let me check what the API returns". The frontend doesn't even know Rust is involved—it just gets typed APIs.
+Use them with full type safety:
 
-### Database: SQLite
-
-I went with SQLite because 99% of side projects don't need PostgreSQL. With WAL mode, it handles concurrent reads just fine. Using `sqlx`, you get compile-time checked queries:
-
-```rust
-let todo = sqlx::query_as::<_, Todo>(
-    "INSERT INTO todos (title, completed) VALUES (?, ?) RETURNING *"
-)
-.bind(&todo.title)
-.bind(todo.completed)
-.fetch_one(&pool)
-.await?;
+```typescript
+async function getTodos(): Promise<Todo[]> {
+  const res = await fetch('/api/todos');
+  return res.json(); // ← Fully typed. No `any`. No manual d.ts files.
+}
 ```
 
-### Frontend: Vite + React (or Vue)
+**Your backend is the source of truth for types.** No more "let me check what the API returns" or keeping a Postman collection alive. Change a field in Rust, re-run tests, and your frontend instantly knows about it. TypeScript catches mismatches at compile time, not runtime.
 
-The template ships with React, but you can use anything—Vue, Svelte, Solid. Build to `dist/`, and Axum serves it as static files. No Nginx config. No CDN setup. No Docker required.
+## Same-Origin Deployment: Why CORS Is Someone Else's Problem
 
-This is where the same-origin deployment shines: one binary serves both your API and your static files.
+Most full-stack setups serve frontend and backend on different ports/domains → CORS headers → preflight requests → "why isn't this working in production?" head-scratches.
 
-## Developer Experience First
-
-### Hot Reloading
-
-Using `cargo-watch`, your backend automatically restarts when you edit `.rs` files:
+RAVE serves the `frontend/dist/` folder as static files from the Axum binary. Your API lives at `/api/`, your frontend at `/`. Same origin, no CORS, no proxy config in production.
 
 ```bash
-# Terminal 1: Backend with hot reloading
-devbox run dev:examples:todo:backend:watch
-
-# Edit any file → server restarts automatically
-# No manual Cmd+C, Cmd+V ritual
-```
-
-### Reproducible Environments
-
-Using `devbox`, everyone gets the same dev environment:
-
-```bash
-devbox shell
-# That's it. All dependencies installed.
-# No "works on my machine"
-```
-
-### Zero Configuration
-
-The template ships with sensible defaults:
-
-- SQLite with WAL mode for concurrent reads
-- CORS configured for local development
-- TypeScript proxy setup in Vite
-- API response standardization
-
-## What's Not Included (On Purpose)
-
-- ❌ **Kubernetes** — You don't need it
-- ❌ **Message queues** — You don't need it
-- ❌ **Microservices** — You _definitely_ don't need it
-- ❌ **Complex auth** — Add it when you have users
-- ❌ **GraphQL** — REST for CRUD works fine
-
-The philosophy is simple: ship fast, validate your idea, add complexity when you actually need it.
-
-## The Development Workflow
-
-1. **Define your models** in Rust
-2. **Run `cargo test`** to generate TypeScript types
-3. **Build your frontend** with full type safety
-4. **Deploy anywhere** — it's just a binary and a `dist/` folder
-
-```bash
-# Build for production
 cd frontend && npm run build
 cd backend && cargo build --release
 
-# Deploy
+# Deploy to any VPS
 scp target/release/rave-backend your-server:/app/
 scp -r frontend/dist your-server:/app/
-
-# Run
 DATABASE_URL=sqlite:./app.db ./rave-backend
+
+# That's it. Your app is live.
 ```
 
-That's it. Your app is now running.
+## What's Not Included (And Why That's The Point)
 
-## Why I Built This
+- ❌ **Kubernetes** — You don't need it for a side project
+- ❌ **Message queues** — Add them when you have a queue problem
+- ❌ **Microservices** — You _definitely_ don't need it yet
+- ❌ **Complex auth** — There's an `AUTH.md` for when you do
+- ❌ **GraphQL** — REST with compile-time checked queries works fine
 
-I've spent years in the TypeScript ecosystem. I love the developer experience. But I was curious about Rust—everyone says it's the future, and I wanted to see what the fuss was about.
+The template ships the absolute minimum to be productive immediately:
 
-The challenge? Most Rust web frameworks felt overwhelming for someone coming from TypeScript. I wanted something simple that would let me:
+- SQLite with WAL mode (99% of projects don't need PostgreSQL)
+- `cargo-watch` for instant server restarts on `.rs` changes
+- `devbox` for reproducible environments
+- API response standardization
+- TypeScript proxy setup in Vite for development
 
-- Learn Rust without drowning in complexity
-- Keep my TypeScript frontend
-- Have type safety between backend and frontend
-- Deploy everything from a single binary
+## Who RAVE Is For
 
-RAVE is my attempt to bridge these two worlds. It's not about replacing TypeScript—it's about using Rust where it shines (backend APIs) and keeping TypeScript where it shines (frontend).
+**You should use RAVE if:**
+- You want Rust on the backend without giving up your TypeScript frontend
+- You're tired of manually syncing API types between frontend and backend
+- You want deployment to be `scp` + `run` — no Dockerfile, no CI pipeline
+- You want to build side projects that could actually scale if they take off
 
-Is Rust the "language of 2026"? I don't know yet. But it's been a fun ride learning it, and building RAVE has given me a much deeper appreciation for what Rust offers.
+**You should NOT use RAVE if:**
+- You need to learn a new frontend paradigm (go use Leptos/Yew)
+- You're building the next Facebook (hire a DevOps team)
+- You hate compile times (Rust compiles slower than TS, that's life)
+- You need PostgreSQL today (swap the SQLite URL, the rest works)
 
-## Should You Use It?
+## The RAVE Promise
 
-**Yes if:**
+I built RAVE because I wanted Rust on the backend without the usual friction. The type safety, the same-origin deployment, the `cargo test → types` pipeline — these aren't gimmicks. They solve real problems I hit when I tried to use other Rust stacks.
 
-- You're building a side project or MVP
-- You want to learn Rust practically
-- You value type safety end-to-end
-- You're curious about same-origin deployment
+**If you know TypeScript and want Rust on the server, RAVE is the shortest path there.**
 
-**No if:**
-
-- You need microservices (you probably don't)
-- You're building the next Facebook
-- You hate compile times (Rust compiles are slower than TS builds)
-- You want zero learning curve (Rust has one)
-
-## Getting Started
-
-```bash
-git clone https://github.com/yourusername/rave-template.git
-cd rave-template
-devbox shell
-devbox run dev:examples:todo:backend:watch
-devbox run dev:examples:todo:frontend
-```
-
-Check out the [full documentation](https://github.com/yourusername/rave-template) for more details, including a complete auth guide in `AUTH.md`.
-
-## Final Thoughts
-
-The Vue ecosystem has given me incredible developer experiences with Nuxt 3 and Nuxt UI. But sometimes you need to step outside your comfort zone. Sometimes you need to learn something new.
-
-RAVE is my way of learning Rust while building something useful. It's not perfect—I'm still learning, still discovering better patterns. But it works, it's type-safe, and it's been a great excuse to dive deeper into Rust.
-
-Whether Rust is "the language of 2026" or not, I don't know. But the ride has been worth it.
+Check out the [full documentation](https://github.com/DnzzL/rave-template) including the [auth guide in `AUTH.md`](https://github.com/DnzzL/rave-template/blob/main/AUTH.md).
 
 ---
 
-**Made with 🦀 Rust, ⚡ Vite, and ☕ Coffee**
+**RAVE: Rust backend, TypeScript frontend, one binary, zero friction.**
